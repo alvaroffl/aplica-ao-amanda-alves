@@ -1,6 +1,6 @@
 begin;
 \ir ../helpers/fixtures.psql
-select plan(21);
+select plan(22);
 
 create temp table ctx as
 select pg_temp.book('40000000-0000-0000-0000-0000000000a1', '30000000-0000-0000-0000-0000000000a1',
@@ -134,6 +134,18 @@ select is(
   'cliente anonimizado'
 );
 select is(public.get_booking_by_token((select b ->> 'manage_token' from pay)), null, 'links antigos deixam de funcionar');
+
+-- ---------------------------------------------------------------------------
+-- Privacidade: mesmo telefone com e-mails diferentes = clientes diferentes
+-- ---------------------------------------------------------------------------
+select pg_temp.book('40000000-0000-0000-0000-0000000000a1', '30000000-0000-0000-0000-0000000000a2', pg_temp.at_local('09:00'), 'pessoa1@teste.dev');
+select pg_temp.book('40000000-0000-0000-0000-0000000000a1', '30000000-0000-0000-0000-0000000000a2', pg_temp.at_local('14:00'), 'pessoa2@teste.dev');
+select is(
+  (select count(distinct client_id) from public.bookings b join public.clients c on c.id = b.client_id
+   where c.email in ('pessoa1@teste.dev', 'pessoa2@teste.dev')),
+  2::bigint,
+  'mesmo telefone com e-mails diferentes não mistura clientes'
+);
 
 select * from finish();
 rollback;

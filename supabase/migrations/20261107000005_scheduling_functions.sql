@@ -219,11 +219,13 @@ declare
   v_email text := nullif(lower(trim(p_email)), '');
   v_phone text := nullif(trim(p_phone), '');
 begin
+  -- Identificação: pelo e-mail quando informado (nunca pelo telefone nesse caso,
+  -- para não enviar a confirmação de uma pessoa ao e-mail de outra que usa o
+  -- mesmo número). Sem e-mail (reserva de balcão), pelo telefone.
   if v_email is not null then
     select id into v_id from public.clients
     where business_id = p_business_id and email = v_email and anonymized_at is null;
-  end if;
-  if v_id is null and v_phone is not null then
+  elsif v_phone is not null then
     select id into v_id from public.clients
     where business_id = p_business_id and phone = v_phone and anonymized_at is null
     order by created_at

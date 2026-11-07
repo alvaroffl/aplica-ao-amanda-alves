@@ -56,7 +56,8 @@ insert into public.availability_rules (business_id, professional_id, unit_id, we
 select pu.business_id, pu.professional_id, pu.unit_id, wd, t.s, t.e
 from public.professional_units pu
 cross join generate_series(0, 6) wd
-cross join (values (time '09:00', time '12:00'), (time '13:00', time '18:00')) t(s, e);
+cross join (values (time '09:00', time '12:00'), (time '13:00', time '18:00')) t(s, e)
+where pu.business_id in ('10000000-0000-0000-0000-00000000000a', '10000000-0000-0000-0000-00000000000b');
 
 -- Dia de teste: segunda-feira daqui a 8–14 dias (longe de antecedência mínima/máxima).
 create function pg_temp.test_day() returns date language sql stable as $$
