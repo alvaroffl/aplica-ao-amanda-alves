@@ -39,7 +39,24 @@ export default defineConfig({
   resolve: {
     alias: { '@': path.resolve(__dirname, 'src') },
   },
-  server: { port: 5173, strictPort: true },
+  server: {
+    port: 5173,
+    strictPort: true,
+    // Com VITE_SUPABASE_URL=/supabase, o navegador fala só com o Vite, que
+    // repassa ao Supabase local (abre no celular pela rede e evita CORS).
+    // O `vite preview` herda este proxy.
+    proxy: {
+      '/supabase': {
+        target: process.env.SUPABASE_PROXY_TARGET ?? 'http://127.0.0.1:54321',
+        changeOrigin: true,
+        ws: true,
+        rewrite: (p) => p.replace(/^\/supabase/, ''),
+      },
+    },
+    // DEV_ALLOW_ANY_HOST=1 aceita qualquer cabeçalho Host (túnel ou pré-visualização
+    // remota). Desliga a proteção contra DNS rebinding: use só em rede confiável.
+    ...(process.env.DEV_ALLOW_ANY_HOST === '1' ? { allowedHosts: true as const } : {}),
+  },
   preview: { port: 4173, strictPort: true },
   build: {
     target: 'es2022',

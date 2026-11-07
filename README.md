@@ -85,6 +85,17 @@ pnpm dev                      # http://localhost:5173
 - **Pagamentos em desenvolvimento:** o provedor `fake` gera um Pix de teste, e o botão **"Simular pagamento aprovado"** na tela do Pix faz o papel do _webhook_.
 - **Worker:** o `pg_cron` chama a Edge Function `process-queue` a cada minuto, que envia os e-mails ao Mailpit e processa os estornos.
 
+### Abrir no celular
+
+Com `VITE_SUPABASE_URL=/supabase` (padrão do `.env.example`), o navegador fala só com o Vite, que repassa as chamadas ao Supabase local. Basta o celular alcançar a porta 5173:
+
+1. Deixe o celular e o computador na mesma rede Wi-Fi.
+2. Rode `pnpm dev --host`. O Vite mostra o endereço de rede, por exemplo `http://192.168.0.10:5173`.
+3. No celular, abra `http://192.168.0.10:5173/studio-exemplo` (troque pelo endereço que apareceu).
+
+- Instalar como app (PWA) e o modo offline exigem HTTPS. Pela rede local o site funciona normalmente, mas sem essas duas coisas.
+- Endereços IP são aceitos por padrão. Para acessar por um nome de host (túnel ou pré-visualização remota), rode com `DEV_ALLOW_ANY_HOST=1`. Isso desliga a proteção contra _DNS rebinding_ do Vite, então use só em rede confiável.
+
 ### Scripts
 
 | Comando                                        | Faz                                                                          |
@@ -293,7 +304,7 @@ Cada _push_ na `main` aplica as migrations, publica as Edge Functions, o front-e
 | Variável                  | Descrição                                                           |
 | ------------------------- | ------------------------------------------------------------------- |
 | `VITE_APP_NAME`           | Nome exibido (marca)                                                |
-| `VITE_SUPABASE_URL`       | URL do projeto Supabase                                             |
+| `VITE_SUPABASE_URL`       | URL do projeto Supabase (local: `/supabase`, via proxy do Vite)     |
 | `VITE_SUPABASE_ANON_KEY`  | Chave publicável (`sb_publishable_…`)                               |
 | `VITE_TURNSTILE_SITE_KEY` | Chave do site do Turnstile (vazio = sem captcha em desenvolvimento) |
 
