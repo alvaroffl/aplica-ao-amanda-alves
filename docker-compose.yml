@@ -1,0 +1,16 @@
+# Front-end em container apontando para o Supabase local (rode `pnpm db:start` antes).
+# Uso: docker compose up --build   →  http://localhost:8080
+services:
+  web:
+    build:
+      context: .
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:-http://127.0.0.1:54321}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY:-sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH}
+        VITE_TURNSTILE_SITE_KEY: ${VITE_TURNSTILE_SITE_KEY:-}
+    environment:
+      SUPABASE_URL: ${VITE_SUPABASE_URL:-http://127.0.0.1:54321}
+      SUPABASE_WS_URL: ${SUPABASE_WS_URL:-ws://127.0.0.1:54321}
+    ports:
+      - '8080:8080'
+    restart: unless-stopped

@@ -5,3 +5,7 @@ supabase/migrations
 supabase/tests
 packages/shared/src/database.types.ts
 docs
+apps/web/dev-dist
+apps/web/playwright-report
+apps/web/test-results
+.github/workflows/*.md
