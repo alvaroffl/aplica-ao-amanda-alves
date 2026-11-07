@@ -611,6 +611,9 @@ isOneToOne: false
 "reschedule_booking_by_token":
 { Args: { "p_starts_at": string,"p_token": string }; Returns: Json
                            },
+"set_weekly_availability":
+{ Args: { "p_professional_id": string,"p_rules": Json,"p_unit_id": string }; Returns: number
+                           },
 "storage_business_id":
 { Args: { "p_name": string }; Returns: string
                            },

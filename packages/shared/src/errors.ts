@@ -19,6 +19,7 @@ export const ERROR_CODES = [
   'SLUG_TAKEN',
   'CLIENT_REQUIRED',
   'INVALID_RANGE',
+  'AVAILABILITY_OVERLAP',
   'INTERNAL_ERROR',
 ] as const;
 
