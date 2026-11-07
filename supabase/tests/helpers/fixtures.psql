@@ -11,9 +11,9 @@ insert into auth.users (id, email, raw_user_meta_data, aud, role) values
   ('a0000000-0000-0000-0000-000000000003', 'pro.a@teste.dev', '{"full_name":"Pro A"}', 'authenticated', 'authenticated'),
   ('b0000000-0000-0000-0000-000000000001', 'admin.b@teste.dev', '{"full_name":"Admin B"}', 'authenticated', 'authenticated');
 
-insert into public.businesses (id, slug, name, timezone, booking_hold_min, cancellation_window_hours) values
-  ('10000000-0000-0000-0000-00000000000a', 'negocio-a', 'Negócio A', 'America/Sao_Paulo', 15, 24),
-  ('10000000-0000-0000-0000-00000000000b', 'negocio-b', 'Negócio B', 'America/Sao_Paulo', 15, 24);
+insert into public.businesses (id, slug, name, timezone, booking_hold_min) values
+  ('10000000-0000-0000-0000-00000000000a', 'negocio-a', 'Negócio A', 'America/Sao_Paulo', 15),
+  ('10000000-0000-0000-0000-00000000000b', 'negocio-b', 'Negócio B', 'America/Sao_Paulo', 15);
 
 insert into public.business_members (business_id, user_id, role) values
   ('10000000-0000-0000-0000-00000000000a', 'a0000000-0000-0000-0000-000000000001', 'admin'),

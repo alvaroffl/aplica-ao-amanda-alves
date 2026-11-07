@@ -23,7 +23,8 @@
     "db:types": "supabase gen types typescript --local > packages/shared/src/database.types.ts",
     "functions:serve": "supabase functions serve --env-file supabase/functions/.env",
     "e2e": "pnpm --filter @agendae/web e2e",
-    "test:functions": "vitest run --config vitest.functions.config.ts"
+    "test:functions": "vitest run --config vitest.functions.config.ts",
+    "demo:purge": "docker exec -i supabase_db_agendae psql -U postgres -v ON_ERROR_STOP=1 < supabase/scripts/remover-dados-demo.sql"
   },
   "devDependencies": {
     "date-fns": "4.4.0",

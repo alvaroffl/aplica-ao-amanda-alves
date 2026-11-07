@@ -45,14 +45,14 @@ isOneToOne: false
                   ]
                 },"availability_rules": {
                   Row: {
-                    "business_id": string,"created_at": string,"end_time": string,"id": string,"professional_id": string,"start_time": string,"unit_id": string,"weekday": number
+                    "business_id": string,"created_at": string,"end_time": string,"id": string,"is_demo": boolean,"professional_id": string,"start_time": string,"unit_id": string,"weekday": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "business_id": string,"created_at"?: string,"end_time": string,"id"?: string,"professional_id": string,"start_time": string,"unit_id": string,"weekday": number
+                    "business_id": string,"created_at"?: string,"end_time": string,"id"?: string,"is_demo"?: boolean,"professional_id": string,"start_time": string,"unit_id": string,"weekday": number
                   }
                   Update: {
-                    "business_id"?: string,"created_at"?: string,"end_time"?: string,"id"?: string,"professional_id"?: string,"start_time"?: string,"unit_id"?: string,"weekday"?: number
+                    "business_id"?: string,"created_at"?: string,"end_time"?: string,"id"?: string,"is_demo"?: boolean,"professional_id"?: string,"start_time"?: string,"unit_id"?: string,"weekday"?: number
                   }
                   Relationships: [
                     {
@@ -69,16 +69,36 @@ isOneToOne: false
       referencedColumns: ["business_id","id"]
     }
                   ]
-                },"bookings": {
+                },"booking_policies": {
                   Row: {
-                    "buffer_after_min": number,"buffer_before_min": number,"business_id": string,"cancel_reason": string | null,"cancelled_at": string | null,"cancelled_by": Database["public"]['Enums']["cancel_actor"] | null,"client_id": string,"created_at": string,"created_by": string | null,"deposit_cents": number,"ends_at": string,"hold_expires_at": string | null,"id": string,"idempotency_key": string | null,"internal_notes": string | null,"notes": string | null,"occupied": unknown,"price_cents": number,"professional_id": string,"service_id": string,"source": Database["public"]['Enums']["booking_source"],"starts_at": string,"status": Database["public"]['Enums']["booking_status"],"token_version": number,"unit_id": string,"updated_at": string
+                    "business_id": string,"client_can_cancel": boolean,"client_can_reschedule": boolean,"is_demo": boolean,"notes": string | null,"refund_min_hours": number,"refund_percent": number,"reschedule_min_hours": number,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "buffer_after_min"?: number,"buffer_before_min"?: number,"business_id": string,"cancel_reason"?: string | null,"cancelled_at"?: string | null,"cancelled_by"?: Database["public"]['Enums']["cancel_actor"] | null,"client_id": string,"created_at"?: string,"created_by"?: string | null,"deposit_cents"?: number,"ends_at": string,"hold_expires_at"?: string | null,"id"?: string,"idempotency_key"?: string | null,"internal_notes"?: string | null,"notes"?: string | null,"occupied"?: never,"price_cents"?: number,"professional_id": string,"service_id": string,"source"?: Database["public"]['Enums']["booking_source"],"starts_at": string,"status"?: Database["public"]['Enums']["booking_status"],"token_version"?: number,"unit_id": string,"updated_at"?: string
+                    "business_id": string,"client_can_cancel"?: boolean,"client_can_reschedule"?: boolean,"is_demo"?: boolean,"notes"?: string | null,"refund_min_hours"?: number,"refund_percent"?: number,"reschedule_min_hours"?: number,"updated_at"?: string
                   }
                   Update: {
-                    "buffer_after_min"?: number,"buffer_before_min"?: number,"business_id"?: string,"cancel_reason"?: string | null,"cancelled_at"?: string | null,"cancelled_by"?: Database["public"]['Enums']["cancel_actor"] | null,"client_id"?: string,"created_at"?: string,"created_by"?: string | null,"deposit_cents"?: number,"ends_at"?: string,"hold_expires_at"?: string | null,"id"?: string,"idempotency_key"?: string | null,"internal_notes"?: string | null,"notes"?: string | null,"occupied"?: never,"price_cents"?: number,"professional_id"?: string,"service_id"?: string,"source"?: Database["public"]['Enums']["booking_source"],"starts_at"?: string,"status"?: Database["public"]['Enums']["booking_status"],"token_version"?: number,"unit_id"?: string,"updated_at"?: string
+                    "business_id"?: string,"client_can_cancel"?: boolean,"client_can_reschedule"?: boolean,"is_demo"?: boolean,"notes"?: string | null,"refund_min_hours"?: number,"refund_percent"?: number,"reschedule_min_hours"?: number,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "booking_policies_business_id_fkey"
+      columns: ["business_id"]
+isOneToOne: true
+      referencedRelation: "businesses"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"bookings": {
+                  Row: {
+                    "buffer_after_min": number,"buffer_before_min": number,"business_id": string,"cancel_reason": string | null,"cancelled_at": string | null,"cancelled_by": Database["public"]['Enums']["cancel_actor"] | null,"client_id": string,"created_at": string,"created_by": string | null,"deposit_cents": number,"ends_at": string,"hold_expires_at": string | null,"id": string,"idempotency_key": string | null,"internal_notes": string | null,"is_demo": boolean,"notes": string | null,"occupied": unknown,"price_cents": number,"professional_id": string,"service_id": string,"source": Database["public"]['Enums']["booking_source"],"starts_at": string,"status": Database["public"]['Enums']["booking_status"],"token_version": number,"unit_id": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "buffer_after_min"?: number,"buffer_before_min"?: number,"business_id": string,"cancel_reason"?: string | null,"cancelled_at"?: string | null,"cancelled_by"?: Database["public"]['Enums']["cancel_actor"] | null,"client_id": string,"created_at"?: string,"created_by"?: string | null,"deposit_cents"?: number,"ends_at": string,"hold_expires_at"?: string | null,"id"?: string,"idempotency_key"?: string | null,"internal_notes"?: string | null,"is_demo"?: boolean,"notes"?: string | null,"occupied"?: never,"price_cents"?: number,"professional_id": string,"service_id": string,"source"?: Database["public"]['Enums']["booking_source"],"starts_at": string,"status"?: Database["public"]['Enums']["booking_status"],"token_version"?: number,"unit_id": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "buffer_after_min"?: number,"buffer_before_min"?: number,"business_id"?: string,"cancel_reason"?: string | null,"cancelled_at"?: string | null,"cancelled_by"?: Database["public"]['Enums']["cancel_actor"] | null,"client_id"?: string,"created_at"?: string,"created_by"?: string | null,"deposit_cents"?: number,"ends_at"?: string,"hold_expires_at"?: string | null,"id"?: string,"idempotency_key"?: string | null,"internal_notes"?: string | null,"is_demo"?: boolean,"notes"?: string | null,"occupied"?: never,"price_cents"?: number,"professional_id"?: string,"service_id"?: string,"source"?: Database["public"]['Enums']["booking_source"],"starts_at"?: string,"status"?: Database["public"]['Enums']["booking_status"],"token_version"?: number,"unit_id"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -141,28 +161,28 @@ isOneToOne: false
                   ]
                 },"businesses": {
                   Row: {
-                    "booking_hold_min": number,"cancellation_window_hours": number,"created_at": string,"currency": string,"description": string | null,"email": string | null,"id": string,"locale": string,"logo_url": string | null,"name": string,"phone": string | null,"reminder_24h": boolean,"reminder_2h": boolean,"slot_interval_min": number,"slug": string,"timezone": string,"updated_at": string,"whatsapp_enabled": boolean
+                    "booking_hold_min": number,"created_at": string,"currency": string,"description": string | null,"email": string | null,"id": string,"locale": string,"logo_url": string | null,"max_installments": number,"name": string,"payment_methods": (string)[],"phone": string | null,"reminder_24h": boolean,"reminder_2h": boolean,"slot_interval_min": number,"slug": string,"timezone": string,"updated_at": string,"whatsapp_enabled": boolean
                   }
                   ComputedFields: never
                   Insert: {
-                    "booking_hold_min"?: number,"cancellation_window_hours"?: number,"created_at"?: string,"currency"?: string,"description"?: string | null,"email"?: string | null,"id"?: string,"locale"?: string,"logo_url"?: string | null,"name": string,"phone"?: string | null,"reminder_24h"?: boolean,"reminder_2h"?: boolean,"slot_interval_min"?: number,"slug": string,"timezone"?: string,"updated_at"?: string,"whatsapp_enabled"?: boolean
+                    "booking_hold_min"?: number,"created_at"?: string,"currency"?: string,"description"?: string | null,"email"?: string | null,"id"?: string,"locale"?: string,"logo_url"?: string | null,"max_installments"?: number,"name": string,"payment_methods"?: (string)[],"phone"?: string | null,"reminder_24h"?: boolean,"reminder_2h"?: boolean,"slot_interval_min"?: number,"slug": string,"timezone"?: string,"updated_at"?: string,"whatsapp_enabled"?: boolean
                   }
                   Update: {
-                    "booking_hold_min"?: number,"cancellation_window_hours"?: number,"created_at"?: string,"currency"?: string,"description"?: string | null,"email"?: string | null,"id"?: string,"locale"?: string,"logo_url"?: string | null,"name"?: string,"phone"?: string | null,"reminder_24h"?: boolean,"reminder_2h"?: boolean,"slot_interval_min"?: number,"slug"?: string,"timezone"?: string,"updated_at"?: string,"whatsapp_enabled"?: boolean
+                    "booking_hold_min"?: number,"created_at"?: string,"currency"?: string,"description"?: string | null,"email"?: string | null,"id"?: string,"locale"?: string,"logo_url"?: string | null,"max_installments"?: number,"name"?: string,"payment_methods"?: (string)[],"phone"?: string | null,"reminder_24h"?: boolean,"reminder_2h"?: boolean,"slot_interval_min"?: number,"slug"?: string,"timezone"?: string,"updated_at"?: string,"whatsapp_enabled"?: boolean
                   }
                   Relationships: [
                     
                   ]
                 },"clients": {
                   Row: {
-                    "anonymized_at": string | null,"business_id": string,"consent_at": string | null,"consent_version": string | null,"created_at": string,"email": string | null,"id": string,"name": string,"notes": string | null,"phone": string | null,"updated_at": string,"user_id": string | null
+                    "anonymized_at": string | null,"business_id": string,"consent_at": string | null,"consent_version": string | null,"created_at": string,"email": string | null,"id": string,"is_demo": boolean,"name": string,"notes": string | null,"phone": string | null,"updated_at": string,"user_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "anonymized_at"?: string | null,"business_id": string,"consent_at"?: string | null,"consent_version"?: string | null,"created_at"?: string,"email"?: string | null,"id"?: string,"name": string,"notes"?: string | null,"phone"?: string | null,"updated_at"?: string,"user_id"?: string | null
+                    "anonymized_at"?: string | null,"business_id": string,"consent_at"?: string | null,"consent_version"?: string | null,"created_at"?: string,"email"?: string | null,"id"?: string,"is_demo"?: boolean,"name": string,"notes"?: string | null,"phone"?: string | null,"updated_at"?: string,"user_id"?: string | null
                   }
                   Update: {
-                    "anonymized_at"?: string | null,"business_id"?: string,"consent_at"?: string | null,"consent_version"?: string | null,"created_at"?: string,"email"?: string | null,"id"?: string,"name"?: string,"notes"?: string | null,"phone"?: string | null,"updated_at"?: string,"user_id"?: string | null
+                    "anonymized_at"?: string | null,"business_id"?: string,"consent_at"?: string | null,"consent_version"?: string | null,"created_at"?: string,"email"?: string | null,"id"?: string,"is_demo"?: boolean,"name"?: string,"notes"?: string | null,"phone"?: string | null,"updated_at"?: string,"user_id"?: string | null
                   }
                   Relationships: [
                     {
@@ -253,14 +273,14 @@ isOneToOne: false
                   ]
                 },"payments": {
                   Row: {
-                    "amount_cents": number,"attempts": number,"booking_id": string,"business_id": string,"checkout_url": string | null,"created_at": string,"expires_at": string | null,"id": string,"last_error": string | null,"method": Database["public"]['Enums']["payment_method"],"pix_qr_code": string | null,"pix_qr_code_base64": string | null,"provider": string,"provider_payment_id": string | null,"raw": Json | null,"refunded_cents": number,"status": Database["public"]['Enums']["payment_status"],"updated_at": string
+                    "amount_cents": number,"attempts": number,"booking_id": string,"business_id": string,"checkout_url": string | null,"created_at": string,"expires_at": string | null,"id": string,"installments": number | null,"last_error": string | null,"method": Database["public"]['Enums']["payment_method"],"method_detail": string | null,"pix_qr_code": string | null,"pix_qr_code_base64": string | null,"provider": string,"provider_payment_id": string | null,"raw": Json | null,"refund_requested_cents": number | null,"refunded_cents": number,"status": Database["public"]['Enums']["payment_status"],"test_mode": boolean,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount_cents": number,"attempts"?: number,"booking_id": string,"business_id": string,"checkout_url"?: string | null,"created_at"?: string,"expires_at"?: string | null,"id"?: string,"last_error"?: string | null,"method": Database["public"]['Enums']["payment_method"],"pix_qr_code"?: string | null,"pix_qr_code_base64"?: string | null,"provider": string,"provider_payment_id"?: string | null,"raw"?: Json | null,"refunded_cents"?: number,"status"?: Database["public"]['Enums']["payment_status"],"updated_at"?: string
+                    "amount_cents": number,"attempts"?: number,"booking_id": string,"business_id": string,"checkout_url"?: string | null,"created_at"?: string,"expires_at"?: string | null,"id"?: string,"installments"?: number | null,"last_error"?: string | null,"method": Database["public"]['Enums']["payment_method"],"method_detail"?: string | null,"pix_qr_code"?: string | null,"pix_qr_code_base64"?: string | null,"provider": string,"provider_payment_id"?: string | null,"raw"?: Json | null,"refund_requested_cents"?: number | null,"refunded_cents"?: number,"status"?: Database["public"]['Enums']["payment_status"],"test_mode"?: boolean,"updated_at"?: string
                   }
                   Update: {
-                    "amount_cents"?: number,"attempts"?: number,"booking_id"?: string,"business_id"?: string,"checkout_url"?: string | null,"created_at"?: string,"expires_at"?: string | null,"id"?: string,"last_error"?: string | null,"method"?: Database["public"]['Enums']["payment_method"],"pix_qr_code"?: string | null,"pix_qr_code_base64"?: string | null,"provider"?: string,"provider_payment_id"?: string | null,"raw"?: Json | null,"refunded_cents"?: number,"status"?: Database["public"]['Enums']["payment_status"],"updated_at"?: string
+                    "amount_cents"?: number,"attempts"?: number,"booking_id"?: string,"business_id"?: string,"checkout_url"?: string | null,"created_at"?: string,"expires_at"?: string | null,"id"?: string,"installments"?: number | null,"last_error"?: string | null,"method"?: Database["public"]['Enums']["payment_method"],"method_detail"?: string | null,"pix_qr_code"?: string | null,"pix_qr_code_base64"?: string | null,"provider"?: string,"provider_payment_id"?: string | null,"raw"?: Json | null,"refund_requested_cents"?: number | null,"refunded_cents"?: number,"status"?: Database["public"]['Enums']["payment_status"],"test_mode"?: boolean,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -305,14 +325,14 @@ isOneToOne: false
                   ]
                 },"professionals": {
                   Row: {
-                    "active": boolean,"avatar_url": string | null,"bio": string | null,"business_id": string,"color": string,"created_at": string,"id": string,"name": string,"sort_order": number,"user_id": string | null
+                    "active": boolean,"avatar_url": string | null,"bio": string | null,"business_id": string,"color": string,"created_at": string,"credentials": string | null,"id": string,"name": string,"sort_order": number,"user_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "active"?: boolean,"avatar_url"?: string | null,"bio"?: string | null,"business_id": string,"color"?: string,"created_at"?: string,"id"?: string,"name": string,"sort_order"?: number,"user_id"?: string | null
+                    "active"?: boolean,"avatar_url"?: string | null,"bio"?: string | null,"business_id": string,"color"?: string,"created_at"?: string,"credentials"?: string | null,"id"?: string,"name": string,"sort_order"?: number,"user_id"?: string | null
                   }
                   Update: {
-                    "active"?: boolean,"avatar_url"?: string | null,"bio"?: string | null,"business_id"?: string,"color"?: string,"created_at"?: string,"id"?: string,"name"?: string,"sort_order"?: number,"user_id"?: string | null
+                    "active"?: boolean,"avatar_url"?: string | null,"bio"?: string | null,"business_id"?: string,"color"?: string,"created_at"?: string,"credentials"?: string | null,"id"?: string,"name"?: string,"sort_order"?: number,"user_id"?: string | null
                   }
                   Relationships: [
                     {
@@ -365,14 +385,14 @@ isOneToOne: false
                   ]
                 },"services": {
                   Row: {
-                    "active": boolean,"buffer_after_min": number,"buffer_before_min": number,"business_id": string,"category": string | null,"created_at": string,"deposit_type": Database["public"]['Enums']["deposit_type"],"deposit_value": number,"description": string | null,"duration_min": number,"id": string,"max_advance_days": number,"min_notice_min": number,"name": string,"price_cents": number,"sort_order": number,"updated_at": string
+                    "active": boolean,"buffer_after_min": number,"buffer_before_min": number,"business_id": string,"category": string | null,"created_at": string,"deposit_type": Database["public"]['Enums']["deposit_type"],"deposit_value": number,"description": string | null,"duration_min": number,"id": string,"is_demo": boolean,"max_advance_days": number,"min_notice_min": number,"name": string,"price_cents": number,"sort_order": number,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "active"?: boolean,"buffer_after_min"?: number,"buffer_before_min"?: number,"business_id": string,"category"?: string | null,"created_at"?: string,"deposit_type"?: Database["public"]['Enums']["deposit_type"],"deposit_value"?: number,"description"?: string | null,"duration_min": number,"id"?: string,"max_advance_days"?: number,"min_notice_min"?: number,"name": string,"price_cents"?: number,"sort_order"?: number,"updated_at"?: string
+                    "active"?: boolean,"buffer_after_min"?: number,"buffer_before_min"?: number,"business_id": string,"category"?: string | null,"created_at"?: string,"deposit_type"?: Database["public"]['Enums']["deposit_type"],"deposit_value"?: number,"description"?: string | null,"duration_min": number,"id"?: string,"is_demo"?: boolean,"max_advance_days"?: number,"min_notice_min"?: number,"name": string,"price_cents"?: number,"sort_order"?: number,"updated_at"?: string
                   }
                   Update: {
-                    "active"?: boolean,"buffer_after_min"?: number,"buffer_before_min"?: number,"business_id"?: string,"category"?: string | null,"created_at"?: string,"deposit_type"?: Database["public"]['Enums']["deposit_type"],"deposit_value"?: number,"description"?: string | null,"duration_min"?: number,"id"?: string,"max_advance_days"?: number,"min_notice_min"?: number,"name"?: string,"price_cents"?: number,"sort_order"?: number,"updated_at"?: string
+                    "active"?: boolean,"buffer_after_min"?: number,"buffer_before_min"?: number,"business_id"?: string,"category"?: string | null,"created_at"?: string,"deposit_type"?: Database["public"]['Enums']["deposit_type"],"deposit_value"?: number,"description"?: string | null,"duration_min"?: number,"id"?: string,"is_demo"?: boolean,"max_advance_days"?: number,"min_notice_min"?: number,"name"?: string,"price_cents"?: number,"sort_order"?: number,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -385,14 +405,14 @@ isOneToOne: false
                   ]
                 },"time_off": {
                   Row: {
-                    "business_id": string,"created_at": string,"created_by": string | null,"ends_at": string,"id": string,"kind": Database["public"]['Enums']["time_off_kind"],"professional_id": string,"reason": string | null,"starts_at": string
+                    "business_id": string,"created_at": string,"created_by": string | null,"ends_at": string,"id": string,"is_demo": boolean,"kind": Database["public"]['Enums']["time_off_kind"],"professional_id": string,"reason": string | null,"starts_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "business_id": string,"created_at"?: string,"created_by"?: string | null,"ends_at": string,"id"?: string,"kind"?: Database["public"]['Enums']["time_off_kind"],"professional_id": string,"reason"?: string | null,"starts_at": string
+                    "business_id": string,"created_at"?: string,"created_by"?: string | null,"ends_at": string,"id"?: string,"is_demo"?: boolean,"kind"?: Database["public"]['Enums']["time_off_kind"],"professional_id": string,"reason"?: string | null,"starts_at": string
                   }
                   Update: {
-                    "business_id"?: string,"created_at"?: string,"created_by"?: string | null,"ends_at"?: string,"id"?: string,"kind"?: Database["public"]['Enums']["time_off_kind"],"professional_id"?: string,"reason"?: string | null,"starts_at"?: string
+                    "business_id"?: string,"created_at"?: string,"created_by"?: string | null,"ends_at"?: string,"id"?: string,"is_demo"?: boolean,"kind"?: Database["public"]['Enums']["time_off_kind"],"professional_id"?: string,"reason"?: string | null,"starts_at"?: string
                   }
                   Relationships: [
                     {
@@ -452,6 +472,9 @@ isOneToOne: false
 "booking_public_payload":
 { Args: { "p_booking_id": string }; Returns: Json
                            },
+"business_has_demo_data":
+{ Args: { "p_business_id": string }; Returns: boolean
+                           },
 "can_manage_professional":
 { Args: { "p_business_id": string,"p_professional_id": string }; Returns: boolean
                            },
@@ -500,15 +523,19 @@ isOneToOne: false
 "created_at": string,
 "expires_at": string | null,
 "id": string,
+"installments": number | null,
 "last_error": string | null,
 "method": Database["public"]['Enums']["payment_method"],
+"method_detail": string | null,
 "pix_qr_code": string | null,
 "pix_qr_code_base64": string | null,
 "provider": string,
 "provider_payment_id": string | null,
 "raw": Json | null,
+"refund_requested_cents": number | null,
 "refunded_cents": number,
 "status": Database["public"]['Enums']["payment_status"],
+"test_mode": boolean,
 "updated_at": string
             }[]
                           SetofOptions: {
@@ -604,6 +631,12 @@ isOneToOne: false
                            },
 "panel_create_booking":
 { Args: { "p_business_id": string,"p_client_email"?: string,"p_client_id"?: string,"p_client_name"?: string,"p_client_phone"?: string,"p_internal_notes"?: string,"p_professional_id": string,"p_service_id": string,"p_starts_at": string,"p_unit_id": string }; Returns: string
+                           },
+"panel_refund_payment":
+{ Args: { "p_amount_cents"?: number,"p_payment_id": string }; Returns: undefined
+                           },
+"purge_demo_data":
+{ Args: { "p_business_id": string }; Returns: Json
                            },
 "report_summary":
 { Args: { "p_business_id": string,"p_from": string,"p_professional_id"?: string,"p_to": string,"p_unit_id"?: string }; Returns: Json
