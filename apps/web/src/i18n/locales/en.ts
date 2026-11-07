@@ -78,7 +78,12 @@ const en: DeepPartial<Translations> = {
     stepOf: 'Step {{current}} of {{total}}',
     stepDone: '(done)',
     stepCurrent: '(current)',
-    steps: { service: 'Service', professional: 'Professional', datetime: 'Date & time', details: 'Your details' },
+    steps: {
+      service: 'Service',
+      professional: 'Professional',
+      datetime: 'Date & time',
+      details: 'Your details',
+    },
     chooseUnit: 'Choose a location',
     chooseService: 'Choose a service',
     chooseProfessional: 'Who would you like to book with?',
@@ -107,7 +112,8 @@ const en: DeepPartial<Translations> = {
     dayUnavailable: 'unavailable',
     loadingSlots: 'Loading times',
     timesIn: 'Times shown in {{zone}}.',
-    tzNotice: 'Times are shown in the {{unit}} time zone ({{zone}}), which differs from your device ({{yourZone}}).',
+    tzNotice:
+      'Times are shown in the {{unit}} time zone ({{zone}}), which differs from your device ({{yourZone}}).',
     noSlotsRange: 'No open times on these dates',
     noSlotsRangeHint: 'Check the next dates or choose another professional.',
     name: 'Full name',
@@ -120,9 +126,12 @@ const en: DeepPartial<Translations> = {
     payWith: 'Deposit payment method',
     pix: 'Pix',
     card: 'Card',
-    depositText: 'To secure your time, pay a {{amount}} deposit now. The rest is paid at the appointment.',
-    policyText: 'You can reschedule or cancel from the email link up to {{hours}}h before, with a deposit refund.',
-    consent: 'I agree to the use of my data to manage this booking and receive reminders, according to the <privacy>privacy policy</privacy>.',
+    depositText:
+      'To secure your time, pay a {{amount}} deposit now. The rest is paid at the appointment.',
+    policyText:
+      'You can reschedule or cancel from the email link up to {{hours}}h before, with a deposit refund.',
+    consent:
+      'I agree to the use of my data to manage this booking and receive reminders, according to the <privacy>privacy policy</privacy>.',
     confirm: 'Confirm booking',
     confirmAndPay: 'Continue to payment ({{amount}})',
     confirming: 'Reserving your time…',
@@ -186,7 +195,8 @@ const en: DeepPartial<Translations> = {
       exported: 'File generated.',
       delete: 'Delete my data',
       deleteTitle: 'Delete your data?',
-      deleteText: 'Your personal data will be erased from this business and future bookings will be cancelled (deposit refunded). This cannot be undone.',
+      deleteText:
+        'Your personal data will be erased from this business and future bookings will be cancelled (deposit refunded). This cannot be undone.',
       deleteConfirm: 'Delete permanently',
       deleted: 'Your data was deleted',
       deletedText: 'We removed your personal information. This link no longer works.',

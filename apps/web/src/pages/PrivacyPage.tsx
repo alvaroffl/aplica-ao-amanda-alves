@@ -10,7 +10,9 @@ export function PrivacyPage() {
     <PublicLayout>
       <article className="prose mx-auto max-w-2xl space-y-5">
         <h1 className="text-3xl font-bold tracking-tight">{t('privacy.title')}</h1>
-        <p className="text-sm text-muted-foreground">{t('privacy.version', { version: CONSENT_VERSION })}</p>
+        <p className="text-sm text-muted-foreground">
+          {t('privacy.version', { version: CONSENT_VERSION })}
+        </p>
         <p>{t('privacy.intro')}</p>
         {sections.map((s) => (
           <section key={s} className="space-y-1.5">

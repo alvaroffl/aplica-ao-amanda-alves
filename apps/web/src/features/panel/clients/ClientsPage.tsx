@@ -35,10 +35,21 @@ export function ClientsPage() {
         .eq('business_id', business.id)
         .order('name')
         .limit(PAGE);
-      if (debounced) q = q.or(`name.ilike.*${debounced}*,email.ilike.*${debounced}*,phone.ilike.*${debounced.replace(/\D/g, '') || debounced}*`);
+      if (debounced)
+        q = q.or(
+          `name.ilike.*${debounced}*,email.ilike.*${debounced}*,phone.ilike.*${debounced.replace(/\D/g, '') || debounced}*`,
+        );
       const rows = unwrap(await q);
       const stats = rows.length
-        ? unwrap(await supabase.from('client_stats').select('*').in('client_id', rows.map((r) => r.id)))
+        ? unwrap(
+            await supabase
+              .from('client_stats')
+              .select('*')
+              .in(
+                'client_id',
+                rows.map((r) => r.id),
+              ),
+          )
         : [];
       return rows.map((r) => ({ ...r, stats: stats.find((s) => s.client_id === r.id) }));
     },
@@ -48,7 +59,10 @@ export function ClientsPage() {
     <div>
       <PageHeader title={t('clients.title')} description={t('clients.subtitle')} />
       <div className="relative mb-4 max-w-md">
-        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+        <Search
+          className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+          aria-hidden
+        />
         <Input
           type="search"
           value={search}
@@ -67,26 +81,43 @@ export function ClientsPage() {
       ) : clients.isError ? (
         <ErrorState error={clients.error} onRetry={() => void clients.refetch()} />
       ) : clients.data.length === 0 ? (
-        <EmptyState icon={<UsersRound />} title={debounced ? t('clients.noResults') : t('clients.empty')} description={t('clients.emptyHint')} />
+        <EmptyState
+          icon={<UsersRound />}
+          title={debounced ? t('clients.noResults') : t('clients.empty')}
+          description={t('clients.emptyHint')}
+        />
       ) : (
         <Card className="divide-y">
           {clients.data.map((c) => (
-            <Link key={c.id} to={`/painel/clientes/${c.id}`} className="flex items-center gap-4 p-4 hover:bg-accent focus-visible:bg-accent focus-visible:outline-none">
+            <Link
+              key={c.id}
+              to={`/painel/clientes/${c.id}`}
+              className="flex items-center gap-4 p-4 hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
+            >
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium">
-                  {c.name} {c.anonymized_at && <Badge variant="secondary">{t('clients.anonymized')}</Badge>}
+                  {c.name}{' '}
+                  {c.anonymized_at && <Badge variant="secondary">{t('clients.anonymized')}</Badge>}
                 </p>
-                <p className="truncate text-sm text-muted-foreground">{[formatPhone(c.phone), c.email].filter(Boolean).join(' · ')}</p>
+                <p className="truncate text-sm text-muted-foreground">
+                  {[formatPhone(c.phone), c.email].filter(Boolean).join(' · ')}
+                </p>
               </div>
               <div className="hidden text-right text-sm sm:block">
-                <p className="tabular-nums">{t('clients.visits', { count: c.stats?.completed_count ?? 0 })}</p>
+                <p className="tabular-nums">
+                  {t('clients.visits', { count: c.stats?.completed_count ?? 0 })}
+                </p>
                 {(c.stats?.no_show_count ?? 0) > 0 && (
-                  <p className="text-destructive">{t('clients.noShows', { count: c.stats!.no_show_count! })}</p>
+                  <p className="text-destructive">
+                    {t('clients.noShows', { count: c.stats!.no_show_count! })}
+                  </p>
                 )}
               </div>
               <div className="hidden w-40 text-right text-sm text-muted-foreground md:block">
                 {c.stats?.next_booking_at ? (
-                  <span className="text-foreground">{formatDateTime(c.stats.next_booking_at, business.timezone)}</span>
+                  <span className="text-foreground">
+                    {formatDateTime(c.stats.next_booking_at, business.timezone)}
+                  </span>
                 ) : c.stats?.revenue_cents ? (
                   formatMoney(c.stats.revenue_cents, business.currency)
                 ) : null}

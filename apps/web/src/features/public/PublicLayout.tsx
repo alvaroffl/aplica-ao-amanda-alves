@@ -25,7 +25,10 @@ export function PublicLayout({
               {business.logo_url ? (
                 <img src={business.logo_url} alt="" className="size-8 rounded-lg object-cover" />
               ) : (
-                <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-xs font-bold text-primary-foreground" aria-hidden>
+                <span
+                  className="flex size-8 items-center justify-center rounded-lg bg-primary text-xs font-bold text-primary-foreground"
+                  aria-hidden
+                >
                   {initials(business.name)}
                 </span>
               )}

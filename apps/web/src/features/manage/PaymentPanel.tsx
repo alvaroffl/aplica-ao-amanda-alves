@@ -22,7 +22,13 @@ function useCountdown(until: string | null) {
   return { ms, label: `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}` };
 }
 
-export function PaymentPanel({ booking, currency = 'BRL' }: { booking: PublicBooking; currency?: string }) {
+export function PaymentPanel({
+  booking,
+  currency = 'BRL',
+}: {
+  booking: PublicBooking;
+  currency?: string;
+}) {
   const { t } = useTranslation();
   const qc = useQueryClient();
   const payment = booking.payment;

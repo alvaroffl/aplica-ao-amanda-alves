@@ -11,7 +11,13 @@ import { ErrorState, PageHeader } from '@/components/common/States';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Field } from '@/components/ui/field';
 import { Input, NativeSelect } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -56,9 +62,16 @@ export function UnitsPage() {
                 </p>
                 {u.address && <p className="text-sm text-muted-foreground">{u.address}</p>}
                 {u.phone && <p className="text-sm text-muted-foreground">{formatPhone(u.phone)}</p>}
-                <p className="mt-1 truncate text-xs text-muted-foreground">{publicUrl(`/${business.slug}/${u.slug}`)}</p>
+                <p className="mt-1 truncate text-xs text-muted-foreground">
+                  {publicUrl(`/${business.slug}/${u.slug}`)}
+                </p>
               </div>
-              <Button variant="ghost" size="icon" onClick={() => setEditing(u)} aria-label={`${t('common.edit')} ${u.name}`}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setEditing(u)}
+                aria-label={`${t('common.edit')} ${u.name}`}
+              >
                 <Pencil aria-hidden />
               </Button>
             </Card>
@@ -102,7 +115,13 @@ function UnitDialog({ editing, onClose }: { editing: Unit | 'new' | null; onClos
     try {
       const payload = { ...v, address: v.address || null, business_id: business.id };
       if (editing === 'new') unwrap(await supabase.from('units').insert(payload));
-      else unwrap(await supabase.from('units').update(payload).eq('id', (editing as Unit).id));
+      else
+        unwrap(
+          await supabase
+            .from('units')
+            .update(payload)
+            .eq('id', (editing as Unit).id),
+        );
       await qc.invalidateQueries({ queryKey: keys.units(business.id) });
       toast.success(t('common.saved'));
       onClose();
@@ -122,7 +141,8 @@ function UnitDialog({ editing, onClose }: { editing: Unit | 'new' | null; onClos
             <Input
               {...register('name', {
                 onChange: (e) => {
-                  if (editing === 'new' && !getFieldState('slug').isDirty) setValue('slug', slugify(e.target.value));
+                  if (editing === 'new' && !getFieldState('slug').isDirty)
+                    setValue('slug', slugify(e.target.value));
                 },
               })}
             />

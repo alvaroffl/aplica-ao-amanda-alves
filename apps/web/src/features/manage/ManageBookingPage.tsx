@@ -8,7 +8,16 @@ import {
   timeZoneLabel,
 } from '@agendae/shared';
 import { useQueryClient } from '@tanstack/react-query';
-import { CalendarClock, CalendarDays, CheckCircle2, Clock, MapPin, Phone, User, XCircle } from 'lucide-react';
+import {
+  CalendarClock,
+  CalendarDays,
+  CheckCircle2,
+  Clock,
+  MapPin,
+  Phone,
+  User,
+  XCircle,
+} from 'lucide-react';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams, useSearchParams } from 'react-router';
@@ -58,7 +67,12 @@ export function ManageBookingPage() {
   if (deleted) {
     return (
       <PublicLayout>
-        <EmptyState headingLevel="h1" icon={<CheckCircle2 />} title={t('manage.privacy.deleted')} description={t('manage.privacy.deletedText')} />
+        <EmptyState
+          headingLevel="h1"
+          icon={<CheckCircle2 />}
+          title={t('manage.privacy.deleted')}
+          description={t('manage.privacy.deletedText')}
+        />
       </PublicLayout>
     );
   }
@@ -79,7 +93,12 @@ export function ManageBookingPage() {
     return (
       <PublicLayout>
         {invalid ? (
-          <EmptyState headingLevel="h1" icon={<XCircle />} title={t('manage.invalidLink')} description={t('manage.invalidLinkHint')} />
+          <EmptyState
+            headingLevel="h1"
+            icon={<XCircle />}
+            title={t('manage.invalidLink')}
+            description={t('manage.invalidLinkHint')}
+          />
         ) : (
           <ErrorState error={query.error} onRetry={() => void query.refetch()} />
         )}
@@ -95,7 +114,10 @@ export function ManageBookingPage() {
     setCancelling(true);
     try {
       const result = await cancelByToken(b.manage_token, reason);
-      qc.setQueryData(['booking-token', token], { ...result, policy: { ...result.policy, can_cancel: false, can_reschedule: false } });
+      qc.setQueryData(['booking-token', token], {
+        ...result,
+        policy: { ...result.policy, can_cancel: false, can_reschedule: false },
+      });
       await qc.invalidateQueries({ queryKey: ['booking-token', token] });
       toast.success(t('manage.cancelled'));
     } catch (e) {
@@ -108,17 +130,35 @@ export function ManageBookingPage() {
 
   const hero =
     b.status === 'confirmed' && isNew
-      ? { icon: <CheckCircle2 className="size-10 text-success" aria-hidden />, title: t('manage.confirmedTitle'), text: b.client.email ? t('manage.confirmedText', { email: b.client.email }) : null }
+      ? {
+          icon: <CheckCircle2 className="size-10 text-success" aria-hidden />,
+          title: t('manage.confirmedTitle'),
+          text: b.client.email ? t('manage.confirmedText', { email: b.client.email }) : null,
+        }
       : b.status === 'pending_payment'
-        ? { icon: <Clock className="size-10 text-warning" aria-hidden />, title: t('manage.pendingTitle'), text: t('manage.pendingText') }
+        ? {
+            icon: <Clock className="size-10 text-warning" aria-hidden />,
+            title: t('manage.pendingTitle'),
+            text: t('manage.pendingText'),
+          }
         : b.status === 'cancelled'
-          ? { icon: <XCircle className="size-10 text-muted-foreground" aria-hidden />, title: t('manage.cancelledTitle'), text: null }
+          ? {
+              icon: <XCircle className="size-10 text-muted-foreground" aria-hidden />,
+              title: t('manage.cancelledTitle'),
+              text: null,
+            }
           : b.status === 'expired'
-            ? { icon: <XCircle className="size-10 text-muted-foreground" aria-hidden />, title: t('manage.expiredTitle'), text: t('manage.expiredText') }
+            ? {
+                icon: <XCircle className="size-10 text-muted-foreground" aria-hidden />,
+                title: t('manage.expiredTitle'),
+                text: t('manage.expiredText'),
+              }
             : null;
 
   return (
-    <PublicLayout business={{ name: b.business.name, logo_url: b.business.logo_url, slug: b.business.slug }}>
+    <PublicLayout
+      business={{ name: b.business.name, logo_url: b.business.logo_url, slug: b.business.slug }}
+    >
       <div className="mx-auto max-w-2xl space-y-5">
         {hero && (
           <div className="flex flex-col items-center gap-2 text-center" aria-live="polite">
@@ -135,7 +175,9 @@ export function ManageBookingPage() {
           <CardHeader className="flex-row items-start justify-between gap-3 space-y-0">
             <div>
               <CardTitle className="text-lg">{b.service.name}</CardTitle>
-              <p className="text-sm text-muted-foreground">{formatDuration(b.service.duration_min)}</p>
+              <p className="text-sm text-muted-foreground">
+                {formatDuration(b.service.duration_min)}
+              </p>
             </div>
             <BookingStatusBadge status={b.status} />
           </CardHeader>
@@ -145,7 +187,9 @@ export function ManageBookingPage() {
                 <span className="block font-medium first-letter:uppercase">
                   {formatLongDate(b.starts_at, tz)} {t('booking.at')} {formatTime(b.starts_at, tz)}
                 </span>
-                <span className="block text-xs text-muted-foreground">{timeZoneLabel(tz, i18n.language, new Date(b.starts_at))}</span>
+                <span className="block text-xs text-muted-foreground">
+                  {timeZoneLabel(tz, i18n.language, new Date(b.starts_at))}
+                </span>
               </Row>
               <Row icon={<User />} label={t('booking.professional')}>
                 {b.professional.name}
@@ -165,7 +209,10 @@ export function ManageBookingPage() {
               </Row>
               {b.business.phone && (
                 <Row icon={<Phone />} label={t('manage.contact')}>
-                  <a className="text-primary underline-offset-2 hover:underline" href={`tel:${b.business.phone}`}>
+                  <a
+                    className="text-primary underline-offset-2 hover:underline"
+                    href={`tel:${b.business.phone}`}
+                  >
                     {formatPhone(b.business.phone)}
                   </a>
                 </Row>
@@ -180,7 +227,8 @@ export function ManageBookingPage() {
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">{t('booking.deposit')}</span>
                   <span className="flex items-center gap-2 tabular-nums">
-                    {formatMoney(b.deposit_cents)} {b.payment && <PaymentStatusBadge status={b.payment.status} />}
+                    {formatMoney(b.deposit_cents)}{' '}
+                    {b.payment && <PaymentStatusBadge status={b.payment.status} />}
                   </span>
                 </div>
               )}
@@ -225,7 +273,14 @@ export function ManageBookingPage() {
         )}
 
         {b.status === 'pending_payment' && policy?.can_cancel && (
-          <CancelDialog refund hasDeposit={false} reason={reason} setReason={setReason} onConfirm={cancel} loading={cancelling} />
+          <CancelDialog
+            refund
+            hasDeposit={false}
+            reason={reason}
+            setReason={setReason}
+            onConfirm={cancel}
+            loading={cancelling}
+          />
         )}
 
         {(b.status === 'cancelled' || b.status === 'expired') && (
@@ -233,9 +288,11 @@ export function ManageBookingPage() {
             <Link to={`/${b.business.slug}`}>{t('manage.bookAgain')}</Link>
           </Button>
         )}
-        {b.status === 'cancelled' && b.payment?.status && ['refund_pending', 'refunded'].includes(b.payment.status) && (
-          <p className="text-center text-sm text-muted-foreground">{t('manage.refundInfo')}</p>
-        )}
+        {b.status === 'cancelled' &&
+          b.payment?.status &&
+          ['refund_pending', 'refunded'].includes(b.payment.status) && (
+            <p className="text-center text-sm text-muted-foreground">{t('manage.refundInfo')}</p>
+          )}
 
         <PrivacyPanel token={b.manage_token} onDeleted={() => setDeleted(true)} />
       </div>
@@ -243,7 +300,15 @@ export function ManageBookingPage() {
   );
 }
 
-function Row({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
+function Row({
+  icon,
+  label,
+  children,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex items-start gap-3">
       <dt className="mt-0.5 text-muted-foreground [&_svg]:size-4">
@@ -274,7 +339,11 @@ function CancelDialog({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" className="text-destructive hover:text-destructive" loading={loading}>
+        <Button
+          variant="outline"
+          className="text-destructive hover:text-destructive"
+          loading={loading}
+        >
           {t('manage.cancel')}
         </Button>
       </AlertDialogTrigger>
@@ -282,14 +351,24 @@ function CancelDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>{t('manage.cancelTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
-            {hasDeposit ? (refund ? t('manage.cancelRefund') : t('manage.cancelNoRefund')) : t('manage.cancelText')}
+            {hasDeposit
+              ? refund
+                ? t('manage.cancelRefund')
+                : t('manage.cancelNoRefund')
+              : t('manage.cancelText')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="grid gap-1.5">
           <Label htmlFor="cancel-reason">
             {t('manage.reason')} ({t('common.optional')})
           </Label>
-          <Textarea id="cancel-reason" rows={2} maxLength={500} value={reason} onChange={(e) => setReason(e.target.value)} />
+          <Textarea
+            id="cancel-reason"
+            rows={2}
+            maxLength={500}
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+          />
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>{t('manage.keep')}</AlertDialogCancel>

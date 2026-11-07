@@ -30,12 +30,18 @@ export function SignInPage() {
     getValues,
     trigger,
     formState: { errors, isSubmitting },
-  } = useForm<Form>({ resolver: zodResolver(signInSchema), defaultValues: { email: '', password: '' } });
+  } = useForm<Form>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: { email: '', password: '' },
+  });
 
   if (user) return <Navigate to={from} replace />;
 
   const onSubmit = handleSubmit(async (values) => {
-    const { error } = await supabase.auth.signInWithPassword({ email: values.email, password: values.password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    });
     if (error) {
       toast.error(t('auth.invalidCredentials'));
       return;
@@ -91,7 +97,13 @@ export function SignInPage() {
           <div className="relative text-center text-xs text-muted-foreground before:absolute before:inset-x-0 before:top-1/2 before:h-px before:bg-border">
             <span className="relative bg-card px-2">{t('auth.or')}</span>
           </div>
-          <Button type="button" variant="outline" className="w-full" onClick={sendMagicLink} loading={magicLoading}>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={sendMagicLink}
+            loading={magicLoading}
+          >
             {t('auth.magicLink')}
           </Button>
         </form>

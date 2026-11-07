@@ -14,7 +14,13 @@ import { TimezoneNotice } from '../public/TimezoneNotice';
 
 const PAGE = 14;
 
-export function ReschedulePanel({ booking, onDone }: { booking: PublicBooking; onDone: () => void }) {
+export function ReschedulePanel({
+  booking,
+  onDone,
+}: {
+  booking: PublicBooking;
+  onDone: () => void;
+}) {
   const { t } = useTranslation();
   const qc = useQueryClient();
   const tz = booking.unit.timezone;
@@ -23,7 +29,12 @@ export function ReschedulePanel({ booking, onDone }: { booking: PublicBooking; o
   const [day, setDay] = React.useState<string | null>(null);
   const [selected, setSelected] = React.useState<string | null>(null);
   const [saving, setSaving] = React.useState(false);
-  const slots = useRescheduleSlots(booking.manage_token, start, addDaysToKey(start, PAGE - 1), true);
+  const slots = useRescheduleSlots(
+    booking.manage_token,
+    start,
+    addDaysToKey(start, PAGE - 1),
+    true,
+  );
 
   const byDay = React.useMemo(() => {
     const map = new Map<string, { starts_at: string; ends_at: string }[]>();
@@ -35,7 +46,7 @@ export function ReschedulePanel({ booking, onDone }: { booking: PublicBooking; o
     return map;
   }, [slots.data, tz, booking.starts_at]);
   const available = React.useMemo(() => new Set(byDay.keys()), [byDay]);
-  const activeDay = day && available.has(day) ? day : [...available].sort()[0] ?? null;
+  const activeDay = day && available.has(day) ? day : ([...available].sort()[0] ?? null);
 
   const confirm = async () => {
     if (!selected) return;
@@ -82,7 +93,12 @@ export function ReschedulePanel({ booking, onDone }: { booking: PublicBooking; o
       ) : !activeDay ? (
         <EmptyState title={t('booking.noSlotsRange')} />
       ) : (
-        <SlotPicker slots={byDay.get(activeDay) ?? []} timeZone={tz} selected={selected} onSelect={(s) => setSelected(s.starts_at)} />
+        <SlotPicker
+          slots={byDay.get(activeDay) ?? []}
+          timeZone={tz}
+          selected={selected}
+          onSelect={(s) => setSelected(s.starts_at)}
+        />
       )}
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <Button variant="outline" onClick={onDone}>

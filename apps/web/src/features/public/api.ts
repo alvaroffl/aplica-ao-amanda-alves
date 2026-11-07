@@ -1,4 +1,9 @@
-import type { PublicBooking, PublicBooking as Booking, PublicBusiness, Slot } from '@agendae/shared';
+import type {
+  PublicBooking,
+  PublicBooking as Booking,
+  PublicBusiness,
+  Slot,
+} from '@agendae/shared';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { ApiError, callFunction, unwrap } from '@/lib/api';
 import { supabase } from '@/lib/supabase';
@@ -81,16 +86,22 @@ export function useRescheduleSlots(token: string, from: string, to: string, enab
     enabled,
     placeholderData: keepPreviousData,
     queryFn: async () =>
-      unwrap(await supabase.rpc('get_reschedule_slots', { p_token: token, p_from: from, p_to: to })) as Omit<Slot, 'professional_id'>[],
+      unwrap(
+        await supabase.rpc('get_reschedule_slots', { p_token: token, p_from: from, p_to: to }),
+      ) as Omit<Slot, 'professional_id'>[],
   });
 }
 
 export async function rescheduleByToken(token: string, startsAt: string) {
-  return unwrap(await supabase.rpc('reschedule_booking_by_token', { p_token: token, p_starts_at: startsAt })) as unknown as Booking;
+  return unwrap(
+    await supabase.rpc('reschedule_booking_by_token', { p_token: token, p_starts_at: startsAt }),
+  ) as unknown as Booking;
 }
 
 export async function cancelByToken(token: string, reason: string) {
-  return unwrap(await supabase.rpc('cancel_booking_by_token', { p_token: token, p_reason: reason })) as unknown as Booking;
+  return unwrap(
+    await supabase.rpc('cancel_booking_by_token', { p_token: token, p_reason: reason }),
+  ) as unknown as Booking;
 }
 
 export async function exportMyData(token: string) {

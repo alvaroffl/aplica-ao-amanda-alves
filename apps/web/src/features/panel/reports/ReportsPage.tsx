@@ -51,9 +51,17 @@ export function ReportsPage() {
           label={t('reports.period')}
           value={period}
           onChange={setPeriod}
-          options={(['7', '30', '90'] as const).map((p) => ({ value: p, label: t('reports.lastDays', { count: Number(p) }) }))}
+          options={(['7', '30', '90'] as const).map((p) => ({
+            value: p,
+            label: t('reports.lastDays', { count: Number(p) }),
+          }))}
         />
-        <NativeSelect value={pro} onChange={(e) => setPro(e.target.value)} className="w-auto min-w-48" aria-label={t('agenda.filterProfessional')}>
+        <NativeSelect
+          value={pro}
+          onChange={(e) => setPro(e.target.value)}
+          className="w-auto min-w-48"
+          aria-label={t('agenda.filterProfessional')}
+        >
           <option value="">{t('agenda.allProfessionals')}</option>
           {(professionals.data ?? []).map((p) => (
             <option key={p.id} value={p.id}>
@@ -72,7 +80,11 @@ export function ReportsPage() {
       ) : report.isError ? (
         <ErrorState error={report.error} onRetry={() => void report.refetch()} />
       ) : report.data.total === 0 ? (
-        <EmptyState icon={<BarChart3 />} title={t('reports.empty')} description={t('reports.emptyHint')} />
+        <EmptyState
+          icon={<BarChart3 />}
+          title={t('reports.empty')}
+          description={t('reports.emptyHint')}
+        />
       ) : (
         <ReportContent data={report.data} currency={business.currency} from={from} to={to} />
       )}
@@ -80,19 +92,51 @@ export function ReportsPage() {
   );
 }
 
-function ReportContent({ data, currency, from, to }: { data: ReportSummary; currency: string; from: string; to: string }) {
+function ReportContent({
+  data,
+  currency,
+  from,
+  to,
+}: {
+  data: ReportSummary;
+  currency: string;
+  from: string;
+  to: string;
+}) {
   const { t } = useTranslation();
   return (
     <>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatTile label={t('reports.occupancy')} value={pct(data.occupancy_rate)} hint={t('reports.occupancyHint', { booked: Math.round(data.booked_minutes / 60), available: Math.round(data.available_minutes / 60) })} />
-        <StatTile label={t('reports.noShowRate')} value={pct(data.no_show_rate)} hint={t('reports.noShowHint', { count: data.no_show })} />
-        <StatTile label={t('reports.revenue')} value={formatMoney(data.revenue_realized_cents, currency)} hint={t('reports.revenueHint', { count: data.completed })} />
-        <StatTile label={t('reports.expected')} value={formatMoney(data.revenue_expected_cents, currency)} hint={t('reports.expectedHint', { count: data.confirmed })} />
+        <StatTile
+          label={t('reports.occupancy')}
+          value={pct(data.occupancy_rate)}
+          hint={t('reports.occupancyHint', {
+            booked: Math.round(data.booked_minutes / 60),
+            available: Math.round(data.available_minutes / 60),
+          })}
+        />
+        <StatTile
+          label={t('reports.noShowRate')}
+          value={pct(data.no_show_rate)}
+          hint={t('reports.noShowHint', { count: data.no_show })}
+        />
+        <StatTile
+          label={t('reports.revenue')}
+          value={formatMoney(data.revenue_realized_cents, currency)}
+          hint={t('reports.revenueHint', { count: data.completed })}
+        />
+        <StatTile
+          label={t('reports.expected')}
+          value={formatMoney(data.revenue_expected_cents, currency)}
+          hint={t('reports.expectedHint', { count: data.confirmed })}
+        />
         <StatTile label={t('reports.bookings')} value={String(data.total)} />
         <StatTile label={t('reports.completed')} value={String(data.completed)} />
         <StatTile label={t('reports.cancelled')} value={String(data.cancelled)} />
-        <StatTile label={t('reports.deposits')} value={formatMoney(data.deposits_cents, currency)} />
+        <StatTile
+          label={t('reports.deposits')}
+          value={formatMoney(data.deposits_cents, currency)}
+        />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
@@ -125,7 +169,10 @@ function ReportContent({ data, currency, from, to }: { data: ReportSummary; curr
                       </span>
                     </div>
                     <div className="h-2 rounded-full bg-muted" aria-hidden>
-                      <div className="h-2 rounded-full bg-primary" style={{ width: `${(s.count / max) * 100}%` }} />
+                      <div
+                        className="h-2 rounded-full bg-primary"
+                        style={{ width: `${(s.count / max) * 100}%` }}
+                      />
                     </div>
                   </li>
                 );
@@ -153,7 +200,17 @@ function StatTile({ label, value, hint }: { label: string; value: string; hint?:
  * Barras finas com topo arredondado ancoradas na base, 2px de espaço entre
  * barras, dica no hover/foco e tabela equivalente para leitores de tela.
  */
-function DailyBars({ rows, from, to, currency }: { rows: ReportSummary['by_day']; from: string; to: string; currency: string }) {
+function DailyBars({
+  rows,
+  from,
+  to,
+  currency,
+}: {
+  rows: ReportSummary['by_day'];
+  from: string;
+  to: string;
+  currency: string;
+}) {
   const { t } = useTranslation();
   const [active, setActive] = React.useState<string | null>(null);
   const days: string[] = [];
@@ -211,7 +268,10 @@ function DailyBars({ rows, from, to, currency }: { rows: ReportSummary['by_day']
           </div>
         </div>
       </div>
-      <div className="ml-6 mt-1 flex justify-between text-[11px] tabular-nums text-muted-foreground" aria-hidden>
+      <div
+        className="ml-6 mt-1 flex justify-between text-[11px] tabular-nums text-muted-foreground"
+        aria-hidden
+      >
         <span>{fmt(from)}</span>
         <span>{fmt(to)}</span>
       </div>
@@ -221,10 +281,18 @@ function DailyBars({ rows, from, to, currency }: { rows: ReportSummary['by_day']
           <caption className="sr-only">{t('reports.byDay')}</caption>
           <thead className="text-xs text-muted-foreground">
             <tr>
-              <th scope="col" className="py-1 font-medium">{t('reports.day')}</th>
-              <th scope="col" className="py-1 text-right font-medium">{t('reports.bookings')}</th>
-              <th scope="col" className="py-1 text-right font-medium">{t('reports.noShowsCol')}</th>
-              <th scope="col" className="py-1 text-right font-medium">{t('reports.revenue')}</th>
+              <th scope="col" className="py-1 font-medium">
+                {t('reports.day')}
+              </th>
+              <th scope="col" className="py-1 text-right font-medium">
+                {t('reports.bookings')}
+              </th>
+              <th scope="col" className="py-1 text-right font-medium">
+                {t('reports.noShowsCol')}
+              </th>
+              <th scope="col" className="py-1 text-right font-medium">
+                {t('reports.revenue')}
+              </th>
             </tr>
           </thead>
           <tbody className="tabular-nums">

@@ -23,7 +23,8 @@ void i18n
       order: ['localStorage', 'navigator'],
       lookupLocalStorage: 'agendae-lang',
       caches: ['localStorage'],
-      convertDetectedLanguage: (lng: string) => (lng.toLowerCase().startsWith('pt') ? 'pt-BR' : lng.split('-')[0] ?? lng),
+      convertDetectedLanguage: (lng: string) =>
+        lng.toLowerCase().startsWith('pt') ? 'pt-BR' : (lng.split('-')[0] ?? lng),
     },
     returnNull: false,
     showSupportNotice: false,

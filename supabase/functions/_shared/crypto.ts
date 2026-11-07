@@ -1,7 +1,9 @@
 const encoder = new TextEncoder();
 
 export function toHex(buffer: ArrayBuffer): string {
-  return Array.from(new Uint8Array(buffer)).map((b) => b.toString(16).padStart(2, '0')).join('');
+  return Array.from(new Uint8Array(buffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
 }
 
 export async function sha256Hex(value: string): Promise<string> {
@@ -9,7 +11,13 @@ export async function sha256Hex(value: string): Promise<string> {
 }
 
 export async function hmacSha256Hex(secret: string, message: string): Promise<string> {
-  const key = await crypto.subtle.importKey('raw', encoder.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
   return toHex(await crypto.subtle.sign('HMAC', key, encoder.encode(message)));
 }
 

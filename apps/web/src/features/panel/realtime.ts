@@ -12,7 +12,12 @@ export function useRealtimeBookings() {
       .channel(`bookings:${business.id}`)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'bookings', filter: `business_id=eq.${business.id}` },
+        {
+          event: '*',
+          schema: 'public',
+          table: 'bookings',
+          filter: `business_id=eq.${business.id}`,
+        },
         () => {
           void qc.invalidateQueries({ queryKey: ['bookings', business.id] });
         },

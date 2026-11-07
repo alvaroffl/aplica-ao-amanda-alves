@@ -41,7 +41,12 @@ const optionalPhoneSchema = z
     return normalized;
   });
 
-const emailSchema = z.string().trim().toLowerCase().email('validation.email').max(254, 'validation.email');
+const emailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .email('validation.email')
+  .max(254, 'validation.email');
 
 const optionalEmailSchema = z
   .string()
@@ -76,7 +81,11 @@ const moneySchema = z.union([z.string(), z.number()]).transform((value, ctx) => 
 });
 
 const intInRange = (min: number, max: number) =>
-  z.coerce.number({ invalid_type_error: 'validation.number' }).int('validation.number').min(min, 'validation.min').max(max, 'validation.max');
+  z.coerce
+    .number({ invalid_type_error: 'validation.number' })
+    .int('validation.number')
+    .min(min, 'validation.min')
+    .max(max, 'validation.max');
 
 // ---------------------------------------------------------------------------
 // Reserva pública
@@ -130,7 +139,10 @@ export const newPasswordSchema = z
     password: z.string().min(8, 'validation.passwordMin').max(72, 'validation.passwordMax'),
     confirm: z.string(),
   })
-  .refine((v) => v.password === v.confirm, { message: 'validation.passwordMismatch', path: ['confirm'] });
+  .refine((v) => v.password === v.confirm, {
+    message: 'validation.passwordMismatch',
+    path: ['confirm'],
+  });
 
 // ---------------------------------------------------------------------------
 // Painel
@@ -159,7 +171,11 @@ export const businessSettingsSchema = z.object({
 
 export const unitSchema = z.object({
   name: z.string().trim().min(1, 'validation.required').max(120, 'validation.nameMax'),
-  slug: z.string().trim().toLowerCase().regex(/^[a-z0-9]([a-z0-9-]{0,46}[a-z0-9])?$/, 'validation.slugFormat'),
+  slug: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .regex(/^[a-z0-9]([a-z0-9-]{0,46}[a-z0-9])?$/, 'validation.slugFormat'),
   address: z.string().trim().max(300, 'validation.max').optional().default(''),
   phone: optionalPhoneSchema,
   timezone: z.string().min(1, 'validation.required'),
@@ -196,14 +212,22 @@ export const serviceSchema = z
     if (v.deposit_type === 'fixed') {
       const cents = parseMoneyToCents(v.deposit_value);
       if (!cents || cents <= 0) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'validation.money', path: ['deposit_value'] });
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'validation.money',
+          path: ['deposit_value'],
+        });
         return z.NEVER;
       }
       depositValue = cents;
     } else if (v.deposit_type === 'percent') {
       const pct = Number(String(v.deposit_value).replace(',', '.'));
       if (!Number.isInteger(pct) || pct < 1 || pct > 100) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'validation.percent', path: ['deposit_value'] });
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'validation.percent',
+          path: ['deposit_value'],
+        });
         return z.NEVER;
       }
       depositValue = pct;

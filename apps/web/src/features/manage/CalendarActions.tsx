@@ -1,4 +1,11 @@
-import { buildIcs, formatLongDate, formatTime, googleCalendarUrl, whatsappShareUrl, type PublicBooking } from '@agendae/shared';
+import {
+  buildIcs,
+  formatLongDate,
+  formatTime,
+  googleCalendarUrl,
+  whatsappShareUrl,
+  type PublicBooking,
+} from '@agendae/shared';
 import { CalendarPlus, Download, Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -19,7 +26,10 @@ export function CalendarActions({ booking }: { booking: PublicBooking }) {
   const downloadIcs = () => {
     const ics = buildIcs({ ...event, uid: `${booking.id}@agendae`, url: manage }, env.appName);
     const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
-    const a = Object.assign(document.createElement('a'), { href: url, download: 'agendamento.ics' });
+    const a = Object.assign(document.createElement('a'), {
+      href: url,
+      download: 'agendamento.ics',
+    });
     a.click();
     URL.revokeObjectURL(url);
   };

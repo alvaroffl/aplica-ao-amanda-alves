@@ -1,4 +1,10 @@
-import { formatDuration, formatLongDate, formatMoney, formatTime, type PublicBusiness } from '@agendae/shared';
+import {
+  formatDuration,
+  formatLongDate,
+  formatMoney,
+  formatTime,
+  type PublicBusiness,
+} from '@agendae/shared';
 import { CalendarDays, Clock, MapPin, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
@@ -73,12 +79,16 @@ export function BookingSummary({
       </dl>
       <div className="mt-4 flex items-baseline justify-between border-t pt-3">
         <span className="text-sm text-muted-foreground">{t('booking.price')}</span>
-        <span className="font-semibold tabular-nums">{formatMoney(service.price_cents, currency)}</span>
+        <span className="font-semibold tabular-nums">
+          {formatMoney(service.price_cents, currency)}
+        </span>
       </div>
       {service.deposit_cents > 0 && (
         <div className="mt-1 flex items-baseline justify-between text-sm">
           <span className="text-muted-foreground">{t('booking.depositNow')}</span>
-          <span className="font-medium tabular-nums text-primary">{formatMoney(service.deposit_cents, currency)}</span>
+          <span className="font-medium tabular-nums text-primary">
+            {formatMoney(service.deposit_cents, currency)}
+          </span>
         </div>
       )}
     </Card>

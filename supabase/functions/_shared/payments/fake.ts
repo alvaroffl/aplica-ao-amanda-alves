@@ -1,4 +1,9 @@
-import type { CreatePaymentInput, CreatePaymentResult, PaymentProvider, ProviderPayment } from './types.ts';
+import type {
+  CreatePaymentInput,
+  CreatePaymentResult,
+  PaymentProvider,
+  ProviderPayment,
+} from './types.ts';
 
 /**
  * Provedor de DESENVOLVIMENTO: gera um "Pix" fictício e permite simular a

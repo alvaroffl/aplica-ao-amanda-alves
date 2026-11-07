@@ -9,7 +9,11 @@ interface FieldProps {
   error?: string;
   hint?: React.ReactNode;
   className?: string;
-  children: React.ReactElement<{ id?: string; 'aria-invalid'?: boolean; 'aria-describedby'?: string }>;
+  children: React.ReactElement<{
+    id?: string;
+    'aria-invalid'?: boolean;
+    'aria-describedby'?: string;
+  }>;
 }
 
 /**

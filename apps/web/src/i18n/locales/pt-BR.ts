@@ -71,7 +71,8 @@ const ptBR = {
     RATE_LIMITED: 'Muitas tentativas. Aguarde um minuto e tente de novo.',
     CAPTCHA_FAILED: 'Não conseguimos validar a verificação de segurança. Tente de novo.',
     VALIDATION_ERROR: 'Confira os dados informados.',
-    PAYMENT_PROVIDER_ERROR: 'O pagamento está indisponível no momento. Tente novamente em instantes.',
+    PAYMENT_PROVIDER_ERROR:
+      'O pagamento está indisponível no momento. Tente novamente em instantes.',
     FORBIDDEN: 'Você não tem permissão para esta ação.',
     LAST_ADMIN: 'O negócio precisa de pelo menos um administrador.',
     SLUG_TAKEN: 'Esse endereço já está em uso. Escolha outro.',
@@ -115,12 +116,30 @@ const ptBR = {
     openPanel: 'Abrir painel',
     featuresTitle: 'Funcionalidades',
     features: {
-      mobile: { title: 'Reserva em 4 toques', text: 'Serviço, profissional, horário e pronto. Sem cadastro e sem baixar app.' },
-      noDouble: { title: 'Zero horário duplicado', text: 'A proteção fica no banco de dados: nem dois cliques simultâneos conseguem a mesma vaga.' },
-      reminders: { title: 'Lembretes automáticos', text: 'E-mail e WhatsApp 24h e 2h antes. O cliente reagenda ou cancela pelo link.' },
-      pix: { title: 'Sinal via Pix ou cartão', text: 'Configure por serviço e reduza faltas. O estorno segue a sua política.' },
-      team: { title: 'Equipe e unidades', text: 'Agenda por profissional, várias unidades e permissões de recepção.' },
-      lgpd: { title: 'LGPD de verdade', text: 'Consentimento registrado, exportação e exclusão de dados pelo próprio cliente.' },
+      mobile: {
+        title: 'Reserva em 4 toques',
+        text: 'Serviço, profissional, horário e pronto. Sem cadastro e sem baixar app.',
+      },
+      noDouble: {
+        title: 'Zero horário duplicado',
+        text: 'A proteção fica no banco de dados: nem dois cliques simultâneos conseguem a mesma vaga.',
+      },
+      reminders: {
+        title: 'Lembretes automáticos',
+        text: 'E-mail e WhatsApp 24h e 2h antes. O cliente reagenda ou cancela pelo link.',
+      },
+      pix: {
+        title: 'Sinal via Pix ou cartão',
+        text: 'Configure por serviço e reduza faltas. O estorno segue a sua política.',
+      },
+      team: {
+        title: 'Equipe e unidades',
+        text: 'Agenda por profissional, várias unidades e permissões de recepção.',
+      },
+      lgpd: {
+        title: 'LGPD de verdade',
+        text: 'Consentimento registrado, exportação e exclusão de dados pelo próprio cliente.',
+      },
     },
   },
 
@@ -130,7 +149,12 @@ const ptBR = {
     stepOf: 'Passo {{current}} de {{total}}',
     stepDone: '(concluído)',
     stepCurrent: '(atual)',
-    steps: { service: 'Serviço', professional: 'Profissional', datetime: 'Data e horário', details: 'Seus dados' },
+    steps: {
+      service: 'Serviço',
+      professional: 'Profissional',
+      datetime: 'Data e horário',
+      details: 'Seus dados',
+    },
     chooseUnit: 'Escolha a unidade',
     chooseService: 'Escolha o serviço',
     chooseProfessional: 'Com quem você quer agendar?',
@@ -159,7 +183,8 @@ const ptBR = {
     dayUnavailable: 'sem horários',
     loadingSlots: 'Carregando horários',
     timesIn: 'Horários no {{zone}}.',
-    tzNotice: 'Os horários estão no fuso de {{unit}} ({{zone}}), diferente do seu aparelho ({{yourZone}}).',
+    tzNotice:
+      'Os horários estão no fuso de {{unit}} ({{zone}}), diferente do seu aparelho ({{yourZone}}).',
     noSlotsRange: 'Sem horários livres nestas datas',
     noSlotsRangeHint: 'Veja as próximas datas ou escolha outro profissional.',
     name: 'Nome completo',
@@ -172,8 +197,10 @@ const ptBR = {
     payWith: 'Forma de pagamento do sinal',
     pix: 'Pix',
     card: 'Cartão',
-    depositText: 'Para garantir o horário, pague agora um sinal de {{amount}}. O restante é pago no atendimento.',
-    policyText: 'Você pode reagendar ou cancelar pelo link do e-mail até {{hours}}h antes, com estorno do sinal.',
+    depositText:
+      'Para garantir o horário, pague agora um sinal de {{amount}}. O restante é pago no atendimento.',
+    policyText:
+      'Você pode reagendar ou cancelar pelo link do e-mail até {{hours}}h antes, com estorno do sinal.',
     consent:
       'Concordo com o uso dos meus dados para gerenciar este agendamento e receber lembretes, conforme a <privacy>política de privacidade</privacy>.',
     confirm: 'Confirmar agendamento',
@@ -203,14 +230,16 @@ const ptBR = {
     pageTitle: 'Seu agendamento',
     title: 'Seu agendamento',
     confirmedTitle: 'Agendamento confirmado!',
-    confirmedText: 'Enviamos os detalhes para {{email}}. Guarde este link para reagendar ou cancelar.',
+    confirmedText:
+      'Enviamos os detalhes para {{email}}. Guarde este link para reagendar ou cancelar.',
     pendingTitle: 'Falta só o sinal',
     pendingText: 'Pague o sinal para confirmar. Se o prazo acabar, o horário é liberado.',
     cancelledTitle: 'Agendamento cancelado',
     expiredTitle: 'O prazo de pagamento acabou',
     expiredText: 'O horário foi liberado. Você pode escolher um novo horário.',
     invalidLink: 'Link inválido',
-    invalidLinkHint: 'Este link não existe ou foi desativado. Use o link mais recente que você recebeu.',
+    invalidLinkHint:
+      'Este link não existe ou foi desativado. Use o link mais recente que você recebeu.',
     contact: 'Contato',
     googleCalendar: 'Google Agenda',
     downloadIcs: 'Baixar .ics',
@@ -233,7 +262,8 @@ const ptBR = {
     cancelConfirm: 'Sim, cancelar',
     cancelled: 'Agendamento cancelado.',
     bookAgain: 'Agendar novo horário',
-    refundInfo: 'O estorno do sinal é processado automaticamente e pode levar alguns dias para aparecer.',
+    refundInfo:
+      'O estorno do sinal é processado automaticamente e pode levar alguns dias para aparecer.',
     privacy: {
       title: 'Seus dados (LGPD)',
       text: 'Você pode baixar uma cópia dos seus dados ou pedir a exclusão. A exclusão cancela agendamentos futuros e desativa este link.',
@@ -354,7 +384,8 @@ const ptBR = {
     cancelled: 'Agendamento cancelado. O cliente foi avisado.',
     refundDeposit: 'Estornar sinal de {{amount}}',
     sendWhatsApp: 'Lembrar no WhatsApp',
-    whatsappReminder: 'Olá, {{name}}! Lembrete do seu horário em {{business}}: {{service}}, {{when}}. Até lá!',
+    whatsappReminder:
+      'Olá, {{name}}! Lembrete do seu horário em {{business}}: {{service}}, {{when}}. Até lá!',
     statusChanged: { completed: 'Atendimento concluído.', no_show: 'Falta registrada.' },
   },
 
@@ -387,7 +418,8 @@ const ptBR = {
     depositFixed: 'Valor fixo',
     depositPercentValue: 'Porcentagem (%)',
     depositFixedValue: 'Valor (R$)',
-    depositHint: 'O cliente paga via Pix ou cartão ao agendar. Sem pagamento, o horário é liberado automaticamente.',
+    depositHint:
+      'O cliente paga via Pix ou cartão ao agendar. Sem pagamento, o horário é liberado automaticamente.',
     depositBadge: 'Sinal {{amount}}',
     professionals: 'Quem realiza',
     noProsWarning: 'Sem profissionais, o serviço não aparece na página pública.',
@@ -422,7 +454,8 @@ const ptBR = {
     pendingInvite: 'Convite pendente',
     cancelInvite: 'Cancelar convite',
     invite: 'Convidar pessoa',
-    inviteHint: 'Se a pessoa já tiver conta, o acesso é liberado na hora. Senão, ela recebe um convite por e-mail.',
+    inviteHint:
+      'Se a pessoa já tiver conta, o acesso é liberado na hora. Senão, ela recebe um convite por e-mail.',
     linkProfessional: 'Vincular à agenda de',
     sendInvite: 'Enviar convite',
     inviteSent: 'Convite enviado.',
@@ -509,7 +542,8 @@ const ptBR = {
     export: 'Exportar dados',
     anonymize: 'Anonimizar cliente',
     anonymizeTitle: 'Anonimizar este cliente?',
-    anonymizeText: 'Nome, contatos e observações serão apagados. Agendamentos futuros serão cancelados. Os números dos relatórios são mantidos.',
+    anonymizeText:
+      'Nome, contatos e observações serão apagados. Agendamentos futuros serão cancelados. Os números dos relatórios são mantidos.',
     anonymizeConfirm: 'Anonimizar',
     anonymizedDone: 'Cliente anonimizado.',
   },

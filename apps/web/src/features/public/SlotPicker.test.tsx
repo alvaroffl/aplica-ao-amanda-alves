@@ -12,7 +12,9 @@ const slots = [
 
 describe('SlotPicker', () => {
   it('mostra horários no fuso da unidade, agrupados por período', () => {
-    render(<SlotPicker slots={slots} timeZone="America/Sao_Paulo" selected={null} onSelect={() => {}} />);
+    render(
+      <SlotPicker slots={slots} timeZone="America/Sao_Paulo" selected={null} onSelect={() => {}} />,
+    );
     expect(screen.getByRole('heading', { name: 'Manhã' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Tarde' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Noite' })).toBeInTheDocument();
@@ -21,13 +23,27 @@ describe('SlotPicker', () => {
   });
 
   it('usa o fuso informado, não o do navegador', () => {
-    render(<SlotPicker slots={slots.slice(0, 1)} timeZone="Europe/Lisbon" selected={null} onSelect={() => {}} />);
+    render(
+      <SlotPicker
+        slots={slots.slice(0, 1)}
+        timeZone="Europe/Lisbon"
+        selected={null}
+        onSelect={() => {}}
+      />,
+    );
     expect(screen.getByRole('button', { name: '12:00' })).toBeInTheDocument();
   });
 
   it('marca o selecionado e dispara onSelect', async () => {
     const onSelect = vi.fn();
-    render(<SlotPicker slots={slots} timeZone="America/Sao_Paulo" selected={slots[2]!.starts_at} onSelect={onSelect} />);
+    render(
+      <SlotPicker
+        slots={slots}
+        timeZone="America/Sao_Paulo"
+        selected={slots[2]!.starts_at}
+        onSelect={onSelect}
+      />,
+    );
     expect(screen.getByRole('button', { name: '14:00' })).toHaveAttribute('aria-pressed', 'true');
     await userEvent.click(screen.getByRole('button', { name: '09:30' }));
     expect(onSelect).toHaveBeenCalledWith(slots[1]);

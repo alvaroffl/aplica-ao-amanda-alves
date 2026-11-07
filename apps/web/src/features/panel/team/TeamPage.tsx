@@ -12,7 +12,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Field } from '@/components/ui/field';
 import { Input, NativeSelect, Textarea } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -24,7 +30,18 @@ import { useAuth } from '@/providers/auth';
 import { useBusiness } from '../business';
 import { keys, useProfessionals, useServices, useUnits, type Professional } from '../data';
 
-const COLORS = ['#7c3aed', '#0891b2', '#db2777', '#ea580c', '#16a34a', '#2563eb', '#ca8a04', '#9333ea', '#dc2626', '#0d9488'];
+const COLORS = [
+  '#7c3aed',
+  '#0891b2',
+  '#db2777',
+  '#ea580c',
+  '#16a34a',
+  '#2563eb',
+  '#ca8a04',
+  '#9333ea',
+  '#dc2626',
+  '#0d9488',
+];
 
 export function TeamPage() {
   const { t } = useTranslation();
@@ -56,7 +73,11 @@ export function TeamPage() {
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {professionals.data.map((p) => (
               <Card key={p.id} className="flex items-center gap-3 p-4">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white" style={{ backgroundColor: p.color }} aria-hidden>
+                <span
+                  className="flex size-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white"
+                  style={{ backgroundColor: p.color }}
+                  aria-hidden
+                >
                   {initials(p.name)}
                 </span>
                 <div className="min-w-0 flex-1">
@@ -65,9 +86,18 @@ export function TeamPage() {
                     {t('team.servicesCount', { count: p.service_ids.length })}
                     {p.user_id ? ` · ${t('team.hasAccess')}` : ''}
                   </p>
-                  {!p.active && <Badge variant="secondary" className="mt-1">{t('common.inactive')}</Badge>}
+                  {!p.active && (
+                    <Badge variant="secondary" className="mt-1">
+                      {t('common.inactive')}
+                    </Badge>
+                  )}
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => setEditing(p)} aria-label={`${t('common.edit')} ${p.name}`}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setEditing(p)}
+                  aria-label={`${t('common.edit')} ${p.name}`}
+                >
                   <Pencil aria-hidden />
                 </Button>
               </Card>
@@ -83,7 +113,13 @@ export function TeamPage() {
 
 type ProForm = z.input<typeof professionalSchema>;
 
-function ProfessionalDialog({ editing, onClose }: { editing: Professional | 'new' | null; onClose: () => void }) {
+function ProfessionalDialog({
+  editing,
+  onClose,
+}: {
+  editing: Professional | 'new' | null;
+  onClose: () => void;
+}) {
   const { t } = useTranslation();
   const qc = useQueryClient();
   const { business } = useBusiness();
@@ -96,7 +132,9 @@ function ProfessionalDialog({ editing, onClose }: { editing: Professional | 'new
     watch,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<ProForm, unknown, z.output<typeof professionalSchema>>({ resolver: zodResolver(professionalSchema) });
+  } = useForm<ProForm, unknown, z.output<typeof professionalSchema>>({
+    resolver: zodResolver(professionalSchema),
+  });
 
   React.useEffect(() => {
     if (!editing) return;
@@ -117,7 +155,10 @@ function ProfessionalDialog({ editing, onClose }: { editing: Professional | 'new
   const active = watch('active');
 
   const toggle = (field: 'unit_ids' | 'service_ids', list: string[], id: string, on: boolean) =>
-    setValue(field, on ? [...list, id] : list.filter((x) => x !== id), { shouldDirty: true, shouldValidate: true });
+    setValue(field, on ? [...list, id] : list.filter((x) => x !== id), {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
 
   const onSubmit = handleSubmit(async ({ unit_ids, service_ids, ...values }) => {
     try {
@@ -125,12 +166,33 @@ function ProfessionalDialog({ editing, onClose }: { editing: Professional | 'new
       const id =
         editing === 'new'
           ? unwrap(await supabase.from('professionals').insert(payload).select('id').single()).id
-          : unwrap(await supabase.from('professionals').update(payload).eq('id', (editing as Professional).id).select('id').single()).id;
+          : unwrap(
+              await supabase
+                .from('professionals')
+                .update(payload)
+                .eq('id', (editing as Professional).id)
+                .select('id')
+                .single(),
+            ).id;
       unwrap(await supabase.from('professional_units').delete().eq('professional_id', id));
-      unwrap(await supabase.from('professional_units').insert(unit_ids.map((u) => ({ business_id: business.id, professional_id: id, unit_id: u }))));
+      unwrap(
+        await supabase
+          .from('professional_units')
+          .insert(
+            unit_ids.map((u) => ({ business_id: business.id, professional_id: id, unit_id: u })),
+          ),
+      );
       unwrap(await supabase.from('service_professionals').delete().eq('professional_id', id));
       if (service_ids.length) {
-        unwrap(await supabase.from('service_professionals').insert(service_ids.map((s) => ({ business_id: business.id, professional_id: id, service_id: s }))));
+        unwrap(
+          await supabase.from('service_professionals').insert(
+            service_ids.map((s) => ({
+              business_id: business.id,
+              professional_id: id,
+              service_id: s,
+            })),
+          ),
+        );
       }
       await qc.invalidateQueries({ queryKey: keys.professionals(business.id) });
       await qc.invalidateQueries({ queryKey: keys.services(business.id) });
@@ -145,13 +207,20 @@ function ProfessionalDialog({ editing, onClose }: { editing: Professional | 'new
     <Dialog open={Boolean(editing)} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>{editing === 'new' ? t('team.newProfessional') : t('team.editProfessional')}</DialogTitle>
+          <DialogTitle>
+            {editing === 'new' ? t('team.newProfessional') : t('team.editProfessional')}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={onSubmit} noValidate className="space-y-4">
           <Field label={t('team.name')} htmlFor="name" error={errors.name?.message}>
             <Input {...register('name')} />
           </Field>
-          <Field label={t('team.bio')} htmlFor="bio" error={errors.bio?.message} hint={t('team.bioHint')}>
+          <Field
+            label={t('team.bio')}
+            htmlFor="bio"
+            error={errors.bio?.message}
+            hint={t('team.bioHint')}
+          >
             <Textarea rows={2} {...register('bio')} />
           </Field>
           <fieldset>
@@ -175,19 +244,32 @@ function ProfessionalDialog({ editing, onClose }: { editing: Professional | 'new
               <legend className="text-sm font-medium">{t('team.units')}</legend>
               {units.data!.map((u) => (
                 <label key={u.id} className="flex items-center gap-2 text-sm">
-                  <Checkbox checked={unitIds.includes(u.id)} onCheckedChange={(v) => toggle('unit_ids', unitIds, u.id, v === true)} />
+                  <Checkbox
+                    checked={unitIds.includes(u.id)}
+                    onCheckedChange={(v) => toggle('unit_ids', unitIds, u.id, v === true)}
+                  />
                   {u.name}
                 </label>
               ))}
-              {errors.unit_ids && <p className="text-xs text-destructive">{t(errors.unit_ids.message ?? 'validation.unitRequired')}</p>}
+              {errors.unit_ids && (
+                <p className="text-xs text-destructive">
+                  {t(errors.unit_ids.message ?? 'validation.unitRequired')}
+                </p>
+              )}
             </fieldset>
           )}
           <fieldset className="space-y-2">
             <legend className="text-sm font-medium">{t('team.services')}</legend>
             <div className="grid gap-2 sm:grid-cols-2">
               {(services.data ?? []).map((s) => (
-                <label key={s.id} className="flex items-center gap-2 rounded-md border px-3 py-2 text-sm">
-                  <Checkbox checked={serviceIds.includes(s.id)} onCheckedChange={(v) => toggle('service_ids', serviceIds, s.id, v === true)} />
+                <label
+                  key={s.id}
+                  className="flex items-center gap-2 rounded-md border px-3 py-2 text-sm"
+                >
+                  <Checkbox
+                    checked={serviceIds.includes(s.id)}
+                    onCheckedChange={(v) => toggle('service_ids', serviceIds, s.id, v === true)}
+                  />
                   {s.name}
                 </label>
               ))}
@@ -195,7 +277,10 @@ function ProfessionalDialog({ editing, onClose }: { editing: Professional | 'new
           </fieldset>
           <label className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm">
             <span className="font-medium">{t('team.active')}</span>
-            <Switch checked={active} onCheckedChange={(v) => setValue('active', v, { shouldDirty: true })} />
+            <Switch
+              checked={active}
+              onCheckedChange={(v) => setValue('active', v, { shouldDirty: true })}
+            />
           </label>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
@@ -225,9 +310,20 @@ function MembersSection() {
   const members = useQuery({
     queryKey: ['members', business.id],
     queryFn: async () => {
-      const rows = unwrap(await supabase.from('business_members').select('user_id, role').eq('business_id', business.id));
+      const rows = unwrap(
+        await supabase
+          .from('business_members')
+          .select('user_id, role')
+          .eq('business_id', business.id),
+      );
       const profiles = unwrap(
-        await supabase.from('profiles').select('id, full_name, email').in('id', rows.map((r) => r.user_id)),
+        await supabase
+          .from('profiles')
+          .select('id, full_name, email')
+          .in(
+            'id',
+            rows.map((r) => r.user_id),
+          ),
       );
       return rows.map((r) => ({ ...r, profile: profiles.find((p) => p.id === r.user_id) }));
     },
@@ -235,7 +331,14 @@ function MembersSection() {
   const invites = useQuery({
     queryKey: ['invites', business.id],
     queryFn: async () =>
-      unwrap(await supabase.from('invitations').select('*').eq('business_id', business.id).is('accepted_at', null).order('created_at')),
+      unwrap(
+        await supabase
+          .from('invitations')
+          .select('*')
+          .eq('business_id', business.id)
+          .is('accepted_at', null)
+          .order('created_at'),
+      ),
   });
 
   const {
@@ -275,14 +378,22 @@ function MembersSection() {
   });
 
   const changeRole = async (userId: string, newRole: MemberRole) => {
-    const { error } = await supabase.from('business_members').update({ role: newRole }).eq('business_id', business.id).eq('user_id', userId);
+    const { error } = await supabase
+      .from('business_members')
+      .update({ role: newRole })
+      .eq('business_id', business.id)
+      .eq('user_id', userId);
     if (error) toast.error(t(`errors.${toApiError(error).code}`));
     else toast.success(t('common.saved'));
     await refresh();
   };
 
   const remove = async (userId: string) => {
-    const { error } = await supabase.from('business_members').delete().eq('business_id', business.id).eq('user_id', userId);
+    const { error } = await supabase
+      .from('business_members')
+      .delete()
+      .eq('business_id', business.id)
+      .eq('user_id', userId);
     if (error) toast.error(t(`errors.${toApiError(error).code}`));
     await refresh();
   };
@@ -306,7 +417,9 @@ function MembersSection() {
             (members.data ?? []).map((m) => (
               <div key={m.user_id} className="flex items-center gap-3 rounded-lg border p-3">
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium">{m.profile?.full_name || m.profile?.email}</p>
+                  <p className="truncate text-sm font-medium">
+                    {m.profile?.full_name || m.profile?.email}
+                  </p>
                   <p className="truncate text-xs text-muted-foreground">{m.profile?.email}</p>
                 </div>
                 <NativeSelect
@@ -323,7 +436,12 @@ function MembersSection() {
                   ))}
                 </NativeSelect>
                 {m.user_id !== user?.id && (
-                  <Button variant="ghost" size="icon-sm" onClick={() => void remove(m.user_id)} aria-label={t('team.removeMember')}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={() => void remove(m.user_id)}
+                    aria-label={t('team.removeMember')}
+                  >
                     <Trash2 aria-hidden />
                   </Button>
                 )}
@@ -339,7 +457,12 @@ function MembersSection() {
                   {t('team.pendingInvite')} · {t(`roles.${i.role}`)}
                 </p>
               </div>
-              <Button variant="ghost" size="icon-sm" onClick={() => void cancelInvite(i.id)} aria-label={t('team.cancelInvite')}>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => void cancelInvite(i.id)}
+                aria-label={t('team.cancelInvite')}
+              >
                 <Trash2 aria-hidden />
               </Button>
             </div>
@@ -367,7 +490,9 @@ function MembersSection() {
             <p className="text-xs text-muted-foreground">{t(`team.roleHint.${role}`)}</p>
             {role === 'professional' && (
               <Field label={t('team.linkProfessional')} htmlFor="invite-pro">
-                <NativeSelect {...register('professional_id', { setValueAs: (v: string) => v || null })}>
+                <NativeSelect
+                  {...register('professional_id', { setValueAs: (v: string) => v || null })}
+                >
                   <option value="">{t('common.none')}</option>
                   {(professionals.data ?? [])
                     .filter((p) => !p.user_id)

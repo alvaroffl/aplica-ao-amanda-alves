@@ -29,7 +29,8 @@ export function useUnits() {
   const { business } = useBusiness();
   return useQuery({
     queryKey: keys.units(business.id),
-    queryFn: async () => unwrap(await supabase.from('units').select('*').eq('business_id', business.id).order('name')),
+    queryFn: async () =>
+      unwrap(await supabase.from('units').select('*').eq('business_id', business.id).order('name')),
   });
 }
 

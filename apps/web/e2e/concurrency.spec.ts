@@ -4,7 +4,9 @@ import { ANON_KEY, SUPABASE_URL } from './helpers';
 const SERVICE = 'e3000000-0000-0000-0000-000000000006'; // Barba (Rafael)
 const UNIT = 'e1000000-0000-0000-0000-000000000001';
 
-test('duas reservas simultâneas no mesmo horário: só uma passa (constraint no banco)', async ({ request }) => {
+test('duas reservas simultâneas no mesmo horário: só uma passa (constraint no banco)', async ({
+  request,
+}) => {
   const from = new Date(Date.now() + 3 * 864e5).toISOString().slice(0, 10);
   const to = new Date(Date.now() + 20 * 864e5).toISOString().slice(0, 10);
   const slotsRes = await request.post(`${SUPABASE_URL}/rest/v1/rpc/get_available_slots`, {
@@ -23,7 +25,12 @@ test('duas reservas simultâneas no mesmo horário: só uma passa (constraint no
         unitId: UNIT,
         professionalId: null,
         startsAt,
-        client: { name: `Concorrente ${n}`, email: `concorrente${n}.${Date.now()}@e2e.dev`, phone: '11987654321', consent: true },
+        client: {
+          name: `Concorrente ${n}`,
+          email: `concorrente${n}.${Date.now()}@e2e.dev`,
+          phone: '11987654321',
+          consent: true,
+        },
         idempotencyKey: key,
         captchaToken: '',
       },

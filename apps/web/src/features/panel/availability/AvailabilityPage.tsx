@@ -37,13 +37,17 @@ export function AvailabilityPage() {
   const [proId, setProId] = React.useState<string | null>(null);
   const [unitId, setUnitId] = React.useState<string | null>(null);
 
-  const pros = (professionals.data ?? []).filter((p) => manageAll || can('timeoff.manageAll') || p.id === myProfessionalId);
-  const pro = pros.find((p) => p.id === proId) ?? pros.find((p) => p.id === myProfessionalId) ?? pros[0];
+  const pros = (professionals.data ?? []).filter(
+    (p) => manageAll || can('timeoff.manageAll') || p.id === myProfessionalId,
+  );
+  const pro =
+    pros.find((p) => p.id === proId) ?? pros.find((p) => p.id === myProfessionalId) ?? pros[0];
   const proUnits = (units.data ?? []).filter((u) => pro?.unit_ids.includes(u.id));
   const unit = proUnits.find((u) => u.id === unitId) ?? proUnits[0];
 
   if (professionals.isPending || units.isPending) return <Skeleton className="h-96" />;
-  if (professionals.isError) return <ErrorState error={professionals.error} onRetry={() => void professionals.refetch()} />;
+  if (professionals.isError)
+    return <ErrorState error={professionals.error} onRetry={() => void professionals.refetch()} />;
 
   const canEditRules = manageAll || pro?.id === myProfessionalId;
 
@@ -56,7 +60,12 @@ export function AvailabilityPage() {
         <>
           <div className="flex flex-wrap gap-3">
             {pros.length > 1 && (
-              <NativeSelect value={pro.id} onChange={(e) => setProId(e.target.value)} aria-label={t('availability.professional')} className="w-auto min-w-52">
+              <NativeSelect
+                value={pro.id}
+                onChange={(e) => setProId(e.target.value)}
+                aria-label={t('availability.professional')}
+                className="w-auto min-w-52"
+              >
                 {pros.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.name}
@@ -65,7 +74,12 @@ export function AvailabilityPage() {
               </NativeSelect>
             )}
             {proUnits.length > 1 && (
-              <NativeSelect value={unit?.id} onChange={(e) => setUnitId(e.target.value)} aria-label={t('availability.unit')} className="w-auto min-w-44">
+              <NativeSelect
+                value={unit?.id}
+                onChange={(e) => setUnitId(e.target.value)}
+                aria-label={t('availability.unit')}
+                className="w-auto min-w-44"
+              >
                 {proUnits.map((u) => (
                   <option key={u.id} value={u.id}>
                     {u.name}
@@ -76,12 +90,20 @@ export function AvailabilityPage() {
           </div>
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
             {unit ? (
-              <WeeklyEditor key={`${pro.id}:${unit.id}`} professionalId={pro.id} unitId={unit.id} readOnly={!canEditRules} />
+              <WeeklyEditor
+                key={`${pro.id}:${unit.id}`}
+                professionalId={pro.id}
+                unitId={unit.id}
+                readOnly={!canEditRules}
+              />
             ) : (
               <EmptyState title={t('availability.noUnit')} />
             )}
             <div className="space-y-6">
-              <TimeOffCard professionalId={pro.id} timeZone={unit?.timezone ?? 'America/Sao_Paulo'} />
+              <TimeOffCard
+                professionalId={pro.id}
+                timeZone={unit?.timezone ?? 'America/Sao_Paulo'}
+              />
               {manageAll && <HolidaysCard />}
             </div>
           </div>
@@ -91,7 +113,15 @@ export function AvailabilityPage() {
   );
 }
 
-function WeeklyEditor({ professionalId, unitId, readOnly }: { professionalId: string; unitId: string; readOnly: boolean }) {
+function WeeklyEditor({
+  professionalId,
+  unitId,
+  readOnly,
+}: {
+  professionalId: string;
+  unitId: string;
+  readOnly: boolean;
+}) {
   const { t } = useTranslation();
   const qc = useQueryClient();
   const rules = useQuery({
@@ -113,7 +143,8 @@ function WeeklyEditor({ professionalId, unitId, readOnly }: { professionalId: st
   React.useEffect(() => {
     if (!rules.data) return;
     const d: Interval[][] = Array.from({ length: 7 }, () => []);
-    for (const r of rules.data) d[r.weekday]!.push({ start: r.start_time.slice(0, 5), end: r.end_time.slice(0, 5) });
+    for (const r of rules.data)
+      d[r.weekday]!.push({ start: r.start_time.slice(0, 5), end: r.end_time.slice(0, 5) });
     setDays(d);
   }, [rules.data]);
 
@@ -123,7 +154,10 @@ function WeeklyEditor({ professionalId, unitId, readOnly }: { professionalId: st
   const update = (d: number, fn: (list: Interval[]) => Interval[]) =>
     setDays((prev) => prev!.map((list, i) => (i === d ? fn(list) : list)));
 
-  const copyMondayToWeekdays = () => setDays((prev) => prev!.map((list, i) => (i >= 1 && i <= 5 ? prev![1]!.map((x) => ({ ...x })) : list)));
+  const copyMondayToWeekdays = () =>
+    setDays((prev) =>
+      prev!.map((list, i) => (i >= 1 && i <= 5 ? prev![1]!.map((x) => ({ ...x })) : list)),
+    );
 
   const save = async () => {
     const parsed = weeklyAvailabilitySchema.safeParse({ unitId, days });
@@ -134,8 +168,16 @@ function WeeklyEditor({ professionalId, unitId, readOnly }: { professionalId: st
     setError(null);
     setSaving(true);
     try {
-      const payload = days.flatMap((list, weekday) => list.map((i) => ({ weekday, start: i.start, end: i.end })));
-      unwrap(await supabase.rpc('set_weekly_availability', { p_professional_id: professionalId, p_unit_id: unitId, p_rules: payload }));
+      const payload = days.flatMap((list, weekday) =>
+        list.map((i) => ({ weekday, start: i.start, end: i.end })),
+      );
+      unwrap(
+        await supabase.rpc('set_weekly_availability', {
+          p_professional_id: professionalId,
+          p_unit_id: unitId,
+          p_rules: payload,
+        }),
+      );
       await qc.invalidateQueries({ queryKey: ['rules', professionalId, unitId] });
       toast.success(t('availability.saved'));
     } catch (e) {
@@ -163,10 +205,15 @@ function WeeklyEditor({ professionalId, unitId, readOnly }: { professionalId: st
       </CardHeader>
       <CardContent className="space-y-1">
         {order.map((d) => (
-          <div key={d} className="flex flex-col gap-2 border-b py-3 last:border-0 sm:flex-row sm:items-start">
+          <div
+            key={d}
+            className="flex flex-col gap-2 border-b py-3 last:border-0 sm:flex-row sm:items-start"
+          >
             <p className="w-24 shrink-0 pt-2 text-sm font-medium">{WEEKDAYS_PT[d]}</p>
             <div className="flex-1 space-y-2">
-              {days[d]!.length === 0 && <p className="pt-2 text-sm text-muted-foreground">{t('availability.closed')}</p>}
+              {days[d]!.length === 0 && (
+                <p className="pt-2 text-sm text-muted-foreground">{t('availability.closed')}</p>
+              )}
               {days[d]!.map((interval, i) => (
                 <div key={i} className="flex items-center gap-2">
                   <Input
@@ -174,7 +221,11 @@ function WeeklyEditor({ professionalId, unitId, readOnly }: { professionalId: st
                     value={interval.start}
                     disabled={readOnly}
                     aria-label={`${WEEKDAYS_PT[d]} ${t('availability.start')} ${i + 1}`}
-                    onChange={(e) => update(d, (l) => l.map((x, j) => (j === i ? { ...x, start: e.target.value } : x)))}
+                    onChange={(e) =>
+                      update(d, (l) =>
+                        l.map((x, j) => (j === i ? { ...x, start: e.target.value } : x)),
+                      )
+                    }
                     className="w-32"
                   />
                   <span className="text-muted-foreground" aria-hidden>
@@ -185,11 +236,20 @@ function WeeklyEditor({ professionalId, unitId, readOnly }: { professionalId: st
                     value={interval.end}
                     disabled={readOnly}
                     aria-label={`${WEEKDAYS_PT[d]} ${t('availability.end')} ${i + 1}`}
-                    onChange={(e) => update(d, (l) => l.map((x, j) => (j === i ? { ...x, end: e.target.value } : x)))}
+                    onChange={(e) =>
+                      update(d, (l) =>
+                        l.map((x, j) => (j === i ? { ...x, end: e.target.value } : x)),
+                      )
+                    }
                     className="w-32"
                   />
                   {!readOnly && (
-                    <Button variant="ghost" size="icon-sm" onClick={() => update(d, (l) => l.filter((_, j) => j !== i))} aria-label={t('availability.removeInterval')}>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => update(d, (l) => l.filter((_, j) => j !== i))}
+                      aria-label={t('availability.removeInterval')}
+                    >
                       <X aria-hidden />
                     </Button>
                   )}
@@ -201,7 +261,12 @@ function WeeklyEditor({ professionalId, unitId, readOnly }: { professionalId: st
                 variant="ghost"
                 size="sm"
                 onClick={() =>
-                  update(d, (l) => [...l, l.length ? { start: l[l.length - 1]!.end, end: '18:00' } : { start: '09:00', end: '18:00' }])
+                  update(d, (l) => [
+                    ...l,
+                    l.length
+                      ? { start: l[l.length - 1]!.end, end: '18:00' }
+                      : { start: '09:00', end: '18:00' },
+                  ])
                 }
               >
                 <Plus aria-hidden /> {t('availability.addInterval')}
@@ -252,7 +317,15 @@ function TimeOffCard({ professionalId, timeZone }: { professionalId: string; tim
     formState: { errors, isSubmitting },
   } = useForm<TimeOffForm, unknown, z.output<typeof timeOffSchema>>({
     resolver: zodResolver(timeOffSchema),
-    defaultValues: { professional_id: professionalId, kind: 'block', start_date: today, start_time: '12:00', end_date: today, end_time: '13:00', reason: '' },
+    defaultValues: {
+      professional_id: professionalId,
+      kind: 'block',
+      start_date: today,
+      start_time: '12:00',
+      end_date: today,
+      end_time: '13:00',
+      reason: '',
+    },
   });
 
   const onSubmit = handleSubmit(async (v) => {
@@ -296,19 +369,35 @@ function TimeOffCard({ professionalId, timeZone }: { professionalId: string; tim
               <option value="time_off">{t('availability.kinds.time_off')}</option>
             </NativeSelect>
           </Field>
-          <Field label={t('availability.startDate')} htmlFor="start_date" error={errors.start_date?.message}>
+          <Field
+            label={t('availability.startDate')}
+            htmlFor="start_date"
+            error={errors.start_date?.message}
+          >
             <Input type="date" {...register('start_date')} />
           </Field>
-          <Field label={t('availability.start')} htmlFor="start_time" error={errors.start_time?.message}>
+          <Field
+            label={t('availability.start')}
+            htmlFor="start_time"
+            error={errors.start_time?.message}
+          >
             <Input type="time" {...register('start_time')} />
           </Field>
-          <Field label={t('availability.endDate')} htmlFor="end_date" error={errors.end_date?.message}>
+          <Field
+            label={t('availability.endDate')}
+            htmlFor="end_date"
+            error={errors.end_date?.message}
+          >
             <Input type="date" {...register('end_date')} />
           </Field>
           <Field label={t('availability.end')} htmlFor="end_time" error={errors.end_time?.message}>
             <Input type="time" {...register('end_time')} />
           </Field>
-          <Field label={`${t('availability.reason')} (${t('common.optional')})`} htmlFor="reason" className="sm:col-span-2">
+          <Field
+            label={`${t('availability.reason')} (${t('common.optional')})`}
+            htmlFor="reason"
+            className="sm:col-span-2"
+          >
             <Input {...register('reason')} />
           </Field>
           <div className="sm:col-span-2">
@@ -323,7 +412,8 @@ function TimeOffCard({ professionalId, timeZone }: { professionalId: string; tim
               <CalendarOff className="size-4 text-muted-foreground" aria-hidden />
               <div className="min-w-0 flex-1">
                 <p>
-                  {formatDateTime(item.starts_at, timeZone)} → {formatDateTime(item.ends_at, timeZone)}
+                  {formatDateTime(item.starts_at, timeZone)} →{' '}
+                  {formatDateTime(item.ends_at, timeZone)}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   <Badge variant="secondary" className="mr-1">
@@ -332,12 +422,19 @@ function TimeOffCard({ professionalId, timeZone }: { professionalId: string; tim
                   {item.reason}
                 </p>
               </div>
-              <Button variant="ghost" size="icon-sm" onClick={() => void remove(item.id)} aria-label={t('common.delete')}>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => void remove(item.id)}
+                aria-label={t('common.delete')}
+              >
                 <Trash2 aria-hidden />
               </Button>
             </li>
           ))}
-          {list.data?.length === 0 && <p className="text-sm text-muted-foreground">{t('availability.noTimeOff')}</p>}
+          {list.data?.length === 0 && (
+            <p className="text-sm text-muted-foreground">{t('availability.noTimeOff')}</p>
+          )}
         </ul>
       </CardContent>
     </Card>
@@ -375,7 +472,11 @@ function HolidaysCard() {
 
   const onSubmit = handleSubmit(async (v) => {
     try {
-      unwrap(await supabase.from('holidays').insert({ business_id: business.id, date: v.date, name: v.name, unit_id: v.unit_id }));
+      unwrap(
+        await supabase
+          .from('holidays')
+          .insert({ business_id: business.id, date: v.date, name: v.name, unit_id: v.unit_id }),
+      );
       reset({ date: '', name: '', unit_id: null });
       await qc.invalidateQueries({ queryKey: ['holidays', business.id] });
       toast.success(t('common.saved'));
@@ -400,7 +501,11 @@ function HolidaysCard() {
           <Field label={t('availability.date')} htmlFor="h-date" error={errors.date?.message}>
             <Input type="date" {...register('date')} />
           </Field>
-          <Field label={t('availability.holidayName')} htmlFor="h-name" error={errors.name?.message}>
+          <Field
+            label={t('availability.holidayName')}
+            htmlFor="h-name"
+            error={errors.name?.message}
+          >
             <Input {...register('name')} />
           </Field>
           {(units.data?.length ?? 0) > 1 && (
@@ -423,16 +528,29 @@ function HolidaysCard() {
         </form>
         <ul className="space-y-2">
           {(list.data ?? []).map((h) => (
-            <li key={h.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
+            <li
+              key={h.id}
+              className="flex items-center justify-between rounded-lg border p-3 text-sm"
+            >
               <span>
-                <span className="font-medium tabular-nums">{h.date.split('-').reverse().join('/')}</span> · {h.name}
+                <span className="font-medium tabular-nums">
+                  {h.date.split('-').reverse().join('/')}
+                </span>{' '}
+                · {h.name}
               </span>
-              <Button variant="ghost" size="icon-sm" onClick={() => void remove(h.id)} aria-label={t('common.delete')}>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => void remove(h.id)}
+                aria-label={t('common.delete')}
+              >
                 <Trash2 aria-hidden />
               </Button>
             </li>
           ))}
-          {list.data?.length === 0 && <p className="text-sm text-muted-foreground">{t('availability.noHolidays')}</p>}
+          {list.data?.length === 0 && (
+            <p className="text-sm text-muted-foreground">{t('availability.noHolidays')}</p>
+          )}
         </ul>
       </CardContent>
     </Card>

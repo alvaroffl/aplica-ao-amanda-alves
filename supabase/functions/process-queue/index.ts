@@ -7,14 +7,20 @@ import { getEnv } from '../_shared/env.ts';
 import { safeEqual } from '../_shared/crypto.ts';
 import { fail, json, log } from '../_shared/http.ts';
 import { sendEmail, sendWhatsApp } from '../_shared/notify/channels.ts';
-import { renderEmail, renderWhatsApp, shouldSkip, type NotificationContext } from '../_shared/notify/templates.ts';
+import {
+  renderEmail,
+  renderWhatsApp,
+  shouldSkip,
+  type NotificationContext,
+} from '../_shared/notify/templates.ts';
 import { paymentProvider } from '../_shared/payments/index.ts';
 import { serviceClient } from '../_shared/supabase.ts';
 
 Deno.serve(async (req) => {
   const env = getEnv();
   const secret = req.headers.get('x-worker-secret') ?? '';
-  if (!env.workerSecret || !safeEqual(secret, env.workerSecret)) return fail(req, 'UNAUTHORIZED', 401);
+  if (!env.workerSecret || !safeEqual(secret, env.workerSecret))
+    return fail(req, 'UNAUTHORIZED', 401);
 
   const db = serviceClient();
   const summary = { sent: 0, failed: 0, skipped: 0, refunds: 0, refundErrors: 0, expired: 0 };
@@ -31,7 +37,9 @@ Deno.serve(async (req) => {
 
   for (const n of claimed ?? []) {
     try {
-      const { data: ctxData, error } = await db.rpc('notification_context', { p_notification_id: n.id });
+      const { data: ctxData, error } = await db.rpc('notification_context', {
+        p_notification_id: n.id,
+      });
       if (error || !ctxData) throw new Error(error?.message ?? 'contexto ausente');
       const ctx = ctxData as unknown as NotificationContext;
 
@@ -49,7 +57,11 @@ Deno.serve(async (req) => {
       } else {
         const msg = renderWhatsApp(ctx, opts);
         if (!msg) {
-          await db.rpc('complete_notification', { p_id: n.id, p_status: 'skipped', p_error: 'no_template' });
+          await db.rpc('complete_notification', {
+            p_id: n.id,
+            p_status: 'skipped',
+            p_error: 'no_template',
+          });
           summary.skipped++;
           continue;
         }
@@ -62,7 +74,11 @@ Deno.serve(async (req) => {
       });
       summary.sent++;
     } catch (e) {
-      log('warn', 'queue.send_failed', { notificationId: n.id, channel: n.channel, message: String(e).slice(0, 300) });
+      log('warn', 'queue.send_failed', {
+        notificationId: n.id,
+        channel: n.channel,
+        message: String(e).slice(0, 300),
+      });
       await db.rpc('complete_notification', { p_id: n.id, p_status: 'failed', p_error: String(e) });
       summary.failed++;
     }
@@ -73,7 +89,11 @@ Deno.serve(async (req) => {
   for (const p of refunds ?? []) {
     try {
       if (!p.provider_payment_id) throw new Error('pagamento sem id no provedor');
-      await paymentProvider(p.provider as 'fake' | 'mercadopago').refund(p.provider_payment_id, p.amount_cents, p.id);
+      await paymentProvider(p.provider as 'fake' | 'mercadopago').refund(
+        p.provider_payment_id,
+        p.amount_cents,
+        p.id,
+      );
       await db.rpc('complete_refund', { p_payment_id: p.id, p_ok: true });
       summary.refunds++;
     } catch (e) {

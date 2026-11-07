@@ -3,11 +3,14 @@ import { expect, type Page } from '@playwright/test';
 
 export const SLUG = 'studio-exemplo';
 export const SUPABASE_URL = process.env.VITE_SUPABASE_URL ?? 'http://127.0.0.1:54321';
-export const ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY ?? 'sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH';
+export const ANON_KEY =
+  process.env.VITE_SUPABASE_ANON_KEY ?? 'sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH';
 
 /** Auditoria WCAG 2.1 AA (axe-core). */
 export async function expectAccessible(page: Page) {
-  const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  const results = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .analyze();
   const summary = results.violations.map((v) => `${v.id}: ${v.nodes.length} nó(s) — ${v.help}`);
   expect(summary, summary.join('\n')).toEqual([]);
 }

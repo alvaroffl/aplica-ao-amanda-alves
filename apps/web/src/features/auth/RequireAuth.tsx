@@ -9,6 +9,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   const location = useLocation();
   const { t } = useTranslation();
   if (loading) return <Spinner className="min-h-dvh" label={t('common.loading')} />;
-  if (!user) return <Navigate to="/entrar" replace state={{ from: location.pathname + location.search }} />;
+  if (!user)
+    return <Navigate to="/entrar" replace state={{ from: location.pathname + location.search }} />;
   return <>{children}</>;
 }

@@ -20,7 +20,13 @@ import { StepProfessional } from './StepProfessional';
 import { StepService } from './StepService';
 
 type StepId = 'service' | 'professional' | 'datetime' | 'details';
-const P = { unit: 'unidade', service: 'servico', pro: 'profissional', day: 'data', time: 'hora' } as const;
+const P = {
+  unit: 'unidade',
+  service: 'servico',
+  pro: 'profissional',
+  day: 'data',
+  time: 'hora',
+} as const;
 const ANY = 'qualquer';
 
 export function BookingPage() {
@@ -50,7 +56,11 @@ export function BookingPage() {
     return (
       <PublicLayout>
         {notFound ? (
-          <EmptyState headingLevel="h1" title={t('booking.businessNotFound')} description={t('booking.businessNotFoundHint')} />
+          <EmptyState
+            headingLevel="h1"
+            title={t('booking.businessNotFound')}
+            description={t('booking.businessNotFoundHint')}
+          />
         ) : (
           <ErrorState error={query.error} onRetry={() => void query.refetch()} />
         )}
@@ -71,19 +81,32 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
   const { business } = data;
 
   // ---- Estado derivado da URL ---------------------------------------------
-  const prosById = React.useMemo(() => new Map(data.professionals.map((p) => [p.id, p])), [data.professionals]);
+  const prosById = React.useMemo(
+    () => new Map(data.professionals.map((p) => [p.id, p])),
+    [data.professionals],
+  );
   const unit =
     data.units.find((u) => u.slug === unitSlug) ??
     data.units.find((u) => u.id === params.get(P.unit)) ??
     (data.units.length === 1 ? data.units[0] : undefined);
 
   const services = React.useMemo(
-    () => (unit ? data.services.filter((s) => s.professional_ids.some((id) => prosById.get(id)?.unit_ids.includes(unit.id))) : []),
+    () =>
+      unit
+        ? data.services.filter((s) =>
+            s.professional_ids.some((id) => prosById.get(id)?.unit_ids.includes(unit.id)),
+          )
+        : [],
     [data.services, prosById, unit],
   );
   const service = services.find((s) => s.id === params.get(P.service));
   const pros = React.useMemo(
-    () => (service && unit ? data.professionals.filter((p) => service.professional_ids.includes(p.id) && p.unit_ids.includes(unit.id)) : []),
+    () =>
+      service && unit
+        ? data.professionals.filter(
+            (p) => service.professional_ids.includes(p.id) && p.unit_ids.includes(unit.id),
+          )
+        : [],
     [data.professionals, service, unit],
   );
   const proParam = params.get(P.pro);
@@ -93,8 +116,20 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
   const startsAt = params.get(P.time);
   const day = params.get(P.day);
 
-  const steps: StepId[] = ['service', ...(singlePro ? [] : (['professional'] as const)), 'datetime', 'details'];
-  const current: StepId = !unit || !service ? 'service' : !professional && !isAny ? 'professional' : !startsAt ? 'datetime' : 'details';
+  const steps: StepId[] = [
+    'service',
+    ...(singlePro ? [] : (['professional'] as const)),
+    'datetime',
+    'details',
+  ];
+  const current: StepId =
+    !unit || !service
+      ? 'service'
+      : !professional && !isAny
+        ? 'professional'
+        : !startsAt
+          ? 'datetime'
+          : 'details';
   const index = steps.indexOf(current);
 
   // Foco no título a cada passo (leitores de tela anunciam a mudança)
@@ -120,7 +155,8 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
 
   const goBack = () => {
     if (current === 'details') update({ [P.time]: null });
-    else if (current === 'datetime') update(singlePro ? { [P.service]: null, [P.day]: null } : { [P.pro]: null, [P.day]: null });
+    else if (current === 'datetime')
+      update(singlePro ? { [P.service]: null, [P.day]: null } : { [P.pro]: null, [P.day]: null });
     else if (current === 'professional') update({ [P.service]: null });
     else if (!unitSlug && data.units.length > 1) update({ [P.unit]: null });
   };
@@ -147,7 +183,10 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
         toast.error(t('errors.SLOT_UNAVAILABLE'));
         await queryClient.invalidateQueries({ queryKey: ['slots'] });
         update({ [P.time]: null });
-      } else if (err.code === 'PAYMENT_PROVIDER_ERROR' && (err.details as { manageToken?: string })?.manageToken) {
+      } else if (
+        err.code === 'PAYMENT_PROVIDER_ERROR' &&
+        (err.details as { manageToken?: string })?.manageToken
+      ) {
         toast.error(t('errors.PAYMENT_PROVIDER_ERROR'));
         navigate(`/r/${(err.details as { manageToken: string }).manageToken}?novo=1`);
       } else {
@@ -187,7 +226,9 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
           {current === 'service' && !service && (
             <div className="mb-6 space-y-1">
               <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{business.name}</h1>
-              {business.description && <p className="text-muted-foreground">{business.description}</p>}
+              {business.description && (
+                <p className="text-muted-foreground">{business.description}</p>
+              )}
             </div>
           )}
 
@@ -196,9 +237,19 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
             <ol className="flex gap-1.5">
               {steps.map((s, i) => (
                 <li key={s} className="flex-1">
-                  <span className={cn('block h-1.5 rounded-full', i <= index ? 'bg-primary' : 'bg-muted')} />
+                  <span
+                    className={cn(
+                      'block h-1.5 rounded-full',
+                      i <= index ? 'bg-primary' : 'bg-muted',
+                    )}
+                  />
                   <span className="sr-only">
-                    {t(`booking.steps.${s}`)} {i < index ? t('booking.stepDone') : i === index ? t('booking.stepCurrent') : ''}
+                    {t(`booking.steps.${s}`)}{' '}
+                    {i < index
+                      ? t('booking.stepDone')
+                      : i === index
+                        ? t('booking.stepCurrent')
+                        : ''}
                   </span>
                 </li>
               ))}
@@ -206,7 +257,8 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
           </nav>
 
           <div className="mb-5 flex items-center gap-2">
-            {(index > 0 || (current === 'service' && unit && !unitSlug && data.units.length > 1)) && (
+            {(index > 0 ||
+              (current === 'service' && unit && !unitSlug && data.units.length > 1)) && (
               <Button variant="ghost" size="icon" onClick={goBack} aria-label={t('common.back')}>
                 <ArrowLeft aria-hidden />
               </Button>
@@ -248,16 +300,25 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
                     <MapPin className="mt-0.5 size-5 text-primary" aria-hidden />
                     <span>
                       <span className="block font-medium">{u.name}</span>
-                      {u.address && <span className="block text-sm text-muted-foreground">{u.address}</span>}
+                      {u.address && (
+                        <span className="block text-sm text-muted-foreground">{u.address}</span>
+                      )}
                     </span>
                   </button>
                 </li>
               ))}
             </ul>
           ) : current === 'service' ? (
-            <StepService services={services} currency={business.currency} onSelect={(s) => update({ [P.service]: s.id })} />
+            <StepService
+              services={services}
+              currency={business.currency}
+              onSelect={(s) => update({ [P.service]: s.id })}
+            />
           ) : current === 'professional' ? (
-            <StepProfessional professionals={pros} onSelect={(id) => update({ [P.pro]: id === 'any' ? ANY : id })} />
+            <StepProfessional
+              professionals={pros}
+              onSelect={(id) => update({ [P.pro]: id === 'any' ? ANY : id })}
+            />
           ) : current === 'datetime' ? (
             <StepDateTime
               serviceId={service!.id}
@@ -294,7 +355,9 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
                 showUnit
               />
             ) : (
-              <div className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">{t('booking.summaryEmpty')}</div>
+              <div className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
+                {t('booking.summaryEmpty')}
+              </div>
             )}
           </div>
         </aside>

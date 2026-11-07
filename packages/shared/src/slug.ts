@@ -1,6 +1,21 @@
 export const RESERVED_SLUGS = new Set([
-  'painel', 'entrar', 'cadastro', 'r', 'auth', 'api', 'app', 'admin', 'assets', 'static',
-  'recuperar-senha', 'redefinir-senha', 'termos', 'privacidade', 'sobre', 'ajuda', 'reserva',
+  'painel',
+  'entrar',
+  'cadastro',
+  'r',
+  'auth',
+  'api',
+  'app',
+  'admin',
+  'assets',
+  'static',
+  'recuperar-senha',
+  'redefinir-senha',
+  'termos',
+  'privacidade',
+  'sobre',
+  'ajuda',
+  'reserva',
 ]);
 
 export const SLUG_REGEX = /^[a-z0-9][a-z0-9-]{1,46}[a-z0-9]$/;

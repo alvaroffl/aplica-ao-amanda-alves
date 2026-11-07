@@ -29,7 +29,9 @@ export function LandingPage() {
           <LanguageSwitcher />
           <ThemeToggle />
           <Button asChild variant="ghost" className="hidden sm:inline-flex">
-            <Link to={user ? '/painel' : '/entrar'}>{user ? t('landing.openPanel') : t('auth.signIn')}</Link>
+            <Link to={user ? '/painel' : '/entrar'}>
+              {user ? t('landing.openPanel') : t('auth.signIn')}
+            </Link>
           </Button>
         </nav>
       </header>
@@ -38,8 +40,12 @@ export function LandingPage() {
           <p className="mx-auto mb-4 w-fit rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
             {t('landing.badge')}
           </p>
-          <h1 className="mx-auto max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">{t('landing.title')}</h1>
-          <p className="mx-auto mt-5 max-w-2xl text-balance text-lg text-muted-foreground">{t('landing.subtitle')}</p>
+          <h1 className="mx-auto max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">
+            {t('landing.title')}
+          </h1>
+          <p className="mx-auto mt-5 max-w-2xl text-balance text-lg text-muted-foreground">
+            {t('landing.subtitle')}
+          </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg">
               <Link to={user ? '/painel' : '/cadastro'}>{t('landing.ctaStart')}</Link>
@@ -58,7 +64,9 @@ export function LandingPage() {
               <li key={key} className="rounded-2xl border bg-card p-6 shadow-xs">
                 <Icon className="size-6 text-primary" aria-hidden />
                 <h3 className="mt-4 font-semibold">{t(`landing.features.${key}.title`)}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground">{t(`landing.features.${key}.text`)}</p>
+                <p className="mt-1.5 text-sm text-muted-foreground">
+                  {t(`landing.features.${key}.text`)}
+                </p>
               </li>
             ))}
           </ul>

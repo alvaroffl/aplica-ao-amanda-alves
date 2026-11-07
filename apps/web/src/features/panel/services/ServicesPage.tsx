@@ -19,7 +19,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Field } from '@/components/ui/field';
 import { Input, NativeSelect, Textarea } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -74,19 +80,30 @@ export function ServicesPage() {
                   {s.deposit_type !== 'none' && (
                     <Badge variant="outline">
                       {t('services.depositBadge', {
-                        amount: formatMoney(computeDeposit(s.price_cents, s.deposit_type, s.deposit_value), business.currency),
+                        amount: formatMoney(
+                          computeDeposit(s.price_cents, s.deposit_type, s.deposit_value),
+                          business.currency,
+                        ),
                       })}
                     </Badge>
                   )}
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {formatDuration(s.duration_min)}
-                  {s.buffer_after_min > 0 && ` · ${t('services.bufferShort', { min: s.buffer_after_min })}`}
+                  {s.buffer_after_min > 0 &&
+                    ` · ${t('services.bufferShort', { min: s.buffer_after_min })}`}
                   {` · ${t('services.prosCount', { count: s.professional_ids.length })}`}
                 </p>
               </div>
-              <span className="font-semibold tabular-nums">{formatMoney(s.price_cents, business.currency)}</span>
-              <Button variant="ghost" size="icon" onClick={() => setEditing(s)} aria-label={`${t('common.edit')} ${s.name}`}>
+              <span className="font-semibold tabular-nums">
+                {formatMoney(s.price_cents, business.currency)}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setEditing(s)}
+                aria-label={`${t('common.edit')} ${s.name}`}
+              >
                 <Pencil aria-hidden />
               </Button>
             </div>
@@ -98,7 +115,13 @@ export function ServicesPage() {
   );
 }
 
-function ServiceDialog({ editing, onClose }: { editing: Service | 'new' | null; onClose: () => void }) {
+function ServiceDialog({
+  editing,
+  onClose,
+}: {
+  editing: Service | 'new' | null;
+  onClose: () => void;
+}) {
   const { t } = useTranslation();
   const qc = useQueryClient();
   const { business } = useBusiness();
@@ -110,7 +133,9 @@ function ServiceDialog({ editing, onClose }: { editing: Service | 'new' | null; 
     watch,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<ServiceFormInput, unknown, ServiceFormOutput>({ resolver: zodResolver(serviceSchema) });
+  } = useForm<ServiceFormInput, unknown, ServiceFormOutput>({
+    resolver: zodResolver(serviceSchema),
+  });
 
   React.useEffect(() => {
     if (!editing) return;
@@ -132,7 +157,8 @@ function ServiceDialog({ editing, onClose }: { editing: Service | 'new' | null; 
           : String(s.deposit_value)
         : '',
       active: s?.active ?? true,
-      professional_ids: s?.professional_ids ?? (professionals.data ?? []).filter((p) => p.active).map((p) => p.id),
+      professional_ids:
+        s?.professional_ids ?? (professionals.data ?? []).filter((p) => p.active).map((p) => p.id),
     });
   }, [editing, reset, professionals.data]);
 
@@ -142,18 +168,34 @@ function ServiceDialog({ editing, onClose }: { editing: Service | 'new' | null; 
 
   const onSubmit = handleSubmit(async ({ professional_ids, ...values }) => {
     try {
-      const payload = { ...values, description: values.description || null, category: values.category || null, business_id: business.id };
+      const payload = {
+        ...values,
+        description: values.description || null,
+        category: values.category || null,
+        business_id: business.id,
+      };
       const id =
         editing === 'new'
           ? unwrap(await supabase.from('services').insert(payload).select('id').single()).id
-          : (unwrap(await supabase.from('services').update(payload).eq('id', (editing as Service).id).select('id').single()).id);
+          : unwrap(
+              await supabase
+                .from('services')
+                .update(payload)
+                .eq('id', (editing as Service).id)
+                .select('id')
+                .single(),
+            ).id;
       // sincroniza quem atende o serviço
       unwrap(await supabase.from('service_professionals').delete().eq('service_id', id));
       if (professional_ids.length) {
         unwrap(
-          await supabase
-            .from('service_professionals')
-            .insert(professional_ids.map((pid) => ({ business_id: business.id, service_id: id, professional_id: pid }))),
+          await supabase.from('service_professionals').insert(
+            professional_ids.map((pid) => ({
+              business_id: business.id,
+              service_id: id,
+              professional_id: pid,
+            })),
+          ),
         );
       }
       await qc.invalidateQueries({ queryKey: keys.services(business.id) });
@@ -176,14 +218,34 @@ function ServiceDialog({ editing, onClose }: { editing: Service | 'new' | null; 
             <Field label={t('services.name')} htmlFor="name" error={errors.name?.message}>
               <Input {...register('name')} />
             </Field>
-            <Field label={t('services.category')} htmlFor="category" error={errors.category?.message} hint={t('services.categoryHint')}>
+            <Field
+              label={t('services.category')}
+              htmlFor="category"
+              error={errors.category?.message}
+              hint={t('services.categoryHint')}
+            >
               <Input {...register('category')} />
             </Field>
-            <Field label={t('services.description')} htmlFor="description" error={errors.description?.message} className="sm:col-span-2">
+            <Field
+              label={t('services.description')}
+              htmlFor="description"
+              error={errors.description?.message}
+              className="sm:col-span-2"
+            >
               <Textarea rows={2} {...register('description')} />
             </Field>
-            <Field label={t('services.duration')} htmlFor="duration_min" error={errors.duration_min?.message}>
-              <Input type="number" inputMode="numeric" min={5} step={5} {...register('duration_min')} />
+            <Field
+              label={t('services.duration')}
+              htmlFor="duration_min"
+              error={errors.duration_min?.message}
+            >
+              <Input
+                type="number"
+                inputMode="numeric"
+                min={5}
+                step={5}
+                {...register('duration_min')}
+              />
             </Field>
             <Field label={t('services.price')} htmlFor="price" error={errors.price?.message}>
               <Input inputMode="decimal" placeholder="0,00" {...register('price')} />
@@ -193,16 +255,34 @@ function ServiceDialog({ editing, onClose }: { editing: Service | 'new' | null; 
           <details className="rounded-lg border p-3" open={editing !== 'new'}>
             <summary className="cursor-pointer text-sm font-medium">{t('services.rules')}</summary>
             <div className="mt-3 grid gap-4 sm:grid-cols-2">
-              <Field label={t('services.bufferBefore')} htmlFor="buffer_before_min" error={errors.buffer_before_min?.message} hint={t('services.bufferHint')}>
+              <Field
+                label={t('services.bufferBefore')}
+                htmlFor="buffer_before_min"
+                error={errors.buffer_before_min?.message}
+                hint={t('services.bufferHint')}
+              >
                 <Input type="number" min={0} step={5} {...register('buffer_before_min')} />
               </Field>
-              <Field label={t('services.bufferAfter')} htmlFor="buffer_after_min" error={errors.buffer_after_min?.message}>
+              <Field
+                label={t('services.bufferAfter')}
+                htmlFor="buffer_after_min"
+                error={errors.buffer_after_min?.message}
+              >
                 <Input type="number" min={0} step={5} {...register('buffer_after_min')} />
               </Field>
-              <Field label={t('services.minNotice')} htmlFor="min_notice_min" error={errors.min_notice_min?.message} hint={t('services.minNoticeHint')}>
+              <Field
+                label={t('services.minNotice')}
+                htmlFor="min_notice_min"
+                error={errors.min_notice_min?.message}
+                hint={t('services.minNoticeHint')}
+              >
                 <Input type="number" min={0} step={15} {...register('min_notice_min')} />
               </Field>
-              <Field label={t('services.maxAdvance')} htmlFor="max_advance_days" error={errors.max_advance_days?.message}>
+              <Field
+                label={t('services.maxAdvance')}
+                htmlFor="max_advance_days"
+                error={errors.max_advance_days?.message}
+              >
                 <Input type="number" min={1} max={365} {...register('max_advance_days')} />
               </Field>
             </div>
@@ -219,14 +299,20 @@ function ServiceDialog({ editing, onClose }: { editing: Service | 'new' | null; 
             </Field>
             {depositType !== 'none' && (
               <Field
-                label={depositType === 'percent' ? t('services.depositPercentValue') : t('services.depositFixedValue')}
+                label={
+                  depositType === 'percent'
+                    ? t('services.depositPercentValue')
+                    : t('services.depositFixedValue')
+                }
                 htmlFor="deposit_value"
                 error={errors.deposit_value?.message}
               >
                 <Input inputMode="decimal" {...register('deposit_value')} />
               </Field>
             )}
-            <p className="text-xs text-muted-foreground sm:col-span-2">{t('services.depositHint')}</p>
+            <p className="text-xs text-muted-foreground sm:col-span-2">
+              {t('services.depositHint')}
+            </p>
           </fieldset>
 
           <fieldset className="space-y-2">
@@ -235,7 +321,10 @@ function ServiceDialog({ editing, onClose }: { editing: Service | 'new' | null; 
               {(professionals.data ?? []).map((p) => {
                 const checked = selectedPros.includes(p.id);
                 return (
-                  <label key={p.id} className="flex items-center gap-2 rounded-md border px-3 py-2 text-sm">
+                  <label
+                    key={p.id}
+                    className="flex items-center gap-2 rounded-md border px-3 py-2 text-sm"
+                  >
                     <Checkbox
                       checked={checked}
                       onCheckedChange={(v) =>
@@ -246,13 +335,19 @@ function ServiceDialog({ editing, onClose }: { editing: Service | 'new' | null; 
                         )
                       }
                     />
-                    <span className="size-2.5 rounded-full" style={{ backgroundColor: p.color }} aria-hidden />
+                    <span
+                      className="size-2.5 rounded-full"
+                      style={{ backgroundColor: p.color }}
+                      aria-hidden
+                    />
                     {p.name}
                   </label>
                 );
               })}
             </div>
-            {selectedPros.length === 0 && <p className="text-xs text-warning">{t('services.noProsWarning')}</p>}
+            {selectedPros.length === 0 && (
+              <p className="text-xs text-warning">{t('services.noProsWarning')}</p>
+            )}
           </fieldset>
 
           <label className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm">
@@ -260,7 +355,10 @@ function ServiceDialog({ editing, onClose }: { editing: Service | 'new' | null; 
               <span className="block font-medium">{t('services.active')}</span>
               <span className="text-muted-foreground">{t('services.activeHint')}</span>
             </span>
-            <Switch checked={active} onCheckedChange={(v) => setValue('active', v, { shouldDirty: true })} />
+            <Switch
+              checked={active}
+              onCheckedChange={(v) => setValue('active', v, { shouldDirty: true })}
+            />
           </label>
 
           <DialogFooter>

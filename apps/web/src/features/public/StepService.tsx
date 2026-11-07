@@ -43,17 +43,27 @@ export function StepService({
                 >
                   <div className="min-w-0 flex-1">
                     <p className="font-medium">{s.name}</p>
-                    {s.description && <p className="mt-0.5 line-clamp-2 text-sm text-muted-foreground">{s.description}</p>}
+                    {s.description && (
+                      <p className="mt-0.5 line-clamp-2 text-sm text-muted-foreground">
+                        {s.description}
+                      </p>
+                    )}
                     <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                       <span className="inline-flex items-center gap-1">
                         <Clock className="size-3.5" aria-hidden /> {formatDuration(s.duration_min)}
                       </span>
                       {s.deposit_cents > 0 && (
-                        <Badge variant="secondary">{t('booking.depositBadge', { amount: formatMoney(s.deposit_cents, currency) })}</Badge>
+                        <Badge variant="secondary">
+                          {t('booking.depositBadge', {
+                            amount: formatMoney(s.deposit_cents, currency),
+                          })}
+                        </Badge>
                       )}
                     </div>
                   </div>
-                  <span className="font-semibold tabular-nums">{formatMoney(s.price_cents, currency)}</span>
+                  <span className="font-semibold tabular-nums">
+                    {formatMoney(s.price_cents, currency)}
+                  </span>
                   <ChevronRight className="size-4 text-muted-foreground" aria-hidden />
                 </button>
               </li>

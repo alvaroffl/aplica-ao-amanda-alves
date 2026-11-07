@@ -41,7 +41,12 @@ describe('StepDetails (dados do cliente)', () => {
     await user.click(screen.getByRole('button', { name: 'Confirmar agendamento' }));
     expect(onSubmit).toHaveBeenCalledTimes(1);
     const arg = onSubmit.mock.calls[0]![0];
-    expect(arg.client).toMatchObject({ name: 'Maria Souza', email: 'maria@exemplo.com', phone: '+5511987654321', consent: true });
+    expect(arg.client).toMatchObject({
+      name: 'Maria Souza',
+      email: 'maria@exemplo.com',
+      phone: '+5511987654321',
+      consent: true,
+    });
     expect(arg.paymentMethod).toBe('pix');
   });
 

@@ -54,9 +54,17 @@ export function PanelRoot() {
   const memberships = useMemberships();
   const location = useLocation();
   if (memberships.isPending) return <Spinner className="min-h-dvh" label={t('common.loading')} />;
-  if (memberships.isError) return <ErrorState className="m-6" error={memberships.error} onRetry={() => void memberships.refetch()} />;
+  if (memberships.isError)
+    return (
+      <ErrorState
+        className="m-6"
+        error={memberships.error}
+        onRetry={() => void memberships.refetch()}
+      />
+    );
   if (memberships.data.length === 0 || location.pathname === '/painel/novo-negocio') {
-    if (location.pathname !== '/painel/novo-negocio') return <Navigate to="/painel/novo-negocio" replace />;
+    if (location.pathname !== '/painel/novo-negocio')
+      return <Navigate to="/painel/novo-negocio" replace />;
     return <Outlet />;
   }
   return (
@@ -84,14 +92,22 @@ function PanelShell() {
       </aside>
 
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b bg-card/95 px-3 backdrop-blur lg:hidden">
-        <Button variant="ghost" size="icon" onClick={() => setOpen(true)} aria-label={t('panel.openMenu')}>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setOpen(true)}
+          aria-label={t('panel.openMenu')}
+        >
           <Menu aria-hidden />
         </Button>
         <Logo to="/painel" />
         <ThemeToggle />
       </header>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent side="right" className="left-0 right-auto max-w-[280px] p-0 data-[state=open]:slide-in-from-left sm:rounded-none sm:rounded-r-2xl">
+        <DialogContent
+          side="right"
+          className="left-0 right-auto max-w-[280px] p-0 data-[state=open]:slide-in-from-left sm:rounded-none sm:rounded-r-2xl"
+        >
           <DialogTitle className="sr-only">{t('panel.menu')}</DialogTitle>
           <Sidebar />
         </DialogContent>
@@ -114,12 +130,37 @@ function Sidebar() {
     { to: '/painel', label: t('panel.nav.agenda'), icon: CalendarDays, end: true },
     { to: '/painel/clientes', label: t('panel.nav.clients'), icon: UsersRound },
     { to: '/painel/disponibilidade', label: t('panel.nav.availability'), icon: Clock },
-    { to: '/painel/servicos', label: t('panel.nav.services'), icon: Scissors, permission: 'services.manage' },
+    {
+      to: '/painel/servicos',
+      label: t('panel.nav.services'),
+      icon: Scissors,
+      permission: 'services.manage',
+    },
     { to: '/painel/equipe', label: t('panel.nav.team'), icon: Users, permission: 'team.manage' },
-    { to: '/painel/unidades', label: t('panel.nav.units'), icon: Building2, permission: 'units.manage' },
-    { to: '/painel/relatorios', label: t('panel.nav.reports'), icon: BarChart3, permission: 'reports.view' },
-    { to: '/painel/notificacoes', label: t('panel.nav.notifications'), icon: Bell, permission: 'notifications.view' },
-    { to: '/painel/configuracoes', label: t('panel.nav.settings'), icon: Settings, permission: 'settings.manage' },
+    {
+      to: '/painel/unidades',
+      label: t('panel.nav.units'),
+      icon: Building2,
+      permission: 'units.manage',
+    },
+    {
+      to: '/painel/relatorios',
+      label: t('panel.nav.reports'),
+      icon: BarChart3,
+      permission: 'reports.view',
+    },
+    {
+      to: '/painel/notificacoes',
+      label: t('panel.nav.notifications'),
+      icon: Bell,
+      permission: 'notifications.view',
+    },
+    {
+      to: '/painel/configuracoes',
+      label: t('panel.nav.settings'),
+      icon: Settings,
+      permission: 'settings.manage',
+    },
   ].filter((i) => !i.permission || can(i.permission as Permission)) as NavItem[];
 
   const copyLink = async () => {
@@ -144,7 +185,10 @@ function Sidebar() {
               type="button"
               className="flex w-full items-center gap-2.5 rounded-lg border bg-background p-2 text-left text-sm hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
             >
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-xs font-bold text-primary-foreground" aria-hidden>
+              <span
+                className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-xs font-bold text-primary-foreground"
+                aria-hidden
+              >
                 {initials(business.name)}
               </span>
               <span className="min-w-0 flex-1">
@@ -182,7 +226,9 @@ function Sidebar() {
                 className={({ isActive }) =>
                   cn(
                     'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-ring',
-                    isActive ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-accent hover:text-foreground',
+                    isActive
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-muted-foreground hover:bg-accent hover:text-foreground',
                   )
                 }
               >
@@ -203,7 +249,12 @@ function Sidebar() {
               <Copy aria-hidden /> {t('common.copy')}
             </Button>
             <Button size="sm" variant="outline" className="h-8" asChild>
-              <a href={link} target="_blank" rel="noreferrer" aria-label={t('panel.openPublicPage')}>
+              <a
+                href={link}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={t('panel.openPublicPage')}
+              >
                 <ExternalLink aria-hidden />
               </a>
             </Button>
@@ -214,7 +265,12 @@ function Sidebar() {
           <div className="flex shrink-0">
             <LanguageSwitcher />
             <ThemeToggle />
-            <Button variant="ghost" size="icon" onClick={() => void signOut()} aria-label={t('common.signOut')}>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => void signOut()}
+              aria-label={t('common.signOut')}
+            >
               <LogOut aria-hidden />
             </Button>
           </div>

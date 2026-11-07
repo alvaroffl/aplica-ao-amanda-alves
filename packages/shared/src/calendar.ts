@@ -18,11 +18,18 @@ export interface CalendarEvent {
 
 function toUtcStamp(value: Date | string): string {
   const d = typeof value === 'string' ? new Date(value) : value;
-  return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  return d
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}/, '');
 }
 
 function escapeText(value: string): string {
-  return value.replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
+  return value
+    .replace(/\\/g, '\\\\')
+    .replace(/\n/g, '\\n')
+    .replace(/,/g, '\\,')
+    .replace(/;/g, '\\;');
 }
 
 /** Dobra linhas em 75 caracteres (RFC 5545 §3.1). */

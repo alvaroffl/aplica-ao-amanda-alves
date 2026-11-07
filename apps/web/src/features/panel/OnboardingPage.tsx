@@ -85,7 +85,11 @@ export function OnboardingPage() {
           error={errors.slug?.message}
           hint={t('onboarding.slugHint', { url: publicUrl(`/${slug || '...'}`) })}
         >
-          <Input autoCapitalize="none" spellCheck={false} {...register('slug', { setValueAs: (v: string) => slugify(v) })} />
+          <Input
+            autoCapitalize="none"
+            spellCheck={false}
+            {...register('slug', { setValueAs: (v: string) => slugify(v) })}
+          />
         </Field>
         <Field label={t('onboarding.timezone')} htmlFor="timezone" error={errors.timezone?.message}>
           <NativeSelect {...register('timezone')}>
@@ -97,7 +101,11 @@ export function OnboardingPage() {
           </NativeSelect>
         </Field>
         <div className="flex items-start gap-3">
-          <Checkbox id="owner" checked={owner} onCheckedChange={(v) => setValue('ownerIsProfessional', v === true)} />
+          <Checkbox
+            id="owner"
+            checked={owner}
+            onCheckedChange={(v) => setValue('ownerIsProfessional', v === true)}
+          />
           <label htmlFor="owner" className="text-sm leading-snug">
             {t('onboarding.ownerIsProfessional')}
           </label>

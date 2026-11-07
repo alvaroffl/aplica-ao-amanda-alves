@@ -5,7 +5,17 @@ import { Logo } from '@/components/common/Logo';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-export function AuthLayout({ title, description, children, footer }: { title: string; description?: string; children: ReactNode; footer?: ReactNode }) {
+export function AuthLayout({
+  title,
+  description,
+  children,
+  footer,
+}: {
+  title: string;
+  description?: string;
+  children: ReactNode;
+  footer?: ReactNode;
+}) {
   const { t } = useTranslation();
   return (
     <div className="flex min-h-dvh flex-col bg-gradient-to-br from-accent/60 via-background to-background">
@@ -19,7 +29,10 @@ export function AuthLayout({ title, description, children, footer }: { title: st
           <ThemeToggle />
         </div>
       </header>
-      <main id="conteudo" className="flex flex-1 items-start justify-center px-4 py-8 sm:items-center">
+      <main
+        id="conteudo"
+        className="flex flex-1 items-start justify-center px-4 py-8 sm:items-center"
+      >
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle as="h1" className="text-xl">
@@ -30,7 +43,9 @@ export function AuthLayout({ title, description, children, footer }: { title: st
           <CardContent>{children}</CardContent>
         </Card>
       </main>
-      {footer && <footer className="pb-8 text-center text-sm text-muted-foreground">{footer}</footer>}
+      {footer && (
+        <footer className="pb-8 text-center text-sm text-muted-foreground">{footer}</footer>
+      )}
     </div>
   );
 }

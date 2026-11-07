@@ -1,4 +1,10 @@
-import type { DateSelectArg, DatesSetArg, EventClickArg, EventDropArg, EventInput } from '@fullcalendar/core';
+import type {
+  DateSelectArg,
+  DatesSetArg,
+  EventClickArg,
+  EventDropArg,
+  EventInput,
+} from '@fullcalendar/core';
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { type EventResizeDoneArg } from '@fullcalendar/interaction';
@@ -35,9 +41,14 @@ export function AgendaPage() {
   const [title, setTitle] = React.useState('');
   const [range, setRange] = React.useState(() => {
     const now = new Date();
-    return { from: new Date(now.getTime() - 7 * 864e5).toISOString(), to: new Date(now.getTime() + 7 * 864e5).toISOString() };
+    return {
+      from: new Date(now.getTime() - 7 * 864e5).toISOString(),
+      to: new Date(now.getTime() + 7 * 864e5).toISOString(),
+    };
   });
-  const [proFilter, setProFilter] = React.useState<string>(can('agenda.viewAll') ? 'all' : myProfessionalId ?? 'all');
+  const [proFilter, setProFilter] = React.useState<string>(
+    can('agenda.viewAll') ? 'all' : (myProfessionalId ?? 'all'),
+  );
   const [showCancelled, setShowCancelled] = React.useState(false);
   const [selected, setSelected] = React.useState<BookingRow | null>(null);
   const [creating, setCreating] = React.useState<NewBookingDefaults | null>(null);
@@ -89,7 +100,10 @@ export function AgendaPage() {
     if (!info.event.start || !info.event.end) return info.revert();
     const startsAt = fromWall(info.event.start, tz).toISOString();
     const endsAt = fromWall(info.event.end, tz).toISOString();
-    const { error } = await supabase.from('bookings').update({ starts_at: startsAt, ends_at: endsAt }).eq('id', booking.id);
+    const { error } = await supabase
+      .from('bookings')
+      .update({ starts_at: startsAt, ends_at: endsAt })
+      .eq('id', booking.id);
     if (error) {
       info.revert();
       const code = toApiError(error).code;
@@ -127,10 +141,20 @@ export function AgendaPage() {
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-2">
           <h1 className="sr-only">{t('panel.nav.agenda')}</h1>
-          <Button variant="outline" size="icon" onClick={() => api()?.prev()} aria-label={t('agenda.previous')}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => api()?.prev()}
+            aria-label={t('agenda.previous')}
+          >
             <ChevronLeft aria-hidden />
           </Button>
-          <Button variant="outline" size="icon" onClick={() => api()?.next()} aria-label={t('agenda.next')}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => api()?.next()}
+            aria-label={t('agenda.next')}
+          >
             <ChevronRight aria-hidden />
           </Button>
           <Button variant="outline" onClick={() => api()?.today()}>
@@ -152,7 +176,11 @@ export function AgendaPage() {
               { value: 'listWeek', label: t('agenda.views.list') },
             ]}
           />
-          <Button onClick={() => setCreating({ date: wallNow().toISOString().slice(0, 10), time: '09:00' })}>
+          <Button
+            onClick={() =>
+              setCreating({ date: wallNow().toISOString().slice(0, 10), time: '09:00' })
+            }
+          >
             <Plus aria-hidden /> {t('agenda.newBooking')}
           </Button>
         </div>
@@ -175,22 +203,36 @@ export function AgendaPage() {
           </NativeSelect>
         )}
         <label className="flex items-center gap-2 text-sm text-muted-foreground">
-          <input type="checkbox" className="size-4 accent-[var(--primary)]" checked={showCancelled} onChange={(e) => setShowCancelled(e.target.checked)} />
+          <input
+            type="checkbox"
+            className="size-4 accent-[var(--primary)]"
+            checked={showCancelled}
+            onChange={(e) => setShowCancelled(e.target.checked)}
+          />
           {t('agenda.showCancelled')}
         </label>
-        <div className="flex flex-wrap gap-3 text-xs text-muted-foreground" aria-label={t('agenda.legend')}>
+        <div
+          className="flex flex-wrap gap-3 text-xs text-muted-foreground"
+          aria-label={t('agenda.legend')}
+        >
           {(professionals.data ?? [])
             .filter((p) => p.active)
             .map((p) => (
               <span key={p.id} className="inline-flex items-center gap-1.5">
-                <span className="size-2.5 rounded-full" style={{ backgroundColor: p.color }} aria-hidden />
+                <span
+                  className="size-2.5 rounded-full"
+                  style={{ backgroundColor: p.color }}
+                  aria-hidden
+                />
                 {p.name}
               </span>
             ))}
         </div>
       </div>
 
-      {bookings.isError && <ErrorState error={bookings.error} onRetry={() => void bookings.refetch()} />}
+      {bookings.isError && (
+        <ErrorState error={bookings.error} onRetry={() => void bookings.refetch()} />
+      )}
 
       <div className="rounded-xl border bg-card p-2 sm:p-3" aria-busy={bookings.isFetching}>
         <FullCalendar

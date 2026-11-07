@@ -56,7 +56,10 @@ export async function ensureDepositPayment(
       .eq('id', paymentId);
   } catch (e) {
     log('error', 'payment.create_failed', { bookingId: booking.id, message: String(e) });
-    await db.from('payments').update({ status: 'cancelled', last_error: String(e).slice(0, 1000) }).eq('id', paymentId);
+    await db
+      .from('payments')
+      .update({ status: 'cancelled', last_error: String(e).slice(0, 1000) })
+      .eq('id', paymentId);
     throw e;
   }
 }

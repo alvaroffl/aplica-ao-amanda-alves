@@ -27,7 +27,14 @@ export interface PublicBusiness {
     cancellation_window_hours: number;
     booking_hold_min: number;
   };
-  units: { id: string; name: string; slug: string; address: string | null; phone: string | null; timezone: string }[];
+  units: {
+    id: string;
+    name: string;
+    slug: string;
+    address: string | null;
+    phone: string | null;
+    timezone: string;
+  }[];
   services: {
     id: string;
     name: string;

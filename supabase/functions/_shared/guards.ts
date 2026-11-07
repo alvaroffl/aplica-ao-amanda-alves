@@ -4,7 +4,12 @@ import { sha256Hex } from './crypto.ts';
 import type { ServiceClient } from './supabase.ts';
 
 /** Rate limit de janela fixa no Postgres. Chaves são hasheadas (LGPD). */
-export async function allow(db: ServiceClient, key: string, max: number, windowSeconds: number): Promise<boolean> {
+export async function allow(
+  db: ServiceClient,
+  key: string,
+  max: number,
+  windowSeconds: number,
+): Promise<boolean> {
   const hashed = await sha256Hex(`${getEnv().rateLimitSalt}:${key}`);
   const { data, error } = await db.rpc('check_rate_limit', {
     p_key: hashed,
@@ -34,7 +39,10 @@ export async function verifyCaptcha(token: string, ip: string): Promise<boolean>
     body.append('secret', turnstileSecret);
     body.append('response', token);
     if (ip !== 'unknown') body.append('remoteip', ip);
-    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body,
+    });
     const result = (await res.json()) as { success?: boolean };
     return result.success === true;
   } catch (e) {

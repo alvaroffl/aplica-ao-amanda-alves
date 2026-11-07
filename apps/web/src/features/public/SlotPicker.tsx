@@ -26,7 +26,10 @@ export function SlotPicker<T extends { starts_at: string }>({
         const Icon = ICONS[period];
         return (
           <section key={period} aria-labelledby={`period-${period}`}>
-            <h3 id={`period-${period}`} className="mb-2 flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+            <h3
+              id={`period-${period}`}
+              className="mb-2 flex items-center gap-1.5 text-sm font-medium text-muted-foreground"
+            >
               <Icon className="size-4" aria-hidden /> {t(`periods.${period}`)}
             </h3>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">

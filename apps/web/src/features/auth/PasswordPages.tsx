@@ -20,7 +20,9 @@ export function ForgotPasswordPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<z.input<typeof passwordResetRequestSchema>>({ resolver: zodResolver(passwordResetRequestSchema) });
+  } = useForm<z.input<typeof passwordResetRequestSchema>>({
+    resolver: zodResolver(passwordResetRequestSchema),
+  });
 
   const onSubmit = handleSubmit(async ({ email }) => {
     await supabase.auth.resetPasswordForEmail(email, { redirectTo: publicUrl('/redefinir-senha') });
@@ -28,7 +30,15 @@ export function ForgotPasswordPage() {
   });
 
   return (
-    <AuthLayout title={t('auth.forgotTitle')} description={t('auth.forgotText')} footer={<Link to="/entrar" className="text-primary hover:underline">{t('common.back')}</Link>}>
+    <AuthLayout
+      title={t('auth.forgotTitle')}
+      description={t('auth.forgotText')}
+      footer={
+        <Link to="/entrar" className="text-primary hover:underline">
+          {t('common.back')}
+        </Link>
+      }
+    >
       {sent ? (
         <p role="status" className="rounded-lg bg-success/10 p-4 text-sm">
           {t('auth.resetSent')}

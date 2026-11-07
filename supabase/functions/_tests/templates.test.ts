@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import type { PublicBooking } from '../../../packages/shared/src/index.ts';
-import { renderEmail, renderWhatsApp, shouldSkip, type NotificationContext } from '../_shared/notify/templates.ts';
+import {
+  renderEmail,
+  renderWhatsApp,
+  shouldSkip,
+  type NotificationContext,
+} from '../_shared/notify/templates.ts';
 
 const booking: PublicBooking = {
   id: '11111111-1111-1111-1111-111111111111',
@@ -14,7 +19,15 @@ const booking: PublicBooking = {
   cancelled_at: null,
   cancelled_by: null,
   manage_token: 'abc.def',
-  business: { id: 'b', name: 'Studio <Exemplo>', slug: 'studio', phone: '+5511988887777', email: null, logo_url: null, cancellation_window_hours: 24 },
+  business: {
+    id: 'b',
+    name: 'Studio <Exemplo>',
+    slug: 'studio',
+    phone: '+5511988887777',
+    email: null,
+    logo_url: null,
+    cancellation_window_hours: 24,
+  },
   service: { id: 's', name: 'Corte feminino', duration_min: 60 },
   professional: { id: 'p', name: 'Carla' },
   unit: { id: 'u', name: 'Centro', address: 'Rua A, 1', timezone: 'America/Sao_Paulo' },
@@ -22,11 +35,22 @@ const booking: PublicBooking = {
   payment: null,
 };
 
-function ctx(template: string, overrides: Partial<PublicBooking> = {}, payload: Record<string, unknown> = {}): NotificationContext {
+function ctx(
+  template: string,
+  overrides: Partial<PublicBooking> = {},
+  payload: Record<string, unknown> = {},
+): NotificationContext {
   return {
     notification: { id: 'n', template, channel: 'email', recipient: 'm@ex.dev', payload },
     booking: { ...booking, ...overrides },
-    business: { id: 'b', name: 'Studio', slug: 'studio', phone: null, email: null, timezone: 'America/Sao_Paulo' },
+    business: {
+      id: 'b',
+      name: 'Studio',
+      slug: 'studio',
+      phone: null,
+      email: null,
+      timezone: 'America/Sao_Paulo',
+    },
   };
 }
 
@@ -61,7 +85,9 @@ describe('WhatsApp', () => {
 
 describe('descartes no momento do envio', () => {
   it('lembrete de reserva reagendada é descartado', () => {
-    expect(shouldSkip(ctx('reminder_24h', {}, { starts_at: '2030-11-17T17:30:00Z' }))).toBe('rescheduled');
+    expect(shouldSkip(ctx('reminder_24h', {}, { starts_at: '2030-11-17T17:30:00Z' }))).toBe(
+      'rescheduled',
+    );
   });
   it('lembrete de reserva cancelada é descartado', () => {
     expect(shouldSkip(ctx('reminder_2h', { status: 'cancelled' }))).toBe('booking_not_confirmed');

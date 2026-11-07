@@ -21,8 +21,16 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div className={cn('flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed px-6 py-10 text-center', className)}>
-      <div className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground [&_svg]:size-6" aria-hidden>
+    <div
+      className={cn(
+        'flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed px-6 py-10 text-center',
+        className,
+      )}
+    >
+      <div
+        className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground [&_svg]:size-6"
+        aria-hidden
+      >
         {icon ?? <Inbox />}
       </div>
       <div className="space-y-1">
@@ -40,15 +48,31 @@ export function EmptyState({
   );
 }
 
-export function ErrorState({ error, onRetry, className }: { error: unknown; onRetry?: () => void; className?: string }) {
+export function ErrorState({
+  error,
+  onRetry,
+  className,
+}: {
+  error: unknown;
+  onRetry?: () => void;
+  className?: string;
+}) {
   const { t } = useTranslation();
   const code = error instanceof ApiError ? error.code : 'INTERNAL_ERROR';
   return (
-    <div role="alert" className={cn('flex flex-col items-center gap-3 rounded-xl border border-destructive/30 bg-destructive/5 px-6 py-8 text-center', className)}>
+    <div
+      role="alert"
+      className={cn(
+        'flex flex-col items-center gap-3 rounded-xl border border-destructive/30 bg-destructive/5 px-6 py-8 text-center',
+        className,
+      )}
+    >
       <AlertTriangle className="size-8 text-destructive" aria-hidden />
       <div className="space-y-1">
         <p className="font-medium">{t('common.errorTitle')}</p>
-        <p className="text-sm text-muted-foreground">{t(`errors.${code}`, { defaultValue: t('errors.INTERNAL_ERROR') })}</p>
+        <p className="text-sm text-muted-foreground">
+          {t(`errors.${code}`, { defaultValue: t('errors.INTERNAL_ERROR') })}
+        </p>
       </div>
       {onRetry && (
         <Button variant="outline" size="sm" onClick={onRetry}>
@@ -59,7 +83,15 @@ export function ErrorState({ error, onRetry, className }: { error: unknown; onRe
   );
 }
 
-export function PageHeader({ title, description, actions }: { title: string; description?: ReactNode; actions?: ReactNode }) {
+export function PageHeader({
+  title,
+  description,
+  actions,
+}: {
+  title: string;
+  description?: ReactNode;
+  actions?: ReactNode;
+}) {
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div className="space-y-1">

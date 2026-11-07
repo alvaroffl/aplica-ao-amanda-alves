@@ -56,7 +56,9 @@ export function zonedToUtc(dateKey: string, time: string, timeZone: string): Dat
 /** Nome legível do fuso: "Horário Padrão de Brasília". */
 export function timeZoneLabel(timeZone: string, locale = 'pt-BR', at: Date = new Date()): string {
   try {
-    const parts = new Intl.DateTimeFormat(locale, { timeZone, timeZoneName: 'long' }).formatToParts(at);
+    const parts = new Intl.DateTimeFormat(locale, { timeZone, timeZoneName: 'long' }).formatToParts(
+      at,
+    );
     return parts.find((p) => p.type === 'timeZoneName')?.value ?? timeZone;
   } catch {
     return timeZone;
@@ -95,7 +97,13 @@ export function groupByPeriod<T extends { starts_at: string }>(
 }
 
 export const WEEKDAYS_PT = [
-  'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado',
+  'Domingo',
+  'Segunda',
+  'Terça',
+  'Quarta',
+  'Quinta',
+  'Sexta',
+  'Sábado',
 ] as const;
 
 /** Duração amigável: 90 → "1h30", 45 → "45 min" */

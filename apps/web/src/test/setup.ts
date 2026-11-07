@@ -35,5 +35,8 @@ if (!('ResizeObserver' in window)) {
     disconnect() {}
   }
   Object.defineProperty(window, 'ResizeObserver', { writable: true, value: ResizeObserverStub });
-  Object.defineProperty(globalThis, 'ResizeObserver', { writable: true, value: ResizeObserverStub });
+  Object.defineProperty(globalThis, 'ResizeObserver', {
+    writable: true,
+    value: ResizeObserverStub,
+  });
 }

@@ -17,9 +17,22 @@ export type TemplateName =
   | 'member_invite';
 
 export interface NotificationContext {
-  notification: { id: string; template: string; channel: 'email' | 'whatsapp'; recipient: string; payload: Record<string, unknown> };
+  notification: {
+    id: string;
+    template: string;
+    channel: 'email' | 'whatsapp';
+    recipient: string;
+    payload: Record<string, unknown>;
+  };
   booking: PublicBooking | null;
-  business: { id: string; name: string; slug: string; phone: string | null; email: string | null; timezone: string };
+  business: {
+    id: string;
+    name: string;
+    slug: string;
+    phone: string | null;
+    email: string | null;
+    timezone: string;
+  };
 }
 
 export interface RenderOptions {
@@ -104,9 +117,7 @@ ${bodyHtml}
 }
 
 function button(href: string, label: string, primary = true): string {
-  const style = primary
-    ? 'background:#4f46e5;color:#ffffff'
-    : 'background:#eef2ff;color:#3730a3';
+  const style = primary ? 'background:#4f46e5;color:#ffffff' : 'background:#eef2ff;color:#3730a3';
   return `<a href="${escapeHtml(href)}" style="${style};display:inline-block;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:600;margin:4px 8px 4px 0">${escapeHtml(label)}</a>`;
 }
 
@@ -198,7 +209,11 @@ export function renderEmail(ctx: NotificationContext, opts: RenderOptions): Emai
     subject: subjects[t],
     html,
     text,
-    attachment: { filename: 'agendamento.ics', content: ics, contentType: 'text/calendar; charset=utf-8' },
+    attachment: {
+      filename: 'agendamento.ics',
+      content: ics,
+      contentType: 'text/calendar; charset=utf-8',
+    },
   };
 }
 
@@ -214,7 +229,10 @@ export const WHATSAPP_TEMPLATES: Record<Exclude<TemplateName, 'member_invite'>, 
   reminder_2h: 'lembrete_agendamento',
 };
 
-export function renderWhatsApp(ctx: NotificationContext, opts: RenderOptions): WhatsAppMessage | null {
+export function renderWhatsApp(
+  ctx: NotificationContext,
+  opts: RenderOptions,
+): WhatsAppMessage | null {
   const t = ctx.notification.template as TemplateName;
   if (t === 'member_invite' || !ctx.booking) return null;
   const b = ctx.booking;

@@ -27,8 +27,13 @@ export function PrivacyPanel({ token, onDeleted }: { token: string; onDeleted: (
     setBusy('export');
     try {
       const data = await exportMyData(token);
-      const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
-      Object.assign(document.createElement('a'), { href: url, download: 'meus-dados.json' }).click();
+      const url = URL.createObjectURL(
+        new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }),
+      );
+      Object.assign(document.createElement('a'), {
+        href: url,
+        download: 'meus-dados.json',
+      }).click();
       URL.revokeObjectURL(url);
       toast.success(t('manage.privacy.exported'));
     } catch {
@@ -75,7 +80,11 @@ export function PrivacyPanel({ token, onDeleted }: { token: string; onDeleted: (
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
-                <AlertDialogAction variant="destructive" onClick={doDelete} disabled={busy === 'delete'}>
+                <AlertDialogAction
+                  variant="destructive"
+                  onClick={doDelete}
+                  disabled={busy === 'delete'}
+                >
                   {t('manage.privacy.deleteConfirm')}
                 </AlertDialogAction>
               </AlertDialogFooter>

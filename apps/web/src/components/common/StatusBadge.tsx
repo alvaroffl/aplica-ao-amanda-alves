@@ -2,7 +2,10 @@ import type { BookingStatus, Enums } from '@agendae/shared';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 
-const bookingVariant: Record<BookingStatus, 'success' | 'warning' | 'destructive' | 'secondary' | 'default'> = {
+const bookingVariant: Record<
+  BookingStatus,
+  'success' | 'warning' | 'destructive' | 'secondary' | 'default'
+> = {
   confirmed: 'default',
   pending_payment: 'warning',
   completed: 'success',
@@ -16,7 +19,10 @@ export function BookingStatusBadge({ status }: { status: BookingStatus }) {
   return <Badge variant={bookingVariant[status]}>{t(`status.${status}`)}</Badge>;
 }
 
-const paymentVariant: Record<Enums<'payment_status'>, 'success' | 'warning' | 'destructive' | 'secondary'> = {
+const paymentVariant: Record<
+  Enums<'payment_status'>,
+  'success' | 'warning' | 'destructive' | 'secondary'
+> = {
   pending: 'warning',
   approved: 'success',
   rejected: 'destructive',

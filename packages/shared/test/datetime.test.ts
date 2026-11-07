@@ -11,10 +11,16 @@ import {
 
 describe('fusos horários', () => {
   it('converte hora local da unidade para UTC', () => {
-    expect(zonedToUtc('2026-11-16', '09:00', 'America/Sao_Paulo').toISOString()).toBe('2026-11-16T12:00:00.000Z');
+    expect(zonedToUtc('2026-11-16', '09:00', 'America/Sao_Paulo').toISOString()).toBe(
+      '2026-11-16T12:00:00.000Z',
+    );
     // Lisboa: inverno UTC+0, verão UTC+1
-    expect(zonedToUtc('2026-01-15', '09:00', 'Europe/Lisbon').toISOString()).toBe('2026-01-15T09:00:00.000Z');
-    expect(zonedToUtc('2026-07-15', '09:00', 'Europe/Lisbon').toISOString()).toBe('2026-07-15T08:00:00.000Z');
+    expect(zonedToUtc('2026-01-15', '09:00', 'Europe/Lisbon').toISOString()).toBe(
+      '2026-01-15T09:00:00.000Z',
+    );
+    expect(zonedToUtc('2026-07-15', '09:00', 'Europe/Lisbon').toISOString()).toBe(
+      '2026-07-15T08:00:00.000Z',
+    );
   });
 
   it('exibe sempre no fuso informado, independente do fuso do processo', () => {

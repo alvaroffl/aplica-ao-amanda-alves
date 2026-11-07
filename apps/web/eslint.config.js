@@ -8,7 +8,11 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
   { ignores: ['dist', 'dev-dist', 'coverage', 'playwright-report', 'test-results'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended, jsxA11y.flatConfigs.recommended],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      jsxA11y.flatConfigs.recommended,
+    ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: { ecmaVersion: 2022, globals: globals.browser },
     plugins: { 'react-hooks': reactHooks, 'react-refresh': reactRefresh },
@@ -17,10 +21,16 @@ export default tseslint.config(
       // Componentes de UI próprios que renderizam controles de formulário
       'jsx-a11y/label-has-associated-control': [
         'error',
-        { controlComponents: ['Switch', 'Checkbox', 'Input', 'NativeSelect', 'Textarea'], depth: 3 },
+        {
+          controlComponents: ['Switch', 'Checkbox', 'Input', 'NativeSelect', 'Textarea'],
+          depth: 3,
+        },
       ],
       'react-refresh/only-export-components': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
   },
 );

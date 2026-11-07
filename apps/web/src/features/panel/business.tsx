@@ -47,12 +47,21 @@ export function useMemberships() {
     enabled: Boolean(user),
     queryFn: async () =>
       unwrap(
-        await supabase.from('business_members').select('role, business:businesses(*)').eq('user_id', user!.id),
+        await supabase
+          .from('business_members')
+          .select('role, business:businesses(*)')
+          .eq('user_id', user!.id),
       ) as unknown as Membership[],
   });
 }
 
-export function BusinessProvider({ memberships, children }: { memberships: Membership[]; children: React.ReactNode }) {
+export function BusinessProvider({
+  memberships,
+  children,
+}: {
+  memberships: Membership[];
+  children: React.ReactNode;
+}) {
   const { user } = useAuth();
   const [selectedId, setSelectedId] = React.useState<string | null>(() => {
     try {

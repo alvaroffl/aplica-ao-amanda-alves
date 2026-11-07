@@ -1,6 +1,10 @@
 import { createHmac } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
-import { mapMercadoPagoStatus, mpDate, verifyMercadoPagoSignature } from '../_shared/payments/mercadopago.ts';
+import {
+  mapMercadoPagoStatus,
+  mpDate,
+  verifyMercadoPagoSignature,
+} from '../_shared/payments/mercadopago.ts';
 
 const secret = 'segredo-de-teste';
 
@@ -13,15 +17,41 @@ describe('webhook do Mercado Pago', () => {
   it('aceita assinatura válida', async () => {
     const v1 = sign('123456', 'req-1', '1700000000');
     expect(
-      await verifyMercadoPagoSignature({ secret, signatureHeader: `ts=1700000000,v1=${v1}`, requestId: 'req-1', dataId: '123456' }),
+      await verifyMercadoPagoSignature({
+        secret,
+        signatureHeader: `ts=1700000000,v1=${v1}`,
+        requestId: 'req-1',
+        dataId: '123456',
+      }),
     ).toBe(true);
   });
 
   it('rejeita assinatura adulterada, segredo ausente ou cabeçalho faltando', async () => {
     const v1 = sign('123456', 'req-1', '1700000000');
-    expect(await verifyMercadoPagoSignature({ secret, signatureHeader: `ts=1700000000,v1=${v1}`, requestId: 'req-1', dataId: '999' })).toBe(false);
-    expect(await verifyMercadoPagoSignature({ secret: '', signatureHeader: `ts=1,v1=${v1}`, requestId: 'req-1', dataId: '123456' })).toBe(false);
-    expect(await verifyMercadoPagoSignature({ secret, signatureHeader: null, requestId: 'req-1', dataId: '123456' })).toBe(false);
+    expect(
+      await verifyMercadoPagoSignature({
+        secret,
+        signatureHeader: `ts=1700000000,v1=${v1}`,
+        requestId: 'req-1',
+        dataId: '999',
+      }),
+    ).toBe(false);
+    expect(
+      await verifyMercadoPagoSignature({
+        secret: '',
+        signatureHeader: `ts=1,v1=${v1}`,
+        requestId: 'req-1',
+        dataId: '123456',
+      }),
+    ).toBe(false);
+    expect(
+      await verifyMercadoPagoSignature({
+        secret,
+        signatureHeader: null,
+        requestId: 'req-1',
+        dataId: '123456',
+      }),
+    ).toBe(false);
   });
 
   it('mapeia status', () => {

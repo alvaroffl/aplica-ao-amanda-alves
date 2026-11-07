@@ -22,7 +22,10 @@ export async function sendEmail(env: Env, to: string, msg: EmailMessage): Promis
     case 'resend': {
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${env.resendApiKey}`, 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: `Bearer ${env.resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           from: env.emailFrom,
           to: [to],
@@ -51,7 +54,13 @@ export async function sendEmail(env: Env, to: string, msg: EmailMessage): Promis
           HTML: msg.html,
           Text: msg.text,
           Attachments: msg.attachment
-            ? [{ Content: toBase64(msg.attachment.content), Filename: msg.attachment.filename, ContentType: 'text/calendar' }]
+            ? [
+                {
+                  Content: toBase64(msg.attachment.content),
+                  Filename: msg.attachment.filename,
+                  ContentType: 'text/calendar',
+                },
+              ]
             : undefined,
         }),
       });
@@ -60,14 +69,22 @@ export async function sendEmail(env: Env, to: string, msg: EmailMessage): Promis
       return { providerMessageId: (body as { ID?: string }).ID ?? null };
     }
     default:
-      console.log(JSON.stringify({ level: 'info', event: 'email.log_driver', subject: msg.subject }));
+      console.log(
+        JSON.stringify({ level: 'info', event: 'email.log_driver', subject: msg.subject }),
+      );
       return { providerMessageId: null };
   }
 }
 
-export async function sendWhatsApp(env: Env, toE164: string, msg: WhatsAppMessage): Promise<SendResult> {
+export async function sendWhatsApp(
+  env: Env,
+  toE164: string,
+  msg: WhatsAppMessage,
+): Promise<SendResult> {
   if (env.whatsappProvider !== 'meta') {
-    console.log(JSON.stringify({ level: 'info', event: 'whatsapp.log_driver', template: msg.template }));
+    console.log(
+      JSON.stringify({ level: 'info', event: 'whatsapp.log_driver', template: msg.template }),
+    );
     return { providerMessageId: null };
   }
   const res = await fetch(
@@ -82,7 +99,9 @@ export async function sendWhatsApp(env: Env, toE164: string, msg: WhatsAppMessag
         template: {
           name: msg.template,
           language: { code: env.whatsappTemplateLang },
-          components: [{ type: 'body', parameters: msg.params.map((text) => ({ type: 'text', text })) }],
+          components: [
+            { type: 'body', parameters: msg.params.map((text) => ({ type: 'text', text })) },
+          ],
         },
       }),
     },

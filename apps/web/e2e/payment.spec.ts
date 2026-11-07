@@ -14,6 +14,8 @@ test('serviço com sinal: pré-reserva, Pix e confirmação após o pagamento', 
 
   // provedor "fake" de desenvolvimento simula a aprovação (webhook)
   await page.getByRole('button', { name: /Simular pagamento aprovado/ }).click();
-  await expect(page.getByRole('heading', { name: 'Agendamento confirmado!' })).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByRole('heading', { name: 'Agendamento confirmado!' })).toBeVisible({
+    timeout: 20_000,
+  });
   await expect(page.getByText('Sinal pago')).toBeVisible();
 });

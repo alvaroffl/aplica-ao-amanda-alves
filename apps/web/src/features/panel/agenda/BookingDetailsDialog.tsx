@@ -1,4 +1,10 @@
-import { formatDateTime, formatMoney, formatPhone, formatTime, whatsappShareUrl } from '@agendae/shared';
+import {
+  formatDateTime,
+  formatMoney,
+  formatPhone,
+  formatTime,
+  whatsappShareUrl,
+} from '@agendae/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { Ban, CheckCircle2, MessageCircle, UserX } from 'lucide-react';
 import * as React from 'react';
@@ -8,7 +14,14 @@ import { toast } from 'sonner';
 import { BookingStatusBadge, PaymentStatusBadge } from '@/components/common/StatusBadge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toApiError } from '@/lib/api';
@@ -16,7 +29,13 @@ import { supabase } from '@/lib/supabase';
 import { useBusiness } from '../business';
 import type { BookingRow } from '../data';
 
-export function BookingDetailsDialog({ booking, onClose }: { booking: BookingRow | null; onClose: () => void }) {
+export function BookingDetailsDialog({
+  booking,
+  onClose,
+}: {
+  booking: BookingRow | null;
+  onClose: () => void;
+}) {
   const { t } = useTranslation();
   const qc = useQueryClient();
   const { business } = useBusiness();
@@ -51,7 +70,11 @@ export function BookingDetailsDialog({ booking, onClose }: { booking: BookingRow
 
   const cancel = async () => {
     setBusy('cancel');
-    const { error } = await supabase.rpc('panel_cancel_booking', { p_booking_id: booking.id, p_reason: reason, p_refund: refund });
+    const { error } = await supabase.rpc('panel_cancel_booking', {
+      p_booking_id: booking.id,
+      p_reason: reason,
+      p_refund: refund,
+    });
     setBusy(null);
     if (error) return toast.error(t(`errors.${toApiError(error).code}`));
     toast.success(t('agenda.cancelled'));
@@ -71,25 +94,35 @@ export function BookingDetailsDialog({ booking, onClose }: { booking: BookingRow
       <DialogContent>
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <span className="size-3 rounded-full" style={{ backgroundColor: booking.professional?.color ?? 'gray' }} aria-hidden />
+            <span
+              className="size-3 rounded-full"
+              style={{ backgroundColor: booking.professional?.color ?? 'gray' }}
+              aria-hidden
+            />
             <DialogTitle>{booking.service?.name}</DialogTitle>
           </div>
           <DialogDescription className="first-letter:uppercase">
-            {formatDateTime(booking.starts_at, tz)} – {formatTime(booking.ends_at, tz)} · {booking.professional?.name}
+            {formatDateTime(booking.starts_at, tz)} – {formatTime(booking.ends_at, tz)} ·{' '}
+            {booking.professional?.name}
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-wrap gap-2">
           <BookingStatusBadge status={booking.status} />
           {payment && <PaymentStatusBadge status={payment.status} />}
-          <span className="text-xs text-muted-foreground">{t(`agenda.source.${booking.source}`)}</span>
+          <span className="text-xs text-muted-foreground">
+            {t(`agenda.source.${booking.source}`)}
+          </span>
         </div>
 
         <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
           <dt className="text-muted-foreground">{t('agenda.client')}</dt>
           <dd>
             {booking.client ? (
-              <Link to={`/painel/clientes/${booking.client.id}`} className="font-medium text-primary hover:underline">
+              <Link
+                to={`/painel/clientes/${booking.client.id}`}
+                className="font-medium text-primary hover:underline"
+              >
                 {booking.client.name}
               </Link>
             ) : (
@@ -138,13 +171,24 @@ export function BookingDetailsDialog({ booking, onClose }: { booking: BookingRow
           <div className="space-y-3 rounded-lg border border-destructive/30 bg-destructive/5 p-3">
             <div className="grid gap-1.5">
               <Label htmlFor="reason">{t('manage.reason')}</Label>
-              <Textarea id="reason" rows={2} value={reason} onChange={(e) => setReason(e.target.value)} />
+              <Textarea
+                id="reason"
+                rows={2}
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+              />
             </div>
             {payment?.status === 'approved' && (
               <div className="flex items-center gap-2">
-                <Checkbox id="refund" checked={refund} onCheckedChange={(v) => setRefund(v === true)} />
+                <Checkbox
+                  id="refund"
+                  checked={refund}
+                  onCheckedChange={(v) => setRefund(v === true)}
+                />
                 <label htmlFor="refund" className="text-sm">
-                  {t('agenda.refundDeposit', { amount: formatMoney(payment.amount_cents, business.currency) })}
+                  {t('agenda.refundDeposit', {
+                    amount: formatMoney(payment.amount_cents, business.currency),
+                  })}
                 </label>
               </div>
             )}
@@ -161,7 +205,11 @@ export function BookingDetailsDialog({ booking, onClose }: { booking: BookingRow
           <DialogFooter className="sm:justify-between">
             {booking.client?.phone && active && !past ? (
               <Button variant="ghost" asChild>
-                <a href={whatsappShareUrl(reminderText, booking.client.phone)} target="_blank" rel="noreferrer">
+                <a
+                  href={whatsappShareUrl(reminderText, booking.client.phone)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <MessageCircle aria-hidden /> {t('agenda.sendWhatsApp')}
                 </a>
               </Button>
@@ -176,7 +224,11 @@ export function BookingDetailsDialog({ booking, onClose }: { booking: BookingRow
               )}
               {booking.status === 'confirmed' && past && (
                 <>
-                  <Button variant="outline" onClick={() => setStatus('no_show')} loading={busy === 'no_show'}>
+                  <Button
+                    variant="outline"
+                    onClick={() => setStatus('no_show')}
+                    loading={busy === 'no_show'}
+                  >
                     <UserX aria-hidden /> {t('agenda.markNoShow')}
                   </Button>
                   <Button onClick={() => setStatus('completed')} loading={busy === 'completed'}>

@@ -22,7 +22,9 @@ function readStored(): Theme {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = React.useState<Theme>(readStored);
-  const [systemDark, setSystemDark] = React.useState(() => window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [systemDark, setSystemDark] = React.useState(
+    () => window.matchMedia('(prefers-color-scheme: dark)').matches,
+  );
 
   React.useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');

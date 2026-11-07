@@ -16,7 +16,11 @@ Deno.serve(async (req) => {
   if (!paymentId) return fail(req, 'VALIDATION_ERROR', 422);
 
   const db = serviceClient();
-  const { data: row } = await db.from('payments').select('id, provider').eq('id', paymentId).maybeSingle();
+  const { data: row } = await db
+    .from('payments')
+    .select('id, provider')
+    .eq('id', paymentId)
+    .maybeSingle();
   if (!row || row.provider !== 'fake') return fail(req, 'VALIDATION_ERROR', 404);
 
   const { data, error } = await db.rpc('confirm_payment', {

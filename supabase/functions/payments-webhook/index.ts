@@ -16,10 +16,17 @@ Deno.serve(async (req) => {
   if (req.method !== 'POST') return fail(req, 'METHOD_NOT_ALLOWED', 405);
   const env = getEnv();
   const url = new URL(req.url);
-  const body = (await req.json().catch(() => ({}))) as { type?: string; action?: string; data?: { id?: string | number } };
+  const body = (await req.json().catch(() => ({}))) as {
+    type?: string;
+    action?: string;
+    data?: { id?: string | number };
+  };
 
   const type = url.searchParams.get('type') ?? url.searchParams.get('topic') ?? body.type;
-  const dataId = url.searchParams.get('data.id') ?? url.searchParams.get('id') ?? (body.data?.id != null ? String(body.data.id) : null);
+  const dataId =
+    url.searchParams.get('data.id') ??
+    url.searchParams.get('id') ??
+    (body.data?.id != null ? String(body.data.id) : null);
 
   if (type !== 'payment' || !dataId) {
     return json(req, { ignored: true });
@@ -45,11 +52,18 @@ Deno.serve(async (req) => {
       return json(req, { ignored: true });
     }
 
-    const { data: row } = await db.from('payments').select('id, amount_cents, provider_payment_id').eq('id', ref).maybeSingle();
+    const { data: row } = await db
+      .from('payments')
+      .select('id, amount_cents, provider_payment_id')
+      .eq('id', ref)
+      .maybeSingle();
     if (!row) return json(req, { ignored: true });
 
     if (!row.provider_payment_id) {
-      await db.from('payments').update({ provider_payment_id: payment.providerPaymentId }).eq('id', row.id);
+      await db
+        .from('payments')
+        .update({ provider_payment_id: payment.providerPaymentId })
+        .eq('id', row.id);
     }
 
     if (payment.status === 'approved') {
@@ -68,7 +82,11 @@ Deno.serve(async (req) => {
     }
 
     if (payment.status === 'rejected' || payment.status === 'cancelled') {
-      await db.rpc('fail_payment', { p_payment_id: row.id, p_status: payment.status, p_raw: payment.raw as never });
+      await db.rpc('fail_payment', {
+        p_payment_id: row.id,
+        p_status: payment.status,
+        p_raw: payment.raw as never,
+      });
     }
     return json(req, { ok: true, status: payment.status });
   } catch (e) {

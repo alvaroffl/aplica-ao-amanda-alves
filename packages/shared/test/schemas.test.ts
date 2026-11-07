@@ -37,7 +37,10 @@ describe('reserva pública', () => {
   });
 
   it('rejeita horário sem fuso', () => {
-    const r = publicBookingRequestSchema.safeParse({ ...validRequest, startsAt: '2026-11-16T12:00:00' });
+    const r = publicBookingRequestSchema.safeParse({
+      ...validRequest,
+      startsAt: '2026-11-16T12:00:00',
+    });
     expect(r.success).toBe(false);
   });
 });
@@ -52,8 +55,15 @@ describe('slug', () => {
 
 describe('serviço', () => {
   const base = {
-    name: 'Corte', duration_min: '60', price: '90,00', buffer_before_min: 0, buffer_after_min: 10,
-    min_notice_min: 60, max_advance_days: 60, deposit_type: 'percent' as const, deposit_value: '30',
+    name: 'Corte',
+    duration_min: '60',
+    price: '90,00',
+    buffer_before_min: 0,
+    buffer_after_min: 10,
+    min_notice_min: 60,
+    max_advance_days: 60,
+    deposit_type: 'percent' as const,
+    deposit_value: '30',
   };
   it('converte preço e sinal', () => {
     const s = serviceSchema.parse(base);
@@ -65,14 +75,19 @@ describe('serviço', () => {
     expect(serviceSchema.safeParse({ ...base, deposit_value: '150' }).success).toBe(false);
   });
   it('sinal fixo em centavos', () => {
-    expect(serviceSchema.parse({ ...base, deposit_type: 'fixed', deposit_value: '50' }).deposit_value).toBe(5000);
+    expect(
+      serviceSchema.parse({ ...base, deposit_type: 'fixed', deposit_value: '50' }).deposit_value,
+    ).toBe(5000);
   });
 });
 
 describe('disponibilidade semanal', () => {
   it('rejeita intervalos sobrepostos', () => {
     const days = Array.from({ length: 7 }, () => [] as { start: string; end: string }[]);
-    days[1] = [{ start: '09:00', end: '12:00' }, { start: '11:00', end: '14:00' }];
+    days[1] = [
+      { start: '09:00', end: '12:00' },
+      { start: '11:00', end: '14:00' },
+    ];
     const r = weeklyAvailabilitySchema.safeParse({ unitId: validRequest.unitId, days });
     expect(r.success).toBe(false);
   });
@@ -81,8 +96,15 @@ describe('disponibilidade semanal', () => {
 describe('erros', () => {
   it('extrai códigos do Postgres', () => {
     expect(errorCodeFrom({ message: 'SLOT_UNAVAILABLE' })).toBe('SLOT_UNAVAILABLE');
-    expect(errorCodeFrom({ code: '23505', message: 'duplicate key value violates unique constraint "businesses_slug_key"' })).toBe('SLUG_TAKEN');
-    expect(errorCodeFrom({ code: '23P01', message: 'conflicting key value' })).toBe('SLOT_UNAVAILABLE');
+    expect(
+      errorCodeFrom({
+        code: '23505',
+        message: 'duplicate key value violates unique constraint "businesses_slug_key"',
+      }),
+    ).toBe('SLUG_TAKEN');
+    expect(errorCodeFrom({ code: '23P01', message: 'conflicting key value' })).toBe(
+      'SLOT_UNAVAILABLE',
+    );
     expect(errorCodeFrom(new Error('boom'))).toBe('INTERNAL_ERROR');
   });
 });

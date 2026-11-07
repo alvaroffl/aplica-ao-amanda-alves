@@ -29,7 +29,9 @@ export function NotificationsPage() {
       unwrap(
         await supabase
           .from('notifications')
-          .select('id, channel, template, recipient, status, attempts, last_error, scheduled_for, sent_at')
+          .select(
+            'id, channel, template, recipient, status, attempts, last_error, scheduled_for, sent_at',
+          )
           .eq('business_id', business.id)
           .order('scheduled_for', { ascending: false })
           .limit(100),
@@ -50,17 +52,33 @@ export function NotificationsPage() {
           {list.data.map((n) => (
             <div key={n.id} className="flex items-start gap-3 p-4 text-sm">
               <span className="mt-0.5 text-muted-foreground" aria-label={n.channel}>
-                {n.channel === 'email' ? <Mail className="size-4" /> : <MessageCircle className="size-4" />}
+                {n.channel === 'email' ? (
+                  <Mail className="size-4" />
+                ) : (
+                  <MessageCircle className="size-4" />
+                )}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="font-medium">{t(`notifications.templates.${n.template}`, { defaultValue: n.template })}</p>
+                <p className="font-medium">
+                  {t(`notifications.templates.${n.template}`, { defaultValue: n.template })}
+                </p>
                 <p className="truncate text-muted-foreground">{n.recipient}</p>
-                {n.last_error && n.status !== 'sent' && <p className="truncate text-xs text-destructive">{n.last_error}</p>}
+                {n.last_error && n.status !== 'sent' && (
+                  <p className="truncate text-xs text-destructive">{n.last_error}</p>
+                )}
               </div>
               <div className="text-right">
-                <Badge variant={statusVariant[n.status]}>{t(`notifications.status.${n.status}`)}</Badge>
-                <p className="mt-1 text-xs tabular-nums text-muted-foreground">{formatDateTime(n.sent_at ?? n.scheduled_for, business.timezone)}</p>
-                {n.attempts > 1 && <p className="text-xs text-muted-foreground">{t('notifications.attempts', { count: n.attempts })}</p>}
+                <Badge variant={statusVariant[n.status]}>
+                  {t(`notifications.status.${n.status}`)}
+                </Badge>
+                <p className="mt-1 text-xs tabular-nums text-muted-foreground">
+                  {formatDateTime(n.sent_at ?? n.scheduled_for, business.timezone)}
+                </p>
+                {n.attempts > 1 && (
+                  <p className="text-xs text-muted-foreground">
+                    {t('notifications.attempts', { count: n.attempts })}
+                  </p>
+                )}
               </div>
             </div>
           ))}

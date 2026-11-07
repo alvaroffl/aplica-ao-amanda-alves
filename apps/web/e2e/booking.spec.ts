@@ -28,7 +28,10 @@ test.describe('reserva pública (celular)', () => {
     await expect(page).toHaveURL(/\/r\/[0-9a-f]{32}\.[0-9a-f]{32}\?novo=1/);
     await expect(page.getByRole('heading', { name: 'Agendamento confirmado!' })).toBeVisible();
     await expect(page.getByText(`às ${time}`).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: /Google Agenda/ })).toHaveAttribute('href', /calendar\.google\.com/);
+    await expect(page.getByRole('link', { name: /Google Agenda/ })).toHaveAttribute(
+      'href',
+      /calendar\.google\.com/,
+    );
     await expectAccessible(page);
 
     // cancelamento pelo link

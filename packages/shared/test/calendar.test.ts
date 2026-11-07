@@ -37,6 +37,8 @@ describe('links', () => {
     expect(url.searchParams.get('dates')).toBe('20261116T120000Z/20261116T130000Z');
   });
   it('WhatsApp', () => {
-    expect(whatsappShareUrl('Olá mundo', '+5511987654321')).toBe('https://wa.me/5511987654321?text=Ol%C3%A1%20mundo');
+    expect(whatsappShareUrl('Olá mundo', '+5511987654321')).toBe(
+      'https://wa.me/5511987654321?text=Ol%C3%A1%20mundo',
+    );
   });
 });

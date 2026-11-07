@@ -41,7 +41,11 @@ export function SignUpPage() {
       options: { data: { full_name: values.fullName }, emailRedirectTo: publicUrl('/painel') },
     });
     if (error) {
-      toast.error(error.message.includes('registered') ? t('auth.alreadyRegistered') : t('errors.INTERNAL_ERROR'));
+      toast.error(
+        error.message.includes('registered')
+          ? t('auth.alreadyRegistered')
+          : t('errors.INTERNAL_ERROR'),
+      );
       return;
     }
     if (data.session) navigate('/painel', { replace: true });
@@ -73,7 +77,12 @@ export function SignUpPage() {
           <Field label={t('auth.email')} htmlFor="email" error={errors.email?.message}>
             <Input type="email" autoComplete="email" inputMode="email" {...register('email')} />
           </Field>
-          <Field label={t('auth.password')} htmlFor="password" error={errors.password?.message} hint={t('auth.passwordHint')}>
+          <Field
+            label={t('auth.password')}
+            htmlFor="password"
+            error={errors.password?.message}
+            hint={t('auth.passwordHint')}
+          >
             <Input type="password" autoComplete="new-password" {...register('password')} />
           </Field>
           <p className="text-xs text-muted-foreground">{t('auth.terms')}</p>

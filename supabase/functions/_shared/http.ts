@@ -4,9 +4,11 @@ import type { ErrorCode } from '../../../packages/shared/src/index.ts';
 export function corsHeaders(origin: string | null): Record<string, string> {
   const { allowedOrigins, environment } = getEnv();
   const allowed =
-    origin && (allowedOrigins.includes(origin) || (environment !== 'production' && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)))
+    origin &&
+    (allowedOrigins.includes(origin) ||
+      (environment !== 'production' && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)))
       ? origin
-      : allowedOrigins[0] ?? '';
+      : (allowedOrigins[0] ?? '');
   return {
     'Access-Control-Allow-Origin': allowed,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -31,7 +33,12 @@ export function json(req: Request, body: unknown, status = 200): Response {
   });
 }
 
-export function fail(req: Request, code: ErrorCode | 'METHOD_NOT_ALLOWED' | 'UNAUTHORIZED', status: number, details?: unknown): Response {
+export function fail(
+  req: Request,
+  code: ErrorCode | 'METHOD_NOT_ALLOWED' | 'UNAUTHORIZED',
+  status: number,
+  details?: unknown,
+): Response {
   return json(req, { error: { code, details } }, status);
 }
 
@@ -46,6 +53,12 @@ export function clientIp(req: Request): string {
 }
 
 /** Log estruturado, sem dados pessoais. */
-export function log(level: 'info' | 'warn' | 'error', event: string, data: Record<string, unknown> = {}) {
-  console[level === 'info' ? 'log' : level](JSON.stringify({ level, event, ...data, at: new Date().toISOString() }));
+export function log(
+  level: 'info' | 'warn' | 'error',
+  event: string,
+  data: Record<string, unknown> = {},
+) {
+  console[level === 'info' ? 'log' : level](
+    JSON.stringify({ level, event, ...data, at: new Date().toISOString() }),
+  );
 }

@@ -8,7 +8,14 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import type { z } from 'zod';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Field } from '@/components/ui/field';
 import { Input, NativeSelect, Textarea } from '@/components/ui/input';
 import { toApiError, unwrap } from '@/lib/api';
@@ -50,7 +57,13 @@ export function useClientSearch(search: string) {
   });
 }
 
-export function NewBookingDialog({ defaults, onClose }: { defaults: NewBookingDefaults | null; onClose: () => void }) {
+export function NewBookingDialog({
+  defaults,
+  onClose,
+}: {
+  defaults: NewBookingDefaults | null;
+  onClose: () => void;
+}) {
   const { t } = useTranslation();
   const qc = useQueryClient();
   const { business, myProfessionalId, can } = useBusiness();
@@ -58,7 +71,10 @@ export function NewBookingDialog({ defaults, onClose }: { defaults: NewBookingDe
   const professionals = useProfessionals();
   const units = useUnits();
   const [search, setSearch] = React.useState('');
-  const [selectedClient, setSelectedClient] = React.useState<Pick<Client, 'id' | 'name' | 'phone'> | null>(null);
+  const [selectedClient, setSelectedClient] = React.useState<Pick<
+    Client,
+    'id' | 'name' | 'phone'
+  > | null>(null);
   const [newClient, setNewClient] = React.useState(false);
   const results = useClientSearch(search);
 
@@ -77,7 +93,8 @@ export function NewBookingDialog({ defaults, onClose }: { defaults: NewBookingDe
     reset({
       date: defaults.date,
       time: defaults.time,
-      professional_id: defaults.professionalId ?? (can('agenda.viewAll') ? '' : myProfessionalId ?? ''),
+      professional_id:
+        defaults.professionalId ?? (can('agenda.viewAll') ? '' : (myProfessionalId ?? '')),
       unit_id: firstUnit?.id ?? '',
       service_id: '',
       client_id: null,
@@ -92,7 +109,10 @@ export function NewBookingDialog({ defaults, onClose }: { defaults: NewBookingDe
   const serviceId = watch('service_id');
   const unitId = watch('unit_id');
   const pros = (professionals.data ?? []).filter(
-    (p) => p.active && (!serviceId || p.service_ids.includes(serviceId)) && (!unitId || p.unit_ids.includes(unitId)),
+    (p) =>
+      p.active &&
+      (!serviceId || p.service_ids.includes(serviceId)) &&
+      (!unitId || p.unit_ids.includes(unitId)),
   );
 
   const onSubmit = handleSubmit(async (v) => {
@@ -134,7 +154,12 @@ export function NewBookingDialog({ defaults, onClose }: { defaults: NewBookingDe
         </DialogHeader>
         <form onSubmit={onSubmit} noValidate className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label={t('agenda.service')} htmlFor="service_id" error={errors.service_id?.message} className="sm:col-span-2">
+            <Field
+              label={t('agenda.service')}
+              htmlFor="service_id"
+              error={errors.service_id?.message}
+              className="sm:col-span-2"
+            >
               <NativeSelect {...register('service_id')}>
                 <option value="">{t('common.select')}</option>
                 {(services.data ?? [])
@@ -147,7 +172,12 @@ export function NewBookingDialog({ defaults, onClose }: { defaults: NewBookingDe
               </NativeSelect>
             </Field>
             {(units.data?.length ?? 0) > 1 && (
-              <Field label={t('agenda.unit')} htmlFor="unit_id" error={errors.unit_id?.message} className="sm:col-span-2">
+              <Field
+                label={t('agenda.unit')}
+                htmlFor="unit_id"
+                error={errors.unit_id?.message}
+                className="sm:col-span-2"
+              >
                 <NativeSelect {...register('unit_id')}>
                   {units.data!.map((u) => (
                     <option key={u.id} value={u.id}>
@@ -157,7 +187,12 @@ export function NewBookingDialog({ defaults, onClose }: { defaults: NewBookingDe
                 </NativeSelect>
               </Field>
             )}
-            <Field label={t('agenda.professional')} htmlFor="professional_id" error={errors.professional_id?.message} className="sm:col-span-2">
+            <Field
+              label={t('agenda.professional')}
+              htmlFor="professional_id"
+              error={errors.professional_id?.message}
+              className="sm:col-span-2"
+            >
               <NativeSelect {...register('professional_id')} disabled={!can('agenda.viewAll')}>
                 <option value="">{t('common.select')}</option>
                 {pros.map((p) => (
@@ -198,20 +233,36 @@ export function NewBookingDialog({ defaults, onClose }: { defaults: NewBookingDe
               </div>
             ) : newClient ? (
               <div className="grid gap-3 sm:grid-cols-2">
-                <Field label={t('booking.name')} htmlFor="client_name" error={errors.client_name?.message} className="sm:col-span-2">
+                <Field
+                  label={t('booking.name')}
+                  htmlFor="client_name"
+                  error={errors.client_name?.message}
+                  className="sm:col-span-2"
+                >
                   <Input {...register('client_name')} />
                 </Field>
-                <Field label={t('booking.phone')} htmlFor="client_phone" error={errors.client_phone?.message}>
+                <Field
+                  label={t('booking.phone')}
+                  htmlFor="client_phone"
+                  error={errors.client_phone?.message}
+                >
                   <Input type="tel" {...register('client_phone')} />
                 </Field>
-                <Field label={t('booking.email')} htmlFor="client_email" error={errors.client_email?.message}>
+                <Field
+                  label={t('booking.email')}
+                  htmlFor="client_email"
+                  error={errors.client_email?.message}
+                >
                   <Input type="email" {...register('client_email')} />
                 </Field>
               </div>
             ) : (
               <div className="space-y-2">
                 <div className="relative">
-                  <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+                  <Search
+                    className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                    aria-hidden
+                  />
                   <Input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -233,7 +284,9 @@ export function NewBookingDialog({ defaults, onClose }: { defaults: NewBookingDe
                           }}
                         >
                           <span className="font-medium">{c.name}</span>{' '}
-                          <span className="text-muted-foreground">{formatPhone(c.phone) || c.email}</span>
+                          <span className="text-muted-foreground">
+                            {formatPhone(c.phone) || c.email}
+                          </span>
                         </button>
                       </li>
                     ))}
@@ -259,7 +312,10 @@ export function NewBookingDialog({ defaults, onClose }: { defaults: NewBookingDe
             )}
           </fieldset>
 
-          <Field label={`${t('agenda.internalNotes')} (${t('common.optional')})`} htmlFor="internal_notes">
+          <Field
+            label={`${t('agenda.internalNotes')} (${t('common.optional')})`}
+            htmlFor="internal_notes"
+          >
             <Textarea rows={2} {...register('internal_notes')} />
           </Field>
 

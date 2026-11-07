@@ -31,7 +31,9 @@ export async function callFunction<T>(name: string, body: unknown): Promise<T> {
   } catch {
     throw new ApiError('NETWORK');
   }
-  const data = (await res.json().catch(() => null)) as { error?: { code: ErrorCode; details?: unknown } } | null;
+  const data = (await res.json().catch(() => null)) as {
+    error?: { code: ErrorCode; details?: unknown };
+  } | null;
   if (!res.ok) {
     throw new ApiError(data?.error?.code ?? 'INTERNAL_ERROR', res.status, data?.error?.details);
   }
@@ -42,7 +44,9 @@ export async function callFunction<T>(name: string, body: unknown): Promise<T> {
  * Desembrulha o retorno do supabase-js lançando ApiError.
  * Consultas de lista/single bem-sucedidas sempre trazem dados.
  */
-export function unwrap<R extends { data: unknown; error: unknown }>(result: R): NonNullable<R['data']> {
+export function unwrap<R extends { data: unknown; error: unknown }>(
+  result: R,
+): NonNullable<R['data']> {
   if (result.error) throw toApiError(result.error);
   return result.data as NonNullable<R['data']>;
 }

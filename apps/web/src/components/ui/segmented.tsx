@@ -13,10 +13,21 @@ interface SegmentedProps<T extends string> {
  * Controle segmentado acessível (role="radiogroup"), com setas do teclado.
  * Usado para trocar visões/períodos — diferente de abas, não controla painéis.
  */
-export function Segmented<T extends string>({ value, onChange, options, label, className }: SegmentedProps<T>) {
+export function Segmented<T extends string>({
+  value,
+  onChange,
+  options,
+  label,
+  className,
+}: SegmentedProps<T>) {
   const refs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const onKeyDown = (e: React.KeyboardEvent, index: number) => {
-    const delta = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+    const delta =
+      e.key === 'ArrowRight' || e.key === 'ArrowDown'
+        ? 1
+        : e.key === 'ArrowLeft' || e.key === 'ArrowUp'
+          ? -1
+          : 0;
     if (!delta) return;
     e.preventDefault();
     const next = (index + delta + options.length) % options.length;
@@ -24,7 +35,14 @@ export function Segmented<T extends string>({ value, onChange, options, label, c
     refs.current[next]?.focus();
   };
   return (
-    <div role="radiogroup" aria-label={label} className={cn('inline-flex h-10 items-center rounded-lg bg-muted p-1 text-muted-foreground', className)}>
+    <div
+      role="radiogroup"
+      aria-label={label}
+      className={cn(
+        'inline-flex h-10 items-center rounded-lg bg-muted p-1 text-muted-foreground',
+        className,
+      )}
+    >
       {options.map((o, i) => {
         const checked = o.value === value;
         return (

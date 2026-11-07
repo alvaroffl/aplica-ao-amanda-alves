@@ -19,7 +19,10 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
   render() {
     if (this.state.error) {
       return (
-        <div role="alert" className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-4 p-6 text-center">
+        <div
+          role="alert"
+          className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-4 p-6 text-center"
+        >
           <h1 className="text-xl font-semibold">{i18n.t('common.errorTitle')}</h1>
           <p className="text-muted-foreground">{i18n.t('common.errorText')}</p>
           <button

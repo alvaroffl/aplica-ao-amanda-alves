@@ -6,4 +6,5 @@ export const env = {
 };
 
 export const functionsUrl = `${env.supabaseUrl}/functions/v1`;
-export const publicUrl = (path = '') => `${window.location.origin}${path.startsWith('/') ? path : `/${path}`}`;
+export const publicUrl = (path = '') =>
+  `${window.location.origin}${path.startsWith('/') ? path : `/${path}`}`;

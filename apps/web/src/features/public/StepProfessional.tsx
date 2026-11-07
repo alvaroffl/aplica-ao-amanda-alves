@@ -21,12 +21,17 @@ export function StepProfessional({
           onClick={() => onSelect('any')}
           className="flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
         >
-          <span className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary" aria-hidden>
+          <span
+            className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary"
+            aria-hidden
+          >
             <Sparkles className="size-5" />
           </span>
           <span className="min-w-0 flex-1">
             <span className="block font-medium">{t('booking.anyProfessional')}</span>
-            <span className="block text-sm text-muted-foreground">{t('booking.anyProfessionalHint')}</span>
+            <span className="block text-sm text-muted-foreground">
+              {t('booking.anyProfessionalHint')}
+            </span>
           </span>
           <ChevronRight className="size-4 text-muted-foreground" aria-hidden />
         </button>
@@ -51,7 +56,9 @@ export function StepProfessional({
             )}
             <span className="min-w-0 flex-1">
               <span className="block font-medium">{p.name}</span>
-              {p.bio && <span className="block truncate text-sm text-muted-foreground">{p.bio}</span>}
+              {p.bio && (
+                <span className="block truncate text-sm text-muted-foreground">{p.bio}</span>
+              )}
             </span>
             <ChevronRight className="size-4 text-muted-foreground" aria-hidden />
           </button>

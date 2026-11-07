@@ -66,7 +66,10 @@ export class MercadoPagoProvider implements PaymentProvider {
     if (!accessToken) throw new Error('MERCADOPAGO_ACCESS_TOKEN ausente');
   }
 
-  private async request<T>(path: string, init: RequestInit & { idempotencyKey?: string } = {}): Promise<T> {
+  private async request<T>(
+    path: string,
+    init: RequestInit & { idempotencyKey?: string } = {},
+  ): Promise<T> {
     const res = await fetch(`${API}${path}`, {
       ...init,
       headers: {
@@ -88,7 +91,9 @@ export class MercadoPagoProvider implements PaymentProvider {
     if (input.method === 'pix') {
       const payment = await this.request<{
         id: number;
-        point_of_interaction?: { transaction_data?: { qr_code?: string; qr_code_base64?: string; ticket_url?: string } };
+        point_of_interaction?: {
+          transaction_data?: { qr_code?: string; qr_code_base64?: string; ticket_url?: string };
+        };
       }>('/v1/payments', {
         method: 'POST',
         idempotencyKey: input.paymentId,
@@ -99,7 +104,11 @@ export class MercadoPagoProvider implements PaymentProvider {
           external_reference: input.paymentId,
           notification_url: input.notificationUrl,
           date_of_expiration: mpDate(input.expiresAt),
-          payer: { email: input.payer.email ?? undefined, first_name: firstName, last_name: rest.join(' ') || undefined },
+          payer: {
+            email: input.payer.email ?? undefined,
+            first_name: firstName,
+            last_name: rest.join(' ') || undefined,
+          },
         }),
       });
       const tx = payment.point_of_interaction?.transaction_data;
@@ -113,22 +122,42 @@ export class MercadoPagoProvider implements PaymentProvider {
     }
 
     // Cartão: Checkout Pro (página segura do Mercado Pago, sem dados de cartão aqui — PCI)
-    const preference = await this.request<{ id: string; init_point: string }>('/checkout/preferences', {
-      method: 'POST',
-      idempotencyKey: input.paymentId,
-      body: JSON.stringify({
-        items: [{ title: input.description, quantity: 1, unit_price: amount, currency_id: 'BRL' }],
-        payer: { name: firstName, surname: rest.join(' ') || undefined, email: input.payer.email ?? undefined },
-        external_reference: input.paymentId,
-        notification_url: input.notificationUrl,
-        back_urls: { success: input.returnUrl, failure: input.returnUrl, pending: input.returnUrl },
-        auto_return: 'approved',
-        payment_methods: { excluded_payment_types: [{ id: 'ticket' }, { id: 'atm' }], installments: 1 },
-        expires: true,
-        expiration_date_to: mpDate(input.expiresAt),
-      }),
-    });
-    return { providerPaymentId: null, checkoutUrl: preference.init_point, raw: { preference_id: preference.id } };
+    const preference = await this.request<{ id: string; init_point: string }>(
+      '/checkout/preferences',
+      {
+        method: 'POST',
+        idempotencyKey: input.paymentId,
+        body: JSON.stringify({
+          items: [
+            { title: input.description, quantity: 1, unit_price: amount, currency_id: 'BRL' },
+          ],
+          payer: {
+            name: firstName,
+            surname: rest.join(' ') || undefined,
+            email: input.payer.email ?? undefined,
+          },
+          external_reference: input.paymentId,
+          notification_url: input.notificationUrl,
+          back_urls: {
+            success: input.returnUrl,
+            failure: input.returnUrl,
+            pending: input.returnUrl,
+          },
+          auto_return: 'approved',
+          payment_methods: {
+            excluded_payment_types: [{ id: 'ticket' }, { id: 'atm' }],
+            installments: 1,
+          },
+          expires: true,
+          expiration_date_to: mpDate(input.expiresAt),
+        }),
+      },
+    );
+    return {
+      providerPaymentId: null,
+      checkoutUrl: preference.init_point,
+      raw: { preference_id: preference.id },
+    };
   }
 
   async getPayment(providerPaymentId: string): Promise<ProviderPayment> {
@@ -147,7 +176,11 @@ export class MercadoPagoProvider implements PaymentProvider {
     };
   }
 
-  async refund(providerPaymentId: string, amountCents: number, idempotencyKey: string): Promise<void> {
+  async refund(
+    providerPaymentId: string,
+    amountCents: number,
+    idempotencyKey: string,
+  ): Promise<void> {
     await this.request(`/v1/payments/${encodeURIComponent(providerPaymentId)}/refunds`, {
       method: 'POST',
       idempotencyKey: `refund-${idempotencyKey}`,
