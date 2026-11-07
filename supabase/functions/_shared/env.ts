@@ -15,9 +15,16 @@ export function getEnv() {
       .filter(Boolean),
     supabaseUrl: get('SUPABASE_URL'),
     serviceRoleKey: get('SUPABASE_SERVICE_ROLE_KEY') || get('SUPABASE_SECRET_KEY'),
-    functionsPublicUrl: get('FUNCTIONS_PUBLIC_URL', `${get('SUPABASE_PUBLIC_URL', 'http://127.0.0.1:54321')}/functions/v1`),
+    functionsPublicUrl: get(
+      'FUNCTIONS_PUBLIC_URL',
+      `${get('SUPABASE_PUBLIC_URL', 'http://127.0.0.1:54321')}/functions/v1`,
+    ),
     turnstileSecret: get('TURNSTILE_SECRET_KEY'),
     rateLimitSalt: get('RATE_LIMIT_SALT', 'dev-only-salt'),
+    // limites da reserva pública (por IP e por e-mail)
+    bookingLimitIpPerMinute: Number(get('BOOKING_LIMIT_IP_PER_MINUTE', '10')),
+    bookingLimitIpPerHour: Number(get('BOOKING_LIMIT_IP_PER_HOUR', '40')),
+    bookingLimitEmailPerHour: Number(get('BOOKING_LIMIT_EMAIL_PER_HOUR', '8')),
     workerSecret: get('WORKER_SECRET'),
     paymentsProvider: get('PAYMENTS_PROVIDER', 'fake') as 'fake' | 'mercadopago',
     mercadoPagoAccessToken: get('MERCADOPAGO_ACCESS_TOKEN'),

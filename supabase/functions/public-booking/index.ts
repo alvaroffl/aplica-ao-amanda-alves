@@ -10,6 +10,7 @@ import {
   CONSENT_VERSION,
   type PublicBooking,
 } from '../../../packages/shared/src/index.ts';
+import { getEnv } from '../_shared/env.ts';
 import { allow, verifyCaptcha } from '../_shared/guards.ts';
 import { ensureDepositPayment } from '../_shared/deposit.ts';
 import { clientIp, fail, json, log, preflight } from '../_shared/http.ts';
@@ -28,8 +29,12 @@ Deno.serve(async (req) => {
 
   const db = serviceClient();
   const ip = clientIp(req);
+  const limits = getEnv();
 
-  if (!(await allow(db, `booking:ip:min:${ip}`, 10, 60)) || !(await allow(db, `booking:ip:hour:${ip}`, 40, 3600))) {
+  if (
+    !(await allow(db, `booking:ip:min:${ip}`, limits.bookingLimitIpPerMinute, 60)) ||
+    !(await allow(db, `booking:ip:hour:${ip}`, limits.bookingLimitIpPerHour, 3600))
+  ) {
     return fail(req, 'RATE_LIMITED', 429);
   }
 
@@ -46,7 +51,9 @@ Deno.serve(async (req) => {
   }
   const input = parsed.data;
 
-  if (!(await allow(db, `booking:email:${input.client.email}`, 8, 3600))) {
+  if (
+    !(await allow(db, `booking:email:${input.client.email}`, limits.bookingLimitEmailPerHour, 3600))
+  ) {
     return fail(req, 'RATE_LIMITED', 429);
   }
   if (!(await verifyCaptcha(input.captchaToken, ip))) {
@@ -81,10 +88,17 @@ Deno.serve(async (req) => {
       const refreshed = await db.rpc('booking_public_payload', { p_booking_id: booking.id });
       booking = { ...(refreshed.data as unknown as PublicBooking), replayed: booking.replayed };
     } catch {
-      return fail(req, 'PAYMENT_PROVIDER_ERROR', 502, { bookingId: booking.id, manageToken: booking.manage_token });
+      return fail(req, 'PAYMENT_PROVIDER_ERROR', 502, {
+        bookingId: booking.id,
+        manageToken: booking.manage_token,
+      });
     }
   }
 
-  log('info', 'booking.created', { bookingId: booking.id, status: booking.status, replayed: booking.replayed });
+  log('info', 'booking.created', {
+    bookingId: booking.id,
+    status: booking.status,
+    replayed: booking.replayed,
+  });
   return json(req, booking, booking.replayed ? 200 : 201);
 });
