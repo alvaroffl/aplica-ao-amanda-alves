@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#5b3ee8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0b12" media="(prefers-color-scheme: dark)" />
+    <meta name="description" content="Agende serviços online em poucos toques. Sem cadastro, com confirmação por e-mail e WhatsApp." />
+    <title>Agendaê — Agendamento online</title>
+    <script>
+      // aplica o tema antes da renderização (evita "piscar" claro/escuro)
+      (function () {
+        try {
+          var t = localStorage.getItem('agendae-theme') || 'system';
+          var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.classList.toggle('dark', dark);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
