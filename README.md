@@ -5,13 +5,19 @@ Agendamento online para negócios de serviço com hora marcada (salões, barbear
 > O nome "Agendaê" é provisório e configurável (`VITE_APP_NAME` / `APP_NAME`).
 > Pesquisa de mercado: [`docs/PESQUISA.md`](docs/PESQUISA.md) · Escopo MVP/V2/V3: [`docs/ESCOPO.md`](docs/ESCOPO.md) · Banco: [`docs/BANCO.md`](docs/BANCO.md)
 
-| Página pública (celular)                    | Escolha de horário                          | Confirmação                                     |
-| ------------------------------------------- | ------------------------------------------- | ----------------------------------------------- |
-| ![Serviços](docs/img/mobile-1-servicos.png) | ![Horários](docs/img/mobile-2-horarios.png) | ![Confirmado](docs/img/mobile-3-confirmado.png) |
+> **Versão de apresentação para a Clínica Amanda Alves** (micropigmentação e estética avançada).
+> A fonte única de verdade de design, conteúdo e regras está em
+> [`docs/referencia-amanda-alves/`](docs/referencia-amanda-alves/00-LEIA-ME.md) (site oficial:
+> <https://www.amandaalvespmu.com.br>). Preços, durações, sinais, política, clientes e reservas
+> do seed são **fictícios** (`is_demo = true`) e os pagamentos rodam em **modo de teste**.
 
-| Agenda do painel (arrastar e soltar)  | Relatórios                                    |
+| Página pública (celular)                    | Escolha de horário                          | Sinal por Pix (modo de teste)     |
+| ------------------------------------------- | ------------------------------------------- | --------------------------------- |
+| ![Serviços](docs/img/mobile-1-servicos.png) | ![Horários](docs/img/mobile-2-horarios.png) | ![Pix](docs/img/mobile-3-pix.png) |
+
+| Agenda do painel (arrastar e soltar)  | Pagamentos e estornos                         |
 | ------------------------------------- | --------------------------------------------- |
-| ![Agenda](docs/img/painel-agenda.png) | ![Relatórios](docs/img/painel-relatorios.png) |
+| ![Agenda](docs/img/painel-agenda.png) | ![Pagamentos](docs/img/painel-pagamentos.png) |
 
 ---
 
@@ -77,12 +83,13 @@ pnpm dev                      # http://localhost:5173
 
 | O quê                                               | Onde                                                           |
 | --------------------------------------------------- | -------------------------------------------------------------- |
-| Página pública de exemplo                           | http://localhost:5173/studio-exemplo                           |
+| Página da clínica (demonstração)                    | http://localhost:5173/amanda-alves                             |
 | Painel (login de demonstração)                      | http://localhost:5173/entrar: **demo@agendae.dev / demo12345** |
 | E-mails enviados (confirmação, lembretes, convites) | http://127.0.0.1:54324 (Mailpit)                               |
 | Supabase API                                        | http://127.0.0.1:54321                                         |
 
-- **Pagamentos em desenvolvimento:** o provedor `fake` gera um Pix de teste, e o botão **"Simular pagamento aprovado"** na tela do Pix faz o papel do _webhook_.
+- **Pagamentos em desenvolvimento:** o provedor `fake` gera um Pix de teste, e o botão **"Simular pagamento aprovado"** na tela do Pix faz o papel do _webhook_. Sandbox do Mercado Pago, cartões de teste e ida para produção: [`05-pagamentos.md`](docs/referencia-amanda-alves/05-pagamentos.md).
+- **Dados de demonstração:** removidos com `pnpm demo:purge` (local), pelo painel (Configurações → "Remover dados de demonstração") ou com [`supabase/scripts/remover-dados-demo.sql`](supabase/scripts/remover-dados-demo.sql) em produção.
 - **Worker:** o `pg_cron` chama a Edge Function `process-queue` a cada minuto, que envia os e-mails ao Mailpit e processa os estornos.
 
 ### Abrir no celular
@@ -91,7 +98,7 @@ Com `VITE_SUPABASE_URL=/supabase` (padrão do `.env.example`), o navegador fala 
 
 1. Deixe o celular e o computador na mesma rede Wi-Fi.
 2. Rode `pnpm dev --host`. O Vite mostra o endereço de rede, por exemplo `http://192.168.0.10:5173`.
-3. No celular, abra `http://192.168.0.10:5173/studio-exemplo` (troque pelo endereço que apareceu).
+3. No celular, abra `http://192.168.0.10:5173/amanda-alves` (troque pelo endereço que apareceu).
 
 - Instalar como app (PWA) e o modo offline exigem HTTPS. Pela rede local o site funciona normalmente, mas sem essas duas coisas.
 - Endereços IP são aceitos por padrão. Para acessar por um nome de host (túnel ou pré-visualização remota), rode com `DEV_ALLOW_ANY_HOST=1`. Isso desliga a proteção contra _DNS rebinding_ do Vite, então use só em rede confiável.
@@ -102,7 +109,7 @@ O repositório traz um [`.devcontainer`](.devcontainer) que instala tudo e sobe 
 
 1. Em [github.com/codespaces](https://github.com/codespaces), clique em **New codespace**, escolha este repositório e a branch, e crie.
 2. Espere a preparação terminar. Na primeira vez leva de 5 a 10 minutos, porque baixa as imagens do Supabase.
-3. Abra a aba **Ports**, clique no globo da porta **5173 (Agendaê)** e acrescente `/studio-exemplo` ao endereço. O endereço também aparece no fim do log de inicialização.
+3. Abra a aba **Ports**, clique no globo da porta **5173 (Agendaê)** e acrescente `/amanda-alves` ao endereço. O endereço também aparece no fim do log de inicialização.
 
 O link `https://…-5173.app.github.dev` só abre para quem está logado no GitHub com a sua conta. Para mostrar a outra pessoa, mude a visibilidade da porta para **Public**. Logs: `/tmp/agendae-web.log` e `/tmp/agendae-functions.log`.
 
@@ -232,13 +239,13 @@ sequenceDiagram
 
 ## Testes e qualidade
 
-| Camada         | Ferramenta                              | O que cobre                                                                                                                                                                                                                                                                                                                                                       |
-| -------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Banco          | **pgTAP**: 72 testes                    | RLS e isolamento entre negócios, papéis, privilégios de `anon`, _exclusion constraint_ (inclusive _buffers_ e INSERT direto), idempotência, "qualquer profissional", fusos (São Paulo e Lisboa), feriados, folgas, antecedência, expiração do sinal, links HMAC, reagendamento, cancelamento com estorno, fila do worker com _backoff_, webhook idempotente, LGPD |
-| Compartilhado  | **Vitest**: 44 testes                   | Telefone E.164, dinheiro e sinal, fusos, ICS (RFC 5545), Google Calendar, esquemas Zod, códigos de erro                                                                                                                                                                                                                                                           |
-| Edge Functions | **Vitest**: 10 testes                   | Assinatura do webhook do Mercado Pago, mapeamento de status, templates de e-mail e WhatsApp, descarte de lembretes obsoletos                                                                                                                                                                                                                                      |
-| Front-end      | **Vitest + Testing Library**: 11 testes | Seletor de horários por período e fuso, validação e consentimento, normalização, faixa de datas acessível, aviso de fuso, conversão da agenda                                                                                                                                                                                                                     |
-| Ponta a ponta  | **Playwright + axe-core**: 7 testes     | Reserva em 4 passos no celular, cancelamento pelo link, sinal Pix com aprovação, **corrida concorrente (201/409)**, painel, rota protegida e **auditoria WCAG 2.1 AA** em cada tela                                                                                                                                                                               |
+| Camada         | Ferramenta                              | O que cobre                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| -------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Banco          | **pgTAP**: 98 testes                    | Política por regra (remarcação, reembolso parcial, cancelamento bloqueado), estorno pelo painel só para admin, limpeza dos dados demo, RLS e isolamento entre negócios, papéis, privilégios de `anon`, _exclusion constraint_ (inclusive _buffers_ e INSERT direto), idempotência, "qualquer profissional", fusos (São Paulo e Lisboa), feriados, folgas, antecedência, expiração do sinal, links HMAC, reagendamento, cancelamento com estorno, fila do worker com _backoff_, webhook idempotente, LGPD |
+| Compartilhado  | **Vitest**: 59 testes                   | Sinal de cada serviço da clínica, valor do estorno pela política, rótulos de pagamento, telefone E.164, dinheiro, fusos, ICS (RFC 5545), Google Calendar, esquemas Zod, códigos de erro                                                                                                                                                                                                                                                                                                                  |
+| Edge Functions | **Vitest**: 25 testes                   | Decisão do webhook (aprovar, recusar, valor divergente, referência desconhecida), parcelas e meios do checkout, prazo do Pix, comprovante e política no e-mail, assinatura do webhook do Mercado Pago, mapeamento de status, templates de e-mail e WhatsApp, descarte de lembretes obsoletos                                                                                                                                                                                                             |
+| Front-end      | **Vitest + Testing Library**: 15 testes | Seletor de horários por período e fuso, validação e consentimento, normalização, faixa de datas acessível, aviso de fuso, conversão da agenda                                                                                                                                                                                                                                                                                                                                                            |
+| Ponta a ponta  | **Playwright + axe-core**: 9 testes     | Avaliação gratuita sem pagamento, cancelamento pelo link, sinal por Pix e por cartão com aviso de teste, painel de pagamentos com estorno e aviso de dados demo, **corrida concorrente (201/409)**, painel, rota protegida e **auditoria WCAG 2.1 AA** em cada tela                                                                                                                                                                                                                                      |
 
 O CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) roda formatação, lint (com `jsx-a11y`), tipos, todos os testes unitários, pgTAP, a checagem de que os tipos gerados estão em dia, o E2E **contra o build de produção** e o build da imagem Docker.
 
@@ -327,7 +334,7 @@ Cada _push_ na `main` aplica as migrations, publica as Edge Functions, o front-e
 | `TURNSTILE_SECRET_KEY`, `RATE_LIMIT_SALT`                                                                           | Proteção contra abuso                                                                                 |
 | `BOOKING_LIMIT_IP_PER_MINUTE` / `_IP_PER_HOUR` / `_EMAIL_PER_HOUR`                                                  | Limites da reserva pública (padrão 10 / 40 / 8)                                                       |
 | `WORKER_SECRET`                                                                                                     | Autentica o `pg_cron` no worker (igual ao segredo `worker_secret` no Vault)                           |
-| `PAYMENTS_PROVIDER`, `MERCADOPAGO_ACCESS_TOKEN`, `MERCADOPAGO_WEBHOOK_SECRET`                                       | Pagamentos                                                                                            |
+| `PAYMENTS_PROVIDER`, `PAYMENTS_MODE`, `MERCADOPAGO_ACCESS_TOKEN`, `MERCADOPAGO_WEBHOOK_SECRET`                      | Pagamentos (`PAYMENTS_MODE=test` marca as cobranças como teste)                                       |
 | `EMAIL_PROVIDER`, `EMAIL_FROM`, `RESEND_API_KEY`, `MAILPIT_URL`                                                     | E-mail                                                                                                |
 | `WHATSAPP_PROVIDER`, `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_API_VERSION`, `WHATSAPP_TEMPLATE_LANG` | WhatsApp                                                                                              |
 

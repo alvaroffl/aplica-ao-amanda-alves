@@ -29,14 +29,16 @@ erDiagram
   bookings ||--o{ payments : "sinal"
   bookings ||--o{ notifications : "outbox"
   businesses ||--o{ audit_log : ""
+  businesses ||--|| booking_policies : "política"
 
   businesses {
     uuid id PK
     text slug UK
     text timezone
     int slot_interval_min
-    int cancellation_window_hours
     int booking_hold_min
+    int max_installments
+    text_array payment_methods "pix, card"
     bool reminder_24h
     bool reminder_2h
     bool whatsapp_enabled
@@ -103,7 +105,20 @@ erDiagram
     text provider
     text provider_payment_id UK
     payment_method method "pix | card"
+    text method_detail "credit_card | debit_card | ..."
+    int installments
     payment_status status
+    int refund_requested_cents
+    bool test_mode
+  }
+  booking_policies {
+    uuid business_id PK
+    int reschedule_min_hours
+    int refund_min_hours
+    int refund_percent
+    bool client_can_reschedule
+    bool client_can_cancel
+    bool is_demo
   }
   notifications {
     uuid id PK
@@ -128,6 +143,10 @@ erDiagram
 | **Links seguros** | `<uuid>.<HMAC-SHA256>` com segredo por ambiente em `private.settings`. É determinístico (o reenvio idempotente devolve o mesmo link) e revogável (`token_version` é incrementado na anonimização LGPD). |
 | **Isolamento entre negócios** | RLS em **todas** as tabelas e chaves estrangeiras compostas `(business_id, id)`, que impedem referências cruzadas entre negócios. |
 | **Privilégios mínimos** | `anon` não lê nenhuma tabela, só executa RPCs específicas. EXECUTE em funções é revogado por padrão e concedido função a função. |
+| **Política por regra** | `booking_policies` (remarcação, devolução do sinal e percentual, permissão de cancelar/remarcar). Aplicada no servidor por `get_booking_by_token`, `reschedule_booking_by_token` e `cancel_booking_by_token`. |
+| **Valor do sinal** | Calculado só no Postgres (`compute_deposit`) a partir do serviço; o front-end não envia valores. Webhook recusa pagamento com valor menor que o sinal. |
+| **Dados de demonstração** | Coluna `is_demo` em serviços, horários, bloqueios, clientes, reservas e política. `purge_demo_data` (admin) / `pnpm demo:purge` remove tudo. |
+| **Aviso em tempo real do Pix** | Trigger em `payments` envia o novo status por `realtime.send` num canal com nome derivado por HMAC do id da reserva (só quem tem o link conhece). |
 
 ## Papéis (RLS)
 
@@ -140,6 +159,7 @@ erDiagram
 | Clientes | todos | todos (sem LGPD) | os que atende (leitura) |
 | Relatórios | ✓ | ✓ | — |
 | Pagamentos e notificações | lê | lê | — |
+| Estornar pagamento / política / remover dados demo | ✓ | — | — |
 | Exportar ou anonimizar cliente (LGPD) | ✓ | — | — |
 
 ## Funções (RPC)
