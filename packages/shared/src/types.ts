@@ -9,6 +9,17 @@ export type TablesUpdate<T extends keyof Database['public']['Tables']> =
 export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T];
 
 export type BookingStatus = Enums<'booking_status'>;
+export type PaymentStatus = Enums<'payment_status'>;
+
+/** Política de remarcação/cancelamento (public.booking_policies, sem metadados). */
+export interface BookingPolicy {
+  reschedule_min_hours: number;
+  refund_min_hours: number;
+  refund_percent: number;
+  client_can_reschedule: boolean;
+  client_can_cancel: boolean;
+  notes: string | null;
+}
 export type MemberRole = Enums<'member_role'>;
 
 /** Retorno de public.get_public_business(slug) */
@@ -24,8 +35,10 @@ export interface PublicBusiness {
     timezone: string;
     locale: string;
     currency: string;
-    cancellation_window_hours: number;
     booking_hold_min: number;
+    max_installments: number;
+    payment_methods: ('pix' | 'card')[];
+    policy: BookingPolicy;
   };
   units: {
     id: string;
@@ -45,6 +58,7 @@ export interface PublicBusiness {
     deposit_type: 'none' | 'fixed' | 'percent';
     deposit_value: number;
     deposit_cents: number;
+    is_demo: boolean;
     professional_ids: string[];
   }[];
   professionals: {
@@ -53,6 +67,8 @@ export interface PublicBusiness {
     bio: string | null;
     avatar_url: string | null;
     color: string;
+    /** formação/credenciais: só vem preenchido quando a clínica informar */
+    credentials: string | null;
     unit_ids: string[];
   }[];
 }
@@ -76,6 +92,8 @@ export interface PublicBooking {
   cancelled_at: string | null;
   cancelled_by: 'client' | 'business' | 'system' | null;
   manage_token: string;
+  /** canal de Realtime (Broadcast) com o status do pagamento */
+  realtime_topic?: string;
   replayed?: boolean;
   refund?: boolean;
   business: {
@@ -85,7 +103,8 @@ export interface PublicBooking {
     phone: string | null;
     email: string | null;
     logo_url: string | null;
-    cancellation_window_hours: number;
+    max_installments: number;
+    policy: BookingPolicy;
   };
   service: { id: string; name: string; duration_min: number };
   professional: { id: string; name: string };
@@ -93,17 +112,27 @@ export interface PublicBooking {
   client: { name: string; email: string | null; phone: string | null };
   payment: {
     id: string;
-    status: Enums<'payment_status'>;
+    status: PaymentStatus;
     method: 'pix' | 'card';
+    /** tipo informado pelo provedor: credit_card, debit_card, account_money, bank_transfer… */
+    method_detail: string | null;
+    installments: number | null;
     amount_cents: number;
+    refunded_cents: number;
     pix_qr_code: string | null;
     pix_qr_code_base64: string | null;
     checkout_url: string | null;
     expires_at: string | null;
     provider: string;
+    provider_payment_id: string | null;
+    /** pagamento em sandbox/teste: nenhuma cobrança real */
+    test_mode: boolean;
+    updated_at: string;
   } | null;
   policy?: {
-    deadline: string;
+    reschedule_deadline: string;
+    refund_deadline: string;
+    refund_percent: number;
     can_cancel: boolean;
     can_reschedule: boolean;
     refund_eligible: boolean;

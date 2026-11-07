@@ -4,6 +4,7 @@ export * from './money.ts';
 export * from './slug.ts';
 export * from './datetime.ts';
 export * from './calendar.ts';
+export * from './payments.ts';
 export * from './errors.ts';
 export * from './types.ts';
 export type { Database, Json } from './database.types.ts';

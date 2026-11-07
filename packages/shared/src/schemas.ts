@@ -161,12 +161,25 @@ export const businessSettingsSchema = z.object({
   email: optionalEmailSchema,
   timezone: z.string().min(1, 'validation.required'),
   slot_interval_min: intInRange(5, 240),
-  cancellation_window_hours: intInRange(0, 720),
   booking_hold_min: intInRange(5, 120),
+  max_installments: intInRange(1, 12),
+  payment_methods: z.array(paymentMethodSchema).min(1, 'validation.paymentMethodRequired'),
   reminder_24h: z.boolean(),
   reminder_2h: z.boolean(),
   whatsapp_enabled: z.boolean(),
 });
+
+/** Política de remarcação/cancelamento (por regra, editável pela clínica). */
+export const bookingPolicySchema = z.object({
+  reschedule_min_hours: intInRange(0, 720),
+  refund_min_hours: intInRange(0, 720),
+  refund_percent: intInRange(0, 100),
+  client_can_reschedule: z.boolean(),
+  client_can_cancel: z.boolean(),
+  notes: z.string().trim().max(1000, 'validation.max').optional().default(''),
+  is_demo: z.boolean().default(false),
+});
+export type BookingPolicyForm = z.input<typeof bookingPolicySchema>;
 
 export const unitSchema = z.object({
   name: z.string().trim().min(1, 'validation.required').max(120, 'validation.nameMax'),
@@ -184,6 +197,8 @@ export const unitSchema = z.object({
 export const professionalSchema = z.object({
   name: z.string().trim().min(1, 'validation.required').max(120, 'validation.nameMax'),
   bio: z.string().trim().max(500, 'validation.max').optional().default(''),
+  /** formação/credenciais (opcional; só aparece na página pública se preenchido) */
+  credentials: z.string().trim().max(300, 'validation.max').optional().default(''),
   color: z.string().regex(/^#[0-9a-fA-F]{6}$/, 'validation.color'),
   active: z.boolean().default(true),
   unit_ids: z.array(uuidSchema).min(1, 'validation.unitRequired'),
@@ -204,6 +219,8 @@ export const serviceSchema = z
     deposit_type: z.enum(['none', 'fixed', 'percent']),
     deposit_value: z.union([z.string(), z.number()]).optional().default('0'),
     active: z.boolean().default(true),
+    /** dado de demonstração (removido por purge_demo_data) */
+    is_demo: z.boolean().default(false),
     professional_ids: z.array(uuidSchema).default([]),
   })
   .transform((v, ctx) => {

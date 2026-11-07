@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import type { PublicBooking } from '../../../packages/shared/src/index.ts';
 import {
+  describePolicy,
+  paymentReceipt,
   renderEmail,
   renderWhatsApp,
   shouldSkip,
@@ -26,7 +28,15 @@ const booking: PublicBooking = {
     phone: '+5511988887777',
     email: null,
     logo_url: null,
-    cancellation_window_hours: 24,
+    max_installments: 3,
+    policy: {
+      reschedule_min_hours: 48,
+      refund_min_hours: 24,
+      refund_percent: 100,
+      client_can_reschedule: true,
+      client_can_cancel: true,
+      notes: null,
+    },
   },
   service: { id: 's', name: 'Corte feminino', duration_min: 60 },
   professional: { id: 'p', name: 'Carla' },
@@ -94,5 +104,67 @@ describe('descartes no momento do envio', () => {
   });
   it('lembrete válido segue', () => {
     expect(shouldSkip(ctx('reminder_2h', {}, { starts_at: booking.starts_at }))).toBeNull();
+  });
+});
+
+describe('política e comprovante do sinal', () => {
+  const paid: PublicBooking['payment'] = {
+    id: 'pay',
+    status: 'approved',
+    method: 'card',
+    method_detail: 'credit_card',
+    installments: 3,
+    amount_cents: 23700,
+    refunded_cents: 0,
+    pix_qr_code: null,
+    pix_qr_code_base64: null,
+    checkout_url: null,
+    expires_at: null,
+    provider: 'mercadopago',
+    provider_payment_id: '123456',
+    test_mode: true,
+    updated_at: '2030-11-10T10:00:00Z',
+  };
+
+  it('descreve a política com as janelas configuradas', () => {
+    const text = describePolicy({ ...booking, deposit_cents: 23700 });
+    expect(text).toContain('remarcar pelo link até 48h');
+    expect(text).toContain('Cancelando até 24h antes, o sinal é devolvido');
+  });
+
+  it('política com devolução parcial e sem remarcação', () => {
+    const text = describePolicy({
+      ...booking,
+      deposit_cents: 1000,
+      business: {
+        ...booking.business,
+        policy: { ...booking.business.policy, refund_percent: 50, client_can_reschedule: false },
+      },
+    });
+    expect(text).not.toContain('remarcar');
+    expect(text).toContain('50% do sinal é devolvido');
+  });
+
+  it('comprovante traz valor, forma de pagamento, restante e aviso de teste', () => {
+    const receipt = paymentReceipt({ ...booking, price_cents: 79000, payment: paid })!;
+    expect(receipt.lines.join('\n')).toContain('R$');
+    expect(receipt.lines).toContain('Forma de pagamento: Cartão de crédito em 3x');
+    expect(receipt.lines.some((l) => l.startsWith('Restante a pagar'))).toBe(true);
+    expect(receipt.lines).toContain('Código da transação: 123456');
+    expect(receipt.lines.at(-1)).toContain('MODO DE TESTE');
+  });
+
+  it('sem pagamento aprovado não há comprovante', () => {
+    expect(paymentReceipt({ ...booking, payment: { ...paid, status: 'pending' } })).toBeNull();
+    expect(paymentReceipt(booking)).toBeNull();
+  });
+
+  it('e-mail de confirmação inclui o comprovante', () => {
+    const email = renderEmail(
+      ctx('booking_confirmed', { price_cents: 79000, payment: paid }),
+      opts,
+    );
+    expect(email.html).toContain('Comprovante do sinal');
+    expect(email.text).toContain('Cartão de crédito em 3x');
   });
 });

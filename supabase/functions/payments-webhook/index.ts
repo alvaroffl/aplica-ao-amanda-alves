@@ -9,8 +9,7 @@ import { fail, json, log } from '../_shared/http.ts';
 import { verifyMercadoPagoSignature } from '../_shared/payments/mercadopago.ts';
 import { paymentProvider } from '../_shared/payments/index.ts';
 import { serviceClient } from '../_shared/supabase.ts';
-
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+import { decideWebhook, paymentRowId } from './decide.ts';
 
 Deno.serve(async (req) => {
   if (req.method !== 'POST') return fail(req, 'METHOD_NOT_ALLOWED', 405);
@@ -46,8 +45,8 @@ Deno.serve(async (req) => {
   const db = serviceClient();
   try {
     const payment = await paymentProvider('mercadopago').getPayment(dataId);
-    const ref = payment.externalReference;
-    if (!ref || !UUID.test(ref)) {
+    const ref = paymentRowId(payment);
+    if (!ref) {
       log('warn', 'webhook.unknown_reference', { dataId });
       return json(req, { ignored: true });
     }
@@ -66,11 +65,12 @@ Deno.serve(async (req) => {
         .eq('id', row.id);
     }
 
-    if (payment.status === 'approved') {
-      if (payment.amountCents < row.amount_cents) {
-        log('error', 'webhook.amount_mismatch', { paymentId: row.id });
-        return json(req, { ignored: true });
-      }
+    const decision = decideWebhook(payment, row.amount_cents);
+    if (decision.action === 'reject_amount') {
+      log('error', 'webhook.amount_mismatch', { paymentId: row.id });
+      return json(req, { ignored: true });
+    }
+    if (decision.action === 'confirm') {
       const { data: result, error } = await db.rpc('confirm_payment', {
         p_payment_id: row.id,
         p_provider_payment_id: payment.providerPaymentId,
@@ -81,10 +81,10 @@ Deno.serve(async (req) => {
       return json(req, { ok: true, result });
     }
 
-    if (payment.status === 'rejected' || payment.status === 'cancelled') {
+    if (decision.action === 'fail') {
       await db.rpc('fail_payment', {
         p_payment_id: row.id,
-        p_status: payment.status,
+        p_status: decision.status,
         p_raw: payment.raw as never,
       });
     }

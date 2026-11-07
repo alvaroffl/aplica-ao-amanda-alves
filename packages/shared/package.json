@@ -14,7 +14,8 @@
     "./phone": "./src/phone.ts",
     "./errors": "./src/errors.ts",
     "./slug": "./src/slug.ts",
-    "./consent": "./src/consent.ts"
+    "./consent": "./src/consent.ts",
+    "./payments": "./src/payments.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

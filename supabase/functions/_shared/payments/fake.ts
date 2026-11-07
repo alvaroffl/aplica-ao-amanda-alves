@@ -28,7 +28,7 @@ export class FakeProvider implements PaymentProvider {
       externalReference: providerPaymentId.replace(/^fake-/, ''),
       status: 'approved',
       amountCents: 0,
-      raw: { fake: true },
+      raw: { id: providerPaymentId, status: 'approved', fake: true },
     });
   }
 

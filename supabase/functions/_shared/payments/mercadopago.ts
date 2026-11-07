@@ -26,6 +26,32 @@ export function mapMercadoPagoStatus(status: string): ProviderPaymentStatus {
   }
 }
 
+/**
+ * Meios aceitos no Checkout Pro para o sinal: crédito (parcelado até o limite
+ * da clínica), débito, pré-pago e saldo/carteira Mercado Pago. Boleto e
+ * pagamento em lotérica ficam de fora: compensam em até 3 dias úteis, mais do
+ * que a pré-reserva do horário (minutos).
+ */
+export function checkoutPaymentMethods(maxInstallments: number) {
+  const installments = Math.min(12, Math.max(1, Math.trunc(maxInstallments) || 1));
+  return {
+    excluded_payment_types: [{ id: 'ticket' }, { id: 'atm' }],
+    installments,
+    default_installments: 1,
+  };
+}
+
+/**
+ * Prazo do Pix no gateway: no mínimo 30 minutos (prazos curtos podem ser
+ * recusados). A pré-reserva do horário continua com o prazo da clínica; se o
+ * Pix for pago depois dela, confirm_payment confirma se o horário ainda estiver
+ * livre ou estorna automaticamente.
+ */
+export function pixExpiration(holdExpiresAt: Date, now = new Date()): Date {
+  const minimum = new Date(now.getTime() + 30 * 60_000);
+  return holdExpiresAt > minimum ? holdExpiresAt : minimum;
+}
+
 /** Data no formato aceito pelo MP: 2026-11-07T10:00:00.000+00:00 */
 export function mpDate(date: Date): string {
   return date.toISOString().replace('Z', '+00:00');
@@ -103,7 +129,7 @@ export class MercadoPagoProvider implements PaymentProvider {
           payment_method_id: 'pix',
           external_reference: input.paymentId,
           notification_url: input.notificationUrl,
-          date_of_expiration: mpDate(input.expiresAt),
+          date_of_expiration: mpDate(pixExpiration(input.expiresAt)),
           payer: {
             email: input.payer.email ?? undefined,
             first_name: firstName,
@@ -144,10 +170,7 @@ export class MercadoPagoProvider implements PaymentProvider {
             pending: input.returnUrl,
           },
           auto_return: 'approved',
-          payment_methods: {
-            excluded_payment_types: [{ id: 'ticket' }, { id: 'atm' }],
-            installments: 1,
-          },
+          payment_methods: checkoutPaymentMethods(input.maxInstallments),
           expires: true,
           expiration_date_to: mpDate(input.expiresAt),
         }),
@@ -166,13 +189,25 @@ export class MercadoPagoProvider implements PaymentProvider {
       status: string;
       external_reference: string | null;
       transaction_amount: number;
+      payment_type_id?: string;
+      payment_method_id?: string;
+      installments?: number;
+      live_mode?: boolean;
     }>(`/v1/payments/${encodeURIComponent(providerPaymentId)}`);
     return {
       providerPaymentId: String(p.id),
       externalReference: p.external_reference,
       status: mapMercadoPagoStatus(p.status),
       amountCents: Math.round(p.transaction_amount * 100),
-      raw: { id: p.id, status: p.status },
+      // só o necessário: nunca guardamos dados do cartão
+      raw: {
+        id: p.id,
+        status: p.status,
+        payment_type_id: p.payment_type_id ?? null,
+        payment_method_id: p.payment_method_id ?? null,
+        installments: p.installments ?? null,
+        live_mode: p.live_mode ?? null,
+      },
     };
   }
 

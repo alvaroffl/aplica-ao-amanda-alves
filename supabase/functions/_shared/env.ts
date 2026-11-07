@@ -27,6 +27,9 @@ export function getEnv() {
     bookingLimitEmailPerHour: Number(get('BOOKING_LIMIT_EMAIL_PER_HOUR', '8')),
     workerSecret: get('WORKER_SECRET'),
     paymentsProvider: get('PAYMENTS_PROVIDER', 'fake') as 'fake' | 'mercadopago',
+    // "test" (padrão) = sandbox: as cobranças são marcadas como teste e o app avisa.
+    // Só use "live" com credenciais de produção do gateway.
+    paymentsMode: (get('PAYMENTS_MODE', 'test') === 'live' ? 'live' : 'test') as 'test' | 'live',
     mercadoPagoAccessToken: get('MERCADOPAGO_ACCESS_TOKEN'),
     mercadoPagoWebhookSecret: get('MERCADOPAGO_WEBHOOK_SECRET'),
     emailProvider: get('EMAIL_PROVIDER', 'log') as 'log' | 'resend' | 'mailpit',

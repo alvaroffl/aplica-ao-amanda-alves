@@ -91,8 +91,9 @@ Deno.serve(async (req) => {
       if (!p.provider_payment_id) throw new Error('pagamento sem id no provedor');
       await paymentProvider(p.provider as 'fake' | 'mercadopago').refund(
         p.provider_payment_id,
-        p.amount_cents,
-        p.id,
+        // estorno parcial pela política/painel; nulo = o que ainda não foi devolvido
+        p.refund_requested_cents ?? p.amount_cents - p.refunded_cents,
+        `${p.id}-${p.refunded_cents}`,
       );
       await db.rpc('complete_refund', { p_payment_id: p.id, p_ok: true });
       summary.refunds++;

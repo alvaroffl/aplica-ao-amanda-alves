@@ -2,8 +2,10 @@ import {
   buildIcs,
   formatLongDate,
   formatPhone,
+  formatMoney,
   formatTime,
   googleCalendarUrl,
+  paymentMethodLabel,
   timeZoneLabel,
   type PublicBooking,
 } from '../../../../packages/shared/src/index.ts';
@@ -82,6 +84,43 @@ export function shouldSkip(ctx: NotificationContext): string | null {
     if (new Date(b.starts_at).getTime() <= Date.now()) return 'already_started';
   }
   return null;
+}
+
+/** Política da clínica em uma frase (regras configuráveis + observação livre). */
+export function describePolicy(b: PublicBooking): string {
+  const p = b.business.policy;
+  if (!p) return '';
+  const parts: string[] = [];
+  if (p.client_can_reschedule) {
+    parts.push(`Você pode remarcar pelo link até ${p.reschedule_min_hours}h antes do horário.`);
+  }
+  if (b.deposit_cents > 0) {
+    parts.push(
+      p.refund_percent > 0
+        ? `Cancelando até ${p.refund_min_hours}h antes, ${p.refund_percent === 100 ? 'o sinal é devolvido' : `${p.refund_percent}% do sinal é devolvido`}; depois disso, não há devolução.`
+        : 'O sinal não é reembolsável.',
+    );
+  }
+  if (p.notes) parts.push(p.notes);
+  return parts.join(' ');
+}
+
+/** Comprovante do sinal (pagamentos aprovados ou estornados). */
+export function paymentReceipt(b: PublicBooking): { title: string; lines: string[] } | null {
+  const pay = b.payment;
+  if (!pay || !['approved', 'refund_pending', 'refunded'].includes(pay.status)) return null;
+  const lines = [
+    `Valor do sinal: ${formatMoney(pay.amount_cents)}`,
+    `Forma de pagamento: ${paymentMethodLabel(pay.method, pay.method_detail, pay.installments)}`,
+  ];
+  if (b.price_cents > pay.amount_cents) {
+    lines.push(`Restante a pagar no atendimento: ${formatMoney(b.price_cents - pay.amount_cents)}`);
+  }
+  if (pay.refunded_cents > 0) lines.push(`Valor devolvido: ${formatMoney(pay.refunded_cents)}`);
+  else if (pay.status === 'refund_pending') lines.push('Devolução do sinal em processamento.');
+  if (pay.provider_payment_id) lines.push(`Código da transação: ${pay.provider_payment_id}`);
+  if (pay.test_mode) lines.push('MODO DE TESTE: nenhuma cobrança real foi feita.');
+  return { title: 'Comprovante do sinal', lines };
 }
 
 function details(b: PublicBooking) {
@@ -171,20 +210,34 @@ export function renderEmail(ctx: NotificationContext, opts: RenderOptions): Emai
   const actions = cancelled
     ? button(`${opts.appUrl}/${b.business.slug}`, 'Agendar novo horário')
     : `${button(manageUrl, 'Ver, reagendar ou cancelar')}${button(calendar, 'Adicionar ao Google Agenda', false)}`;
-  const policy = cancelled
-    ? ''
-    : `<p style="font-size:13px;color:#52525b">Reagendamentos e cancelamentos com reembolso do sinal podem ser feitos até ${b.business.cancellation_window_hours}h antes do horário.</p>`;
+  const policyText = cancelled ? '' : describePolicy(b);
+  const policy = policyText
+    ? `<p style="font-size:13px;color:#52525b">${escapeHtml(policyText)}</p>`
+    : '';
+  const receipt = paymentReceipt(b);
+  const receiptHtml = receipt
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border:1px solid #e7e0da;border-radius:12px;padding:16px;margin:0 0 20px">
+        <tr><td style="padding:2px 0;font-weight:600">${escapeHtml(receipt.title)}</td></tr>
+        ${receipt.lines.map((l) => `<tr><td style="padding:2px 0;font-size:14px">${escapeHtml(l)}</td></tr>`).join('')}
+      </table>`
+    : '';
   const contact = b.business.phone
     ? `<p style="font-size:13px;color:#52525b">Dúvidas? Fale com ${escapeHtml(b.business.name)}: ${escapeHtml(formatPhone(b.business.phone))}</p>`
     : '';
 
-  const html = layout(title, `${greeting}${summary}${actions}${policy}${contact}`, opts.appName);
+  const html = layout(
+    title,
+    `${greeting}${summary}${receiptHtml}${actions}${policy}${contact}`,
+    opts.appName,
+  );
   const text = [
     `Olá, ${firstName(b.client.name)}!`,
     title,
     `${b.service.name} com ${b.professional.name}`,
     `${d.date} às ${d.time} (${d.tzLabel})`,
     where,
+    ...(receipt ? ['', receipt.title, ...receipt.lines, ''] : []),
+    policyText,
     cancelled ? `Agendar novamente: ${opts.appUrl}/${b.business.slug}` : `Gerenciar: ${manageUrl}`,
   ]
     .filter(Boolean)
