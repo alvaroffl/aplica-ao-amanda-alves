@@ -13,7 +13,7 @@
     "build": "pnpm -r --filter ./packages/** --filter ./apps/** build",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
-    "test": "pnpm -r test",
+    "test": "pnpm -r test && pnpm test:functions",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "db:start": "supabase start",
@@ -22,12 +22,17 @@
     "db:test": "supabase test db",
     "db:types": "supabase gen types typescript --local > packages/shared/src/database.types.ts",
     "functions:serve": "supabase functions serve --env-file supabase/functions/.env",
-    "e2e": "pnpm --filter @agendae/web e2e"
+    "e2e": "pnpm --filter @agendae/web e2e",
+    "test:functions": "vitest run --config vitest.functions.config.ts"
   },
   "devDependencies": {
+    "date-fns": "4.4.0",
+    "date-fns-tz": "3.2.0",
     "prettier": "3.9.10",
     "supabase": "2.121.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "3.2.7",
+    "zod": "3.25.76"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
