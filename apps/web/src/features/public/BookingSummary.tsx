@@ -32,21 +32,27 @@ export function BookingSummary({
       <p className="font-semibold">{service.name}</p>
       <dl className="mt-3 space-y-2 text-sm">
         <div className="flex items-center gap-2 text-muted-foreground">
-          <dt className="sr-only">{t('booking.duration')}</dt>
-          <Clock className="size-4" aria-hidden />
+          <dt>
+            <Clock className="size-4" aria-hidden />
+            <span className="sr-only">{t('booking.duration')}</span>
+          </dt>
           <dd>{formatDuration(service.duration_min)}</dd>
         </div>
         {(professional || anyProfessional) && (
           <div className="flex items-center gap-2 text-muted-foreground">
-            <dt className="sr-only">{t('booking.professional')}</dt>
-            <User className="size-4" aria-hidden />
+            <dt>
+              <User className="size-4" aria-hidden />
+              <span className="sr-only">{t('booking.professional')}</span>
+            </dt>
             <dd>{professional ? professional.name : t('booking.anyProfessional')}</dd>
           </div>
         )}
         {startsAt && unit && (
           <div className="flex items-center gap-2 font-medium text-foreground">
-            <dt className="sr-only">{t('booking.when')}</dt>
-            <CalendarDays className="size-4 text-primary" aria-hidden />
+            <dt>
+              <CalendarDays className="size-4 text-primary" aria-hidden />
+              <span className="sr-only">{t('booking.when')}</span>
+            </dt>
             <dd className="first-letter:uppercase">
               {formatLongDate(startsAt, unit.timezone)} · {formatTime(startsAt, unit.timezone)}
             </dd>
@@ -54,8 +60,10 @@ export function BookingSummary({
         )}
         {showUnit && unit && (
           <div className="flex items-start gap-2 text-muted-foreground">
-            <dt className="sr-only">{t('booking.unit')}</dt>
-            <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
+            <dt>
+              <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
+              <span className="sr-only">{t('booking.unit')}</span>
+            </dt>
             <dd>
               {unit.name}
               {unit.address ? ` — ${unit.address}` : ''}

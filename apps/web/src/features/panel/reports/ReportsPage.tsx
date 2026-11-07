@@ -7,7 +7,7 @@ import { EmptyState, ErrorState, PageHeader } from '@/components/common/States';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { NativeSelect } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Segmented } from '@/components/ui/segmented';
 import { unwrap } from '@/lib/api';
 import { supabase } from '@/lib/supabase';
 import { useBusiness } from '../business';
@@ -47,15 +47,12 @@ export function ReportsPage() {
 
       {/* Filtros em uma linha, acima dos gráficos */}
       <div className="flex flex-wrap items-center gap-3">
-        <Tabs value={period} onValueChange={(v) => setPeriod(v as Period)}>
-          <TabsList aria-label={t('reports.period')}>
-            {(['7', '30', '90'] as const).map((p) => (
-              <TabsTrigger key={p} value={p}>
-                {t('reports.lastDays', { count: Number(p) })}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+        <Segmented<Period>
+          label={t('reports.period')}
+          value={period}
+          onChange={setPeriod}
+          options={(['7', '30', '90'] as const).map((p) => ({ value: p, label: t('reports.lastDays', { count: Number(p) }) }))}
+        />
         <NativeSelect value={pro} onChange={(e) => setPro(e.target.value)} className="w-auto min-w-48" aria-label={t('agenda.filterProfessional')}>
           <option value="">{t('agenda.allProfessionals')}</option>
           {(professionals.data ?? []).map((p) => (

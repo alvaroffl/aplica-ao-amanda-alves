@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import { ErrorState } from '@/components/common/States';
 import { Button } from '@/components/ui/button';
 import { NativeSelect } from '@/components/ui/input';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Segmented } from '@/components/ui/segmented';
 import { toApiError } from '@/lib/api';
 import { supabase } from '@/lib/supabase';
 import { useBusiness } from '../business';
@@ -115,8 +115,8 @@ export function AgendaPage() {
     setSelected(arg.event.extendedProps.booking as BookingRow);
   };
 
-  const changeView = (v: string) => {
-    setView(v as View);
+  const changeView = (v: View) => {
+    setView(v);
     api()?.changeView(v);
   };
 
@@ -141,14 +141,17 @@ export function AgendaPage() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <Tabs value={view} onValueChange={changeView}>
-            <TabsList>
-              <TabsTrigger value="timeGridDay">{t('agenda.views.day')}</TabsTrigger>
-              <TabsTrigger value="timeGridWeek">{t('agenda.views.week')}</TabsTrigger>
-              <TabsTrigger value="dayGridMonth">{t('agenda.views.month')}</TabsTrigger>
-              <TabsTrigger value="listWeek">{t('agenda.views.list')}</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <Segmented<View>
+            label={t('agenda.viewLabel')}
+            value={view}
+            onChange={changeView}
+            options={[
+              { value: 'timeGridDay', label: t('agenda.views.day') },
+              { value: 'timeGridWeek', label: t('agenda.views.week') },
+              { value: 'dayGridMonth', label: t('agenda.views.month') },
+              { value: 'listWeek', label: t('agenda.views.list') },
+            ]}
+          />
           <Button onClick={() => setCreating({ date: wallNow().toISOString().slice(0, 10), time: '09:00' })}>
             <Plus aria-hidden /> {t('agenda.newBooking')}
           </Button>

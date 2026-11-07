@@ -58,7 +58,7 @@ export function ManageBookingPage() {
   if (deleted) {
     return (
       <PublicLayout>
-        <EmptyState icon={<CheckCircle2 />} title={t('manage.privacy.deleted')} description={t('manage.privacy.deletedText')} />
+        <EmptyState headingLevel="h1" icon={<CheckCircle2 />} title={t('manage.privacy.deleted')} description={t('manage.privacy.deletedText')} />
       </PublicLayout>
     );
   }
@@ -79,7 +79,7 @@ export function ManageBookingPage() {
     return (
       <PublicLayout>
         {invalid ? (
-          <EmptyState icon={<XCircle />} title={t('manage.invalidLink')} description={t('manage.invalidLinkHint')} />
+          <EmptyState headingLevel="h1" icon={<XCircle />} title={t('manage.invalidLink')} description={t('manage.invalidLinkHint')} />
         ) : (
           <ErrorState error={query.error} onRetry={() => void query.refetch()} />
         )}
@@ -246,13 +246,11 @@ export function ManageBookingPage() {
 function Row({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="mt-0.5 text-muted-foreground [&_svg]:size-4" aria-hidden>
-        {icon}
-      </span>
-      <div className="min-w-0">
-        <dt className="sr-only">{label}</dt>
-        <dd>{children}</dd>
-      </div>
+      <dt className="mt-0.5 text-muted-foreground [&_svg]:size-4">
+        <span aria-hidden>{icon}</span>
+        <span className="sr-only">{label}</span>
+      </dt>
+      <dd className="min-w-0">{children}</dd>
     </div>
   );
 }

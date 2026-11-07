@@ -321,6 +321,7 @@ const ptBR = {
     next: 'Próximo',
     today: 'Hoje',
     views: { day: 'Dia', week: 'Semana', month: 'Mês', list: 'Lista' },
+    viewLabel: 'Visualização da agenda',
     newBooking: 'Novo agendamento',
     newBookingHint: 'Encaixes fora do horário são permitidos; sobreposição nunca.',
     createBooking: 'Agendar',

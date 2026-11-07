@@ -26,6 +26,7 @@ void i18n
       convertDetectedLanguage: (lng: string) => (lng.toLowerCase().startsWith('pt') ? 'pt-BR' : lng.split('-')[0] ?? lng),
     },
     returnNull: false,
+    showSupportNotice: false,
   });
 
 i18n.on('languageChanged', (lng) => {

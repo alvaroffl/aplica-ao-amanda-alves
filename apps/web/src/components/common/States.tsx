@@ -11,9 +11,11 @@ export function EmptyState({
   description,
   action,
   className,
+  headingLevel = 'h2',
 }: {
   icon?: ReactNode;
   title: string;
+  headingLevel?: 'h1' | 'h2' | 'h3';
   description?: ReactNode;
   action?: ReactNode;
   className?: string;
@@ -24,7 +26,13 @@ export function EmptyState({
         {icon ?? <Inbox />}
       </div>
       <div className="space-y-1">
-        <p className="font-medium">{title}</p>
+        {headingLevel === 'h1' ? (
+          <h1 className="text-lg font-semibold">{title}</h1>
+        ) : headingLevel === 'h3' ? (
+          <h3 className="font-medium">{title}</h3>
+        ) : (
+          <h2 className="font-medium">{title}</h2>
+        )}
         {description && <p className="max-w-sm text-sm text-muted-foreground">{description}</p>}
       </div>
       {action}

@@ -50,7 +50,7 @@ export function BookingPage() {
     return (
       <PublicLayout>
         {notFound ? (
-          <EmptyState title={t('booking.businessNotFound')} description={t('booking.businessNotFoundHint')} />
+          <EmptyState headingLevel="h1" title={t('booking.businessNotFound')} description={t('booking.businessNotFoundHint')} />
         ) : (
           <ErrorState error={query.error} onRetry={() => void query.refetch()} />
         )}
