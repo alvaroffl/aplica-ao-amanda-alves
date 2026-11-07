@@ -2,13 +2,14 @@ import { lazy, Suspense, type ReactNode } from 'react';
 import { createBrowserRouter } from 'react-router';
 import { Spinner } from '@/components/ui/skeleton';
 import i18n from '@/i18n';
-import { RequireAuth } from '@/features/auth/RequireAuth';
 import { BookingPage } from '@/features/public/BookingPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { PrivacyPage } from '@/pages/PrivacyPage';
 
-// O painel é carregado sob demanda: a página pública fica leve no celular.
+// O painel e a autenticação (supabase-js) são carregados sob demanda:
+// a página pública fica leve no celular.
+const AuthRoot = lazy(() => import('@/providers/auth-root'));
 const ManageBookingPage = lazy(() =>
   import('@/features/manage/ManageBookingPage').then((m) => ({ default: m.ManageBookingPage })),
 );
@@ -24,9 +25,7 @@ const ForgotPasswordPage = lazy(() =>
 const ResetPasswordPage = lazy(() =>
   import('@/features/auth/PasswordPages').then((m) => ({ default: m.ResetPasswordPage })),
 );
-const PanelRoot = lazy(() =>
-  import('@/features/panel/PanelLayout').then((m) => ({ default: m.PanelRoot })),
-);
+const PanelRoute = lazy(() => import('@/features/panel/PanelRoute'));
 const OnboardingPage = lazy(() =>
   import('@/features/panel/OnboardingPage').then((m) => ({ default: m.OnboardingPage })),
 );
@@ -75,29 +74,34 @@ const page = (node: ReactNode) => (
 
 export const router = createBrowserRouter([
   { path: '/', element: <LandingPage /> },
-  { path: '/entrar', element: page(<SignInPage />) },
-  { path: '/cadastro', element: page(<SignUpPage />) },
-  { path: '/recuperar-senha', element: page(<ForgotPasswordPage />) },
-  { path: '/redefinir-senha', element: page(<ResetPasswordPage />) },
-  { path: '/privacidade', element: <PrivacyPage /> },
-  { path: '/r/:token', element: page(<ManageBookingPage />) },
   {
-    path: '/painel',
-    element: <RequireAuth>{page(<PanelRoot />)}</RequireAuth>,
+    element: page(<AuthRoot />),
     children: [
-      { index: true, element: page(<AgendaPage />) },
-      { path: 'novo-negocio', element: page(<OnboardingPage />) },
-      { path: 'clientes', element: page(<ClientsPage />) },
-      { path: 'clientes/:id', element: page(<ClientDetailPage />) },
-      { path: 'servicos', element: page(<ServicesPage />) },
-      { path: 'equipe', element: page(<TeamPage />) },
-      { path: 'disponibilidade', element: page(<AvailabilityPage />) },
-      { path: 'unidades', element: page(<UnitsPage />) },
-      { path: 'relatorios', element: page(<ReportsPage />) },
-      { path: 'notificacoes', element: page(<NotificationsPage />) },
-      { path: 'configuracoes', element: page(<SettingsPage />) },
+      { path: '/entrar', element: page(<SignInPage />) },
+      { path: '/cadastro', element: page(<SignUpPage />) },
+      { path: '/recuperar-senha', element: page(<ForgotPasswordPage />) },
+      { path: '/redefinir-senha', element: page(<ResetPasswordPage />) },
+      {
+        path: '/painel',
+        element: page(<PanelRoute />),
+        children: [
+          { index: true, element: page(<AgendaPage />) },
+          { path: 'novo-negocio', element: page(<OnboardingPage />) },
+          { path: 'clientes', element: page(<ClientsPage />) },
+          { path: 'clientes/:id', element: page(<ClientDetailPage />) },
+          { path: 'servicos', element: page(<ServicesPage />) },
+          { path: 'equipe', element: page(<TeamPage />) },
+          { path: 'disponibilidade', element: page(<AvailabilityPage />) },
+          { path: 'unidades', element: page(<UnitsPage />) },
+          { path: 'relatorios', element: page(<ReportsPage />) },
+          { path: 'notificacoes', element: page(<NotificationsPage />) },
+          { path: 'configuracoes', element: page(<SettingsPage />) },
+        ],
+      },
     ],
   },
+  { path: '/privacidade', element: <PrivacyPage /> },
+  { path: '/r/:token', element: page(<ManageBookingPage />) },
   { path: '/:slug', element: <BookingPage /> },
   { path: '/:slug/:unitSlug', element: <BookingPage /> },
   { path: '*', element: <NotFoundPage /> },

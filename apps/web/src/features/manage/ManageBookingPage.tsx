@@ -2,11 +2,11 @@ import {
   formatDateTime,
   formatDuration,
   formatLongDate,
-  formatMoney,
-  formatPhone,
   formatTime,
   timeZoneLabel,
-} from '@agendae/shared';
+} from '@agendae/shared/datetime';
+import { formatMoney } from '@agendae/shared/money';
+import { formatPhone } from '@agendae/shared/phone';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   CalendarClock,

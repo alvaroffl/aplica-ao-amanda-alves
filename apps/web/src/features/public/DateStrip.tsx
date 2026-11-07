@@ -1,4 +1,4 @@
-import { addDaysToKey, formatInZone, zonedToUtc } from '@agendae/shared';
+import { addDaysToKey, formatInZone, zonedToUtc } from '@agendae/shared/datetime';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';

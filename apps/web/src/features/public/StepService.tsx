@@ -1,4 +1,6 @@
-import { formatDuration, formatMoney, type PublicBusiness } from '@agendae/shared';
+import { formatDuration } from '@agendae/shared/datetime';
+import { formatMoney } from '@agendae/shared/money';
+import type { PublicBusiness } from '@agendae/shared';
 import { ChevronRight, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { EmptyState } from '@/components/common/States';

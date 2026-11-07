@@ -1,4 +1,5 @@
-import { formatTime, groupByPeriod, type DayPeriod } from '@agendae/shared';
+import { formatTime, groupByPeriod } from '@agendae/shared/datetime';
+import type { DayPeriod } from '@agendae/shared';
 import { Moon, Sun, Sunrise } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';

@@ -1,4 +1,4 @@
-import { browserTimeZone, sameOffset, timeZoneLabel } from '@agendae/shared';
+import { browserTimeZone, sameOffset, timeZoneLabel } from '@agendae/shared/datetime';
 import { Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 

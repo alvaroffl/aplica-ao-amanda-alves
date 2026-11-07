@@ -1,4 +1,5 @@
-import { addDaysToKey, localDateKey, todayKey, type Slot } from '@agendae/shared';
+import { addDaysToKey, localDateKey, todayKey } from '@agendae/shared/datetime';
+import type { Slot } from '@agendae/shared';
 import { CalendarX } from 'lucide-react';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';

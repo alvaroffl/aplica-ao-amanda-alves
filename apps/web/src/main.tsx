@@ -9,7 +9,6 @@ import { ErrorBoundary } from './components/common/ErrorBoundary';
 import './i18n';
 import './index.css';
 import { queryClient } from './lib/query';
-import { AuthProvider } from './providers/auth';
 import { ThemeProvider, useTheme } from './providers/theme';
 
 registerSW({ immediate: true });
@@ -24,10 +23,8 @@ createRoot(document.getElementById('root')!).render(
     <ErrorBoundary>
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <RouterProvider router={router} />
-            <ThemedToaster />
-          </AuthProvider>
+          <RouterProvider router={router} />
+          <ThemedToaster />
         </QueryClientProvider>
       </ThemeProvider>
     </ErrorBoundary>

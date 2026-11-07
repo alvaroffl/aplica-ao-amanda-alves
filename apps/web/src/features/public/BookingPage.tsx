@@ -9,13 +9,18 @@ import { ErrorState, EmptyState } from '@/components/common/States';
 import type { TurnstileHandle } from '@/components/common/Turnstile';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+
+// Formulário (Zod + React Hook Form) carregado só no último passo
+const StepDetails = React.lazy(() =>
+  import('./StepDetails').then((m) => ({ default: m.StepDetails })),
+);
 import { ApiError } from '@/lib/api';
 import { cn, newIdempotencyKey } from '@/lib/utils';
 import { createBooking, usePublicBusiness } from './api';
 import { BookingSummary } from './BookingSummary';
 import { PublicLayout } from './PublicLayout';
 import { StepDateTime } from './StepDateTime';
-import { StepDetails, type DetailsSubmit } from './StepDetails';
+import type { DetailsSubmit } from './StepDetails';
 import { StepProfessional } from './StepProfessional';
 import { StepService } from './StepService';
 
@@ -331,14 +336,16 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
               onSelectSlot={selectSlot}
             />
           ) : (
-            <StepDetails
-              depositCents={service!.deposit_cents}
-              currency={business.currency}
-              cancellationHours={business.cancellation_window_hours}
-              submitting={submitting}
-              onSubmit={onSubmit}
-              captchaRef={captchaRef}
-            />
+            <React.Suspense fallback={<Skeleton className="h-96" />}>
+              <StepDetails
+                depositCents={service!.deposit_cents}
+                currency={business.currency}
+                cancellationHours={business.cancellation_window_hours}
+                submitting={submitting}
+                onSubmit={onSubmit}
+                captchaRef={captchaRef}
+              />
+            </React.Suspense>
           )}
         </div>
 

@@ -1,11 +1,6 @@
-import {
-  buildIcs,
-  formatLongDate,
-  formatTime,
-  googleCalendarUrl,
-  whatsappShareUrl,
-  type PublicBooking,
-} from '@agendae/shared';
+import { buildIcs, googleCalendarUrl, whatsappShareUrl } from '@agendae/shared/calendar';
+import { formatLongDate, formatTime } from '@agendae/shared/datetime';
+import type { PublicBooking } from '@agendae/shared';
 import { CalendarPlus, Download, Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';

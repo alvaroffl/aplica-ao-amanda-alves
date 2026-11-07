@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { PublicLayout } from '@/features/public/PublicLayout';
-import { CONSENT_VERSION } from '@agendae/shared';
+import { CONSENT_VERSION } from '@agendae/shared/consent';
 
 /** Política de privacidade resumida (modelo — revise com assessoria jurídica). */
 export function PrivacyPage() {

@@ -1,4 +1,5 @@
-import { formatMoney, type PublicBooking } from '@agendae/shared';
+import { formatMoney } from '@agendae/shared/money';
+import type { PublicBooking } from '@agendae/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { Copy, CreditCard, FlaskConical, Timer } from 'lucide-react';
 import * as React from 'react';

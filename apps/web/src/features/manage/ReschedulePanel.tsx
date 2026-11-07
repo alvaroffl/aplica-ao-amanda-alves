@@ -1,4 +1,5 @@
-import { addDaysToKey, localDateKey, todayKey, type PublicBooking } from '@agendae/shared';
+import { addDaysToKey, localDateKey, todayKey } from '@agendae/shared/datetime';
+import type { PublicBooking } from '@agendae/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';

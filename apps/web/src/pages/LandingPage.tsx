@@ -5,11 +5,9 @@ import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
 import { Logo } from '@/components/common/Logo';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/providers/auth';
 
 export function LandingPage() {
   const { t } = useTranslation();
-  const { user } = useAuth();
   const features = [
     { icon: Smartphone, key: 'mobile' },
     { icon: CalendarCheck2, key: 'noDouble' },
@@ -29,9 +27,7 @@ export function LandingPage() {
           <LanguageSwitcher />
           <ThemeToggle />
           <Button asChild variant="ghost" className="hidden sm:inline-flex">
-            <Link to={user ? '/painel' : '/entrar'}>
-              {user ? t('landing.openPanel') : t('auth.signIn')}
-            </Link>
+            <Link to="/painel">{t('landing.openPanel')}</Link>
           </Button>
         </nav>
       </header>
@@ -48,7 +44,7 @@ export function LandingPage() {
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg">
-              <Link to={user ? '/painel' : '/cadastro'}>{t('landing.ctaStart')}</Link>
+              <Link to="/cadastro">{t('landing.ctaStart')}</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
               <Link to="/studio-exemplo">{t('landing.ctaDemo')}</Link>

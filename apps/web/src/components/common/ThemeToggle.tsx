@@ -1,35 +1,25 @@
 import { Monitor, Moon, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { useTheme } from '@/providers/theme';
 
+const ORDER = ['light', 'dark', 'system'] as const;
+
+/** Alterna claro → escuro → automático (botão simples, sem menu: mais leve). */
 export function ThemeToggle() {
   const { t } = useTranslation();
-  const { resolved, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const next = ORDER[(ORDER.indexOf(theme) + 1) % ORDER.length]!;
+  const Icon = theme === 'dark' ? Moon : theme === 'light' ? Sun : Monitor;
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label={t('common.theme.toggle')}>
-          {resolved === 'dark' ? <Moon aria-hidden /> : <Sun aria-hidden />}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onSelect={() => setTheme('light')}>
-          <Sun aria-hidden /> {t('common.theme.light')}
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => setTheme('dark')}>
-          <Moon aria-hidden /> {t('common.theme.dark')}
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => setTheme('system')}>
-          <Monitor aria-hidden /> {t('common.theme.system')}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={() => setTheme(next)}
+      aria-label={`${t('common.theme.toggle')}: ${t(`common.theme.${theme}`)} → ${t(`common.theme.${next}`)}`}
+      title={t(`common.theme.${theme}`)}
+    >
+      <Icon aria-hidden />
+    </Button>
   );
 }

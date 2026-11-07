@@ -9,8 +9,7 @@ import { RESERVED_SLUGS, SLUG_REGEX } from './slug.ts';
  * traduzidas na interface.
  */
 
-/** Versão do texto de consentimento LGPD exibido na reserva. */
-export const CONSENT_VERSION = '2026-11-v1';
+export { CONSENT_VERSION } from './consent.ts';
 
 export const uuidSchema = z.string().uuid('validation.invalid');
 

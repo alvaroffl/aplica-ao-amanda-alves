@@ -1,9 +1,6 @@
-import {
-  clientDetailsSchema,
-  formatMoney,
-  type ClientDetails,
-  type ClientDetailsInput,
-} from '@agendae/shared';
+import { formatMoney } from '@agendae/shared/money';
+import type { ClientDetails, ClientDetailsInput } from '@agendae/shared';
+import { clientDetailsSchema } from '@agendae/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreditCard, QrCode, ShieldCheck } from 'lucide-react';
 import * as React from 'react';

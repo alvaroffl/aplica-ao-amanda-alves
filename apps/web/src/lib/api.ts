@@ -1,4 +1,4 @@
-import { errorCodeFrom, type ErrorCode } from '@agendae/shared';
+import { errorCodeFrom, type ErrorCode } from '@agendae/shared/errors';
 import { env, functionsUrl } from './env';
 
 /** Erro de API com código de negócio (traduzido via i18n "errors.<code>"). */

@@ -1,10 +1,6 @@
-import {
-  formatDuration,
-  formatLongDate,
-  formatMoney,
-  formatTime,
-  type PublicBusiness,
-} from '@agendae/shared';
+import { formatDuration, formatLongDate, formatTime } from '@agendae/shared/datetime';
+import { formatMoney } from '@agendae/shared/money';
+import type { PublicBusiness } from '@agendae/shared';
 import { CalendarDays, Clock, MapPin, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
