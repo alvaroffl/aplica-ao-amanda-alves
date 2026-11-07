@@ -1,5 +1,6 @@
 import { lazy, Suspense, type ReactNode } from 'react';
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, type RouteObject } from 'react-router';
+import { RouteErrorPage } from '@/components/common/ErrorBoundary';
 import { Spinner } from '@/components/ui/skeleton';
 import i18n from '@/i18n';
 import { BookingPage } from '@/features/public/BookingPage';
@@ -72,7 +73,7 @@ const page = (node: ReactNode) => (
   </Suspense>
 );
 
-export const router = createBrowserRouter([
+const routes: RouteObject[] = [
   { path: '/', element: <LandingPage /> },
   {
     element: page(<AuthRoot />),
@@ -105,4 +106,8 @@ export const router = createBrowserRouter([
   { path: '/:slug', element: <BookingPage /> },
   { path: '/:slug/:unitSlug', element: <BookingPage /> },
   { path: '*', element: <NotFoundPage /> },
-]);
+];
+
+// Rota raiz sem caminho: qualquer erro de renderização mostra a tela amigável
+// (no idioma do app) em vez da página padrão do React Router.
+export const router = createBrowserRouter([{ errorElement: <RouteErrorPage />, children: routes }]);
