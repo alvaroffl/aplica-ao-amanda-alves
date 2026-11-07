@@ -1,4 +1,9 @@
-import { clientDetailsSchema, formatMoney, type ClientDetails, type ClientDetailsInput } from '@agendae/shared';
+import {
+  clientDetailsSchema,
+  formatMoney,
+  type ClientDetails,
+  type ClientDetailsInput,
+} from '@agendae/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreditCard, QrCode, ShieldCheck } from 'lucide-react';
 import * as React from 'react';
@@ -52,16 +57,42 @@ export function StepDetails({
   return (
     <form onSubmit={submit} noValidate className="space-y-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label={t('booking.name')} htmlFor="name" error={errors.name?.message} className="sm:col-span-2">
+        <Field
+          label={t('booking.name')}
+          htmlFor="name"
+          error={errors.name?.message}
+          className="sm:col-span-2"
+        >
           <Input autoComplete="name" autoCapitalize="words" {...register('name')} />
         </Field>
-        <Field label={t('booking.email')} htmlFor="email" error={errors.email?.message} hint={t('booking.emailHint')}>
+        <Field
+          label={t('booking.email')}
+          htmlFor="email"
+          error={errors.email?.message}
+          hint={t('booking.emailHint')}
+        >
           <Input type="email" inputMode="email" autoComplete="email" {...register('email')} />
         </Field>
-        <Field label={t('booking.phone')} htmlFor="phone" error={errors.phone?.message} hint={t('booking.phoneHint')}>
-          <Input type="tel" inputMode="tel" autoComplete="tel" placeholder="(11) 98765-4321" {...register('phone')} />
+        <Field
+          label={t('booking.phone')}
+          htmlFor="phone"
+          error={errors.phone?.message}
+          hint={t('booking.phoneHint')}
+        >
+          <Input
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="(11) 98765-4321"
+            {...register('phone')}
+          />
         </Field>
-        <Field label={`${t('booking.notes')} (${t('common.optional')})`} htmlFor="notes" error={errors.notes?.message} className="sm:col-span-2">
+        <Field
+          label={`${t('booking.notes')} (${t('common.optional')})`}
+          htmlFor="notes"
+          error={errors.notes?.message}
+          className="sm:col-span-2"
+        >
           <Textarea rows={2} placeholder={t('booking.notesPlaceholder')} {...register('notes')} />
         </Field>
       </div>
@@ -69,7 +100,9 @@ export function StepDetails({
       {depositCents > 0 && (
         <fieldset className="space-y-3 rounded-xl border bg-accent/40 p-4">
           <legend className="sr-only">{t('booking.payWith')}</legend>
-          <p className="text-sm">{t('booking.depositText', { amount: formatMoney(depositCents, currency) })}</p>
+          <p className="text-sm">
+            {t('booking.depositText', { amount: formatMoney(depositCents, currency) })}
+          </p>
           <div className="grid grid-cols-2 gap-2">
             {(['pix', 'card'] as const).map((m) => (
               <label
@@ -87,7 +120,11 @@ export function StepDetails({
                   onChange={() => setPaymentMethod(m)}
                   className="sr-only"
                 />
-                {m === 'pix' ? <QrCode className="size-4" aria-hidden /> : <CreditCard className="size-4" aria-hidden />}
+                {m === 'pix' ? (
+                  <QrCode className="size-4" aria-hidden />
+                ) : (
+                  <CreditCard className="size-4" aria-hidden />
+                )}
                 {t(`booking.${m}`)}
               </label>
             ))}
@@ -118,12 +155,8 @@ export function StepDetails({
             )}
           />
           <label htmlFor="consent" className="text-sm leading-snug">
-            <Trans
-              i18nKey="booking.consent"
-              // o texto do link vem da tradução (<privacy>…</privacy>)
-              // eslint-disable-next-line jsx-a11y/anchor-has-content
-              components={{ privacy: <a href="/privacidade" target="_blank" rel="noreferrer" className="font-medium text-primary underline-offset-2 hover:underline" /> }}
-            />
+            {/* o texto do link vem da tradução: <privacy>…</privacy> */}
+            <Trans i18nKey="booking.consent" components={{ privacy: <PrivacyLink /> }} />
           </label>
         </div>
         {errors.consent && (
@@ -133,9 +166,19 @@ export function StepDetails({
         )}
       </div>
 
-      <Turnstile ref={captchaRef} onToken={setCaptchaToken} language={i18n.language.toLowerCase()} />
+      <Turnstile
+        ref={captchaRef}
+        onToken={setCaptchaToken}
+        language={i18n.language.toLowerCase()}
+      />
 
-      <Button type="submit" size="lg" className="w-full" loading={submitting} disabled={needsCaptcha && !captchaToken}>
+      <Button
+        type="submit"
+        size="lg"
+        className="w-full"
+        loading={submitting}
+        disabled={needsCaptcha && !captchaToken}
+      >
         {submitting
           ? t('booking.confirming')
           : depositCents > 0
@@ -143,5 +186,18 @@ export function StepDetails({
             : t('booking.confirm')}
       </Button>
     </form>
+  );
+}
+
+function PrivacyLink({ children }: { children?: React.ReactNode }) {
+  return (
+    <a
+      href="/privacidade"
+      target="_blank"
+      rel="noreferrer"
+      className="font-medium text-primary underline-offset-2 hover:underline"
+    >
+      {children}
+    </a>
   );
 }

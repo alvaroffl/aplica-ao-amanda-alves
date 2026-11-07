@@ -47,19 +47,23 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-dom/client', 'react-router'],
-          forms: ['zod', 'react-hook-form', '@hookform/resolvers'],
-          i18n: ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
-          calendar: [
-            '@fullcalendar/core',
-            '@fullcalendar/react',
-            '@fullcalendar/daygrid',
-            '@fullcalendar/timegrid',
-            '@fullcalendar/interaction',
-            '@fullcalendar/list',
-          ],
-          supabase: ['@supabase/supabase-js'],
+        // Agrupa dependências por domínio. React, React DOM e scheduler ficam
+        // juntos (separá-los quebra a ordem de inicialização em produção).
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+          if (/[\\/]@fullcalendar[\\/]/.test(id)) return 'calendar';
+          if (/[\\/]@supabase[\\/]/.test(id)) return 'supabase';
+          if (/[\\/]node_modules[\\/](react|react-dom|scheduler|react-router)[\\/]/.test(id))
+            return 'react';
+          if (/[\\/]node_modules[\\/](zod|react-hook-form|@hookform[\\/]resolvers)[\\/]/.test(id))
+            return 'forms';
+          if (
+            /[\\/]node_modules[\\/](i18next|react-i18next|i18next-browser-languagedetector)[\\/]/.test(
+              id,
+            )
+          )
+            return 'i18n';
+          return undefined;
         },
       },
     },

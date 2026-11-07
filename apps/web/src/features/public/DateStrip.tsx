@@ -18,10 +18,24 @@ interface DateStripProps {
 }
 
 /** Faixa de datas rolável; dias sem horário ficam desabilitados. */
-export function DateStrip({ start, days, selected, available, loading, timeZone, minDate, onSelect, onPage }: DateStripProps) {
+export function DateStrip({
+  start,
+  days,
+  selected,
+  available,
+  loading,
+  timeZone,
+  minDate,
+  onSelect,
+  onPage,
+}: DateStripProps) {
   const { t } = useTranslation();
-  const keys = React.useMemo(() => Array.from({ length: days }, (_, i) => addDaysToKey(start, i)), [start, days]);
-  const label = (key: string, pattern: string) => formatInZone(zonedToUtc(key, '12:00', timeZone), timeZone, pattern);
+  const keys = React.useMemo(
+    () => Array.from({ length: days }, (_, i) => addDaysToKey(start, i)),
+    [start, days],
+  );
+  const label = (key: string, pattern: string) =>
+    formatInZone(zonedToUtc(key, '12:00', timeZone), timeZone, pattern);
   const monthLabel = label(keys[0]!, "MMMM 'de' yyyy");
 
   return (
@@ -31,15 +45,31 @@ export function DateStrip({ start, days, selected, available, loading, timeZone,
           {monthLabel}
         </p>
         <div className="flex gap-1">
-          <Button variant="ghost" size="icon-sm" onClick={() => onPage(-1)} disabled={start <= minDate} aria-label={t('booking.prevDates')}>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => onPage(-1)}
+            disabled={start <= minDate}
+            aria-label={t('booking.prevDates')}
+          >
             <ChevronLeft aria-hidden />
           </Button>
-          <Button variant="ghost" size="icon-sm" onClick={() => onPage(1)} aria-label={t('booking.nextDates')}>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => onPage(1)}
+            aria-label={t('booking.nextDates')}
+          >
             <ChevronRight aria-hidden />
           </Button>
         </div>
       </div>
-      <div role="listbox" aria-label={t('booking.chooseDate')} className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-2 [scrollbar-width:thin]">
+      <div
+        role="listbox"
+        tabIndex={0}
+        aria-label={t('booking.chooseDate')}
+        className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-2 [scrollbar-width:thin]"
+      >
         {keys.map((key) => {
           const isAvailable = available.has(key);
           const isSelected = key === selected;
@@ -50,7 +80,7 @@ export function DateStrip({ start, days, selected, available, loading, timeZone,
               role="option"
               aria-selected={isSelected}
               aria-disabled={!isAvailable}
-              disabled={!isAvailable || loading}
+              disabled={!isAvailable}
               onClick={() => onSelect(key)}
               className={cn(
                 'flex w-14 shrink-0 snap-start flex-col items-center rounded-xl border px-1 py-2 text-center transition-colors focus-visible:outline-2 focus-visible:outline-ring',
@@ -69,8 +99,16 @@ export function DateStrip({ start, days, selected, available, loading, timeZone,
               <span className="text-lg font-semibold leading-6" aria-hidden>
                 {label(key, 'd')}
               </span>
-              <span className={cn('mt-0.5 size-1.5 rounded-full', isAvailable && !isSelected ? 'bg-success' : 'bg-transparent')} aria-hidden />
-              <span className="sr-only">{isAvailable ? t('booking.dayAvailable') : t('booking.dayUnavailable')}</span>
+              <span
+                className={cn(
+                  'mt-0.5 size-1.5 rounded-full',
+                  isAvailable && !isSelected ? 'bg-success' : 'bg-transparent',
+                )}
+                aria-hidden
+              />
+              <span className="sr-only">
+                {isAvailable ? t('booking.dayAvailable') : t('booking.dayUnavailable')}
+              </span>
             </button>
           );
         })}

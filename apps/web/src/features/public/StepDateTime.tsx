@@ -34,7 +34,9 @@ export function StepDateTime({
   const { t } = useTranslation();
   const today = todayKey(timeZone);
   const [start, setStart] = React.useState(() =>
-    selectedDay && selectedDay > today ? addDaysToKey(selectedDay, -Math.min(3, daysBetween(today, selectedDay))) : today,
+    selectedDay && selectedDay > today
+      ? addDaysToKey(selectedDay, -Math.min(3, daysBetween(today, selectedDay)))
+      : today,
   );
   const to = addDaysToKey(start, PAGE - 1);
   const slots = useSlots({ serviceId, unitId, professionalId, from: start, to });
@@ -83,7 +85,11 @@ export function StepDateTime({
         {slots.isError ? (
           <ErrorState error={slots.error} onRetry={() => void slots.refetch()} />
         ) : !slots.data ? (
-          <div className="grid grid-cols-3 gap-2 sm:grid-cols-5" aria-label={t('booking.loadingSlots')}>
+          <div
+            className="grid grid-cols-3 gap-2 sm:grid-cols-5"
+            role="status"
+            aria-label={t('booking.loadingSlots')}
+          >
             {Array.from({ length: 10 }, (_, i) => (
               <Skeleton key={i} className="h-11" />
             ))}
@@ -100,7 +106,12 @@ export function StepDateTime({
             }
           />
         ) : day ? (
-          <SlotPicker slots={byDay.get(day) ?? []} timeZone={timeZone} selected={null} onSelect={onSelectSlot} />
+          <SlotPicker
+            slots={byDay.get(day) ?? []}
+            timeZone={timeZone}
+            selected={null}
+            onSelect={onSelectSlot}
+          />
         ) : null}
       </div>
     </div>
