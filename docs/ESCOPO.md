@@ -2,7 +2,7 @@
 
 > Base: [`PESQUISA.md`](./PESQUISA.md). Este documento define **o que entra em cada versão e por quê**, as decisões de arquitetura que afetam o escopo e o plano de entrega por fases.
 >
-> **Status: aguardando aprovação.** Nada será implementado antes do "de acordo".
+> **Status: aprovado e implementado (MVP).** Decisões da aprovação: lista de espera, Google Calendar em 2 vias e login do cliente ficam na **V2**; **Mercado Pago** primeiro; **Cloudflare Pages** (com Vercel e Docker como alternativas); nome provisório **"Agendaê"** (configurável); segmento de exemplo: **salão/barbearia**.
 
 ---
 
@@ -164,7 +164,7 @@ Ao fim de **cada fase** eu rodo build e testes, resumo o que foi feito e **peço
 
 | # | Fase | Entregáveis | Critério de pronto |
 |---|---|---|---|
-| 0 | Pesquisa + escopo | `docs/PESQUISA.md`, `docs/ESCOPO.md` | **Sua aprovação** ← estamos aqui |
+| 0 | Pesquisa + escopo | `docs/PESQUISA.md`, `docs/ESCOPO.md` | Aprovado ✅ |
 | 1 | Fundação | Monorepo, Vite + TS + Tailwind + shadcn/ui, ESLint/Prettier, Vitest, i18n, tema claro/escuro, CI inicial | `pnpm build`, `pnpm test` e CI verdes |
 | 2 | Banco | Migrations versionadas, RLS, *exclusion constraint*, funções `get_available_slots` / `create_booking`, seed, testes pgTAP, `docs/BANCO.md` | Testes de RLS, concorrência e idempotência passando |
 | 3 | Backend | Edge Functions (`public-booking`, `manage-booking`, `lgpd`), Zod compartilhado, rate limit, Turnstile | Testes de unidade e integração passando |
