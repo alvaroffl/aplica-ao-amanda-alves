@@ -226,7 +226,7 @@ function WeeklyEditor({
                         l.map((x, j) => (j === i ? { ...x, start: e.target.value } : x)),
                       )
                     }
-                    className="w-32"
+                    className="w-[7.5rem] min-w-0"
                   />
                   <span className="text-muted-foreground" aria-hidden>
                     –
@@ -241,7 +241,7 @@ function WeeklyEditor({
                         l.map((x, j) => (j === i ? { ...x, end: e.target.value } : x)),
                       )
                     }
-                    className="w-32"
+                    className="w-[7.5rem] min-w-0"
                   />
                   {!readOnly && (
                     <Button
@@ -260,6 +260,8 @@ function WeeklyEditor({
               <Button
                 variant="ghost"
                 size="sm"
+                className="self-start"
+                aria-label={`${t('availability.addInterval')} — ${WEEKDAYS_PT[d]}`}
                 onClick={() =>
                   update(d, (l) => [
                     ...l,
@@ -269,7 +271,10 @@ function WeeklyEditor({
                   ])
                 }
               >
-                <Plus aria-hidden /> {t('availability.addInterval')}
+                <Plus aria-hidden />
+                <span aria-hidden className="sm:hidden 2xl:inline">
+                  {t('availability.addInterval')}
+                </span>
               </Button>
             )}
           </div>

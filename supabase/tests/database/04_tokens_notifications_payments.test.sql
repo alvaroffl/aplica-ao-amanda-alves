@@ -80,14 +80,20 @@ select throws_ok(
 -- ---------------------------------------------------------------------------
 select ok((select count(*) from public.claim_notifications(50)) >= 1, 'worker reivindica notificações vencidas');
 select is(
-  (select count(*) from public.notifications where status = 'processing'),
-  (select count(*) from public.notifications where attempts = 1),
+  (select count(*) from public.notifications
+   where business_id = '10000000-0000-0000-0000-00000000000a' and status = 'processing'),
+  (select count(*) from public.notifications
+   where business_id = '10000000-0000-0000-0000-00000000000a' and attempts = 1),
   'itens reivindicados ficam em processamento'
 );
 select public.complete_notification(
-  (select id from public.notifications where status = 'processing' limit 1), 'failed', 'timeout');
+  (select id from public.notifications
+   where business_id = '10000000-0000-0000-0000-00000000000a' and status = 'processing' limit 1),
+  'failed', 'timeout');
 select is(
-  (select count(*) from public.notifications where status = 'pending' and last_error = 'timeout' and scheduled_for > now()),
+  (select count(*) from public.notifications
+   where business_id = '10000000-0000-0000-0000-00000000000a'
+     and status = 'pending' and last_error = 'timeout' and scheduled_for > now()),
   1::bigint,
   'falha volta para a fila com backoff'
 );

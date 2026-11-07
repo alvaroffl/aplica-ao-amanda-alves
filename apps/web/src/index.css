@@ -9,6 +9,7 @@
  * texto principal ≥ 12:1, texto secundário ≥ 4.6:1, primário sobre branco ≥ 5.5:1.
  */
 :root {
+  color-scheme: light;
   --radius: 0.75rem;
   --background: oklch(0.99 0.003 286);
   --foreground: oklch(0.2 0.02 286);
@@ -35,6 +36,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --background: oklch(0.155 0.012 285);
   --foreground: oklch(0.96 0.005 286);
   --card: oklch(0.2 0.014 285);
