@@ -36,7 +36,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Spinner } from '@/components/ui/skeleton';
 import { publicUrl } from '@/lib/env';
-import { cn, initials } from '@/lib/utils';
+import { cn, copyText, initials } from '@/lib/utils';
 import { useAuth } from '@/providers/auth';
 import { BusinessProvider, useBusiness, useMemberships, type Permission } from './business';
 import { useRealtimeBookings } from './realtime';
@@ -165,7 +165,7 @@ function Sidebar() {
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(link);
+      await copyText(link);
       toast.success(t('panel.linkCopied'));
     } catch {
       toast.error(t('errors.INTERNAL_ERROR'));

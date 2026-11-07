@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { QrCode } from '@/components/common/QrCode';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { copyText } from '@/lib/utils';
 import { simulatePayment } from '../public/api';
 
 function useCountdown(until: string | null) {
@@ -39,7 +40,7 @@ export function PaymentPanel({
   const copy = async () => {
     if (!payment?.pix_qr_code) return;
     try {
-      await navigator.clipboard.writeText(payment.pix_qr_code);
+      await copyText(payment.pix_qr_code);
       toast.success(t('common.copied'));
     } catch {
       toast.error(t('errors.INTERNAL_ERROR'));
