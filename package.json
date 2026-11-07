@@ -1,0 +1,38 @@
+{
+  "name": "agendae",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Plataforma de agendamento online (MVP) — React + Supabase",
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @agendae/web dev",
+    "build": "pnpm -r --filter ./packages/** --filter ./apps/** build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:test": "supabase test db",
+    "db:types": "supabase gen types typescript --local > packages/shared/src/database.types.ts",
+    "functions:serve": "supabase functions serve --env-file supabase/functions/.env",
+    "e2e": "pnpm --filter @agendae/web e2e"
+  },
+  "devDependencies": {
+    "prettier": "3.9.10",
+    "supabase": "2.121.0",
+    "typescript": "5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "supabase",
+      "esbuild"
+    ]
+  }
+}

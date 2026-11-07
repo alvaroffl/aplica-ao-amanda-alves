@@ -1,0 +1,7 @@
+pnpm-lock.yaml
+dist
+coverage
+supabase/migrations
+supabase/tests
+packages/shared/src/database.types.ts
+docs
