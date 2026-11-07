@@ -19,6 +19,8 @@ import { supabase } from '@/lib/supabase';
 import { initials } from '@/lib/utils';
 import { useBusiness } from '../business';
 import { TIMEZONES } from '../timezones';
+import { DemoDataCard } from './DemoDataCard';
+import { PolicyCard } from './PolicyCard';
 
 type Form = z.input<typeof businessSettingsSchema>;
 
@@ -47,8 +49,9 @@ export function SettingsPage() {
       email: business.email ?? '',
       timezone: business.timezone,
       slot_interval_min: business.slot_interval_min,
-      cancellation_window_hours: business.cancellation_window_hours,
       booking_hold_min: business.booking_hold_min,
+      max_installments: business.max_installments,
+      payment_methods: business.payment_methods as ('pix' | 'card')[],
       reminder_24h: business.reminder_24h,
       reminder_2h: business.reminder_2h,
       whatsapp_enabled: business.whatsapp_enabled,
@@ -56,6 +59,13 @@ export function SettingsPage() {
   }, [business, reset]);
 
   const slug = watch('slug');
+  const methods = watch('payment_methods') ?? [];
+  const toggleMethod = (m: 'pix' | 'card', on: boolean) =>
+    setValue(
+      'payment_methods',
+      on ? [...new Set([...methods, m])] : methods.filter((x) => x !== m),
+      { shouldDirty: true, shouldValidate: true },
+    );
 
   const onSubmit = handleSubmit(async (v) => {
     try {
@@ -206,7 +216,7 @@ export function SettingsPage() {
             <CardTitle>{t('settings.policies')}</CardTitle>
             <CardDescription>{t('settings.policiesHint')}</CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-4 sm:grid-cols-3">
+          <CardContent className="grid gap-4 sm:grid-cols-2">
             <Field
               label={t('settings.slotInterval')}
               htmlFor="slot_interval_min"
@@ -222,20 +232,53 @@ export function SettingsPage() {
               </NativeSelect>
             </Field>
             <Field
-              label={t('settings.cancellationWindow')}
-              htmlFor="cancellation_window_hours"
-              error={errors.cancellation_window_hours?.message}
-              hint={t('settings.cancellationWindowHint')}
-            >
-              <Input type="number" min={0} max={720} {...register('cancellation_window_hours')} />
-            </Field>
-            <Field
               label={t('settings.hold')}
               htmlFor="booking_hold_min"
               error={errors.booking_hold_min?.message}
               hint={t('settings.holdHint')}
             >
               <Input type="number" min={5} max={120} {...register('booking_hold_min')} />
+            </Field>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('settings.payments')}</CardTitle>
+            <CardDescription>{t('settings.paymentsHint')}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {(['pix', 'card'] as const).map((m) => (
+              <label
+                key={m}
+                className="flex items-center justify-between gap-4 rounded-lg border p-3 text-sm"
+              >
+                <span>
+                  <span className="block font-medium">{t(`settings.method.${m}`)}</span>
+                  <span className="text-muted-foreground">{t(`settings.method.${m}Hint`)}</span>
+                </span>
+                <Switch checked={methods.includes(m)} onCheckedChange={(v) => toggleMethod(m, v)} />
+              </label>
+            ))}
+            {errors.payment_methods?.message && (
+              <p role="alert" className="text-sm text-destructive">
+                {t(errors.payment_methods.message)}
+              </p>
+            )}
+            <Field
+              label={t('settings.maxInstallments')}
+              htmlFor="max_installments"
+              error={errors.max_installments?.message}
+              hint={t('settings.maxInstallmentsHint')}
+              className="sm:max-w-xs"
+            >
+              <NativeSelect {...register('max_installments')} disabled={!methods.includes('card')}>
+                {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => (
+                  <option key={n} value={n}>
+                    {n === 1 ? t('settings.installmentsOne') : t('settings.installmentsN', { n })}
+                  </option>
+                ))}
+              </NativeSelect>
             </Field>
           </CardContent>
         </Card>
@@ -276,6 +319,11 @@ export function SettingsPage() {
           </Button>
         </div>
       </form>
+
+      <div className="mt-8 space-y-6">
+        <PolicyCard businessId={business.id} />
+        <DemoDataCard businessId={business.id} />
+      </div>
     </div>
   );
 }

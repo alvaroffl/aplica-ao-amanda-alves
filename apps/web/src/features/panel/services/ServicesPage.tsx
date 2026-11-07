@@ -77,6 +77,8 @@ export function ServicesPage() {
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="font-medium">{s.name}</p>
                   {!s.active && <Badge variant="secondary">{t('common.inactive')}</Badge>}
+                  {s.is_demo && <Badge variant="warning">{t('demo.badge')}</Badge>}
+                  {s.price_cents === 0 && <Badge variant="success">{t('services.free')}</Badge>}
                   {s.deposit_type !== 'none' && (
                     <Badge variant="outline">
                       {t('services.depositBadge', {
@@ -157,6 +159,7 @@ function ServiceDialog({
           : String(s.deposit_value)
         : '',
       active: s?.active ?? true,
+      is_demo: s?.is_demo ?? false,
       professional_ids:
         s?.professional_ids ?? (professionals.data ?? []).filter((p) => p.active).map((p) => p.id),
     });
@@ -165,6 +168,7 @@ function ServiceDialog({
   const depositType = watch('deposit_type');
   const selectedPros = watch('professional_ids') ?? [];
   const active = watch('active');
+  const isDemo = watch('is_demo');
 
   const onSubmit = handleSubmit(async ({ professional_ids, ...values }) => {
     try {
@@ -358,6 +362,17 @@ function ServiceDialog({
             <Switch
               checked={active}
               onCheckedChange={(v) => setValue('active', v, { shouldDirty: true })}
+            />
+          </label>
+
+          <label className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm">
+            <span>
+              <span className="block font-medium">{t('demo.flagLabel')}</span>
+              <span className="text-muted-foreground">{t('demo.flagHint')}</span>
+            </span>
+            <Switch
+              checked={Boolean(isDemo)}
+              onCheckedChange={(v) => setValue('is_demo', v, { shouldDirty: true })}
             />
           </label>
 

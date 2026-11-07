@@ -246,9 +246,26 @@ export function ManageBookingPage() {
               </CardTitle>
               <p className="text-sm text-muted-foreground">
                 {policy.can_reschedule
-                  ? t('manage.policyDeadline', { date: formatDateTime(policy.deadline, tz) })
-                  : t('manage.policyPassed', { hours: b.business.cancellation_window_hours })}
+                  ? t('manage.policyDeadline', {
+                      date: formatDateTime(policy.reschedule_deadline, tz),
+                    })
+                  : b.business.policy.client_can_reschedule
+                    ? t('manage.policyPassed', { hours: b.business.policy.reschedule_min_hours })
+                    : t('manage.rescheduleByContact')}
               </p>
+              {b.deposit_cents > 0 && b.payment?.status === 'approved' && (
+                <p className="text-sm text-muted-foreground">
+                  {policy.refund_eligible
+                    ? t('manage.refundUntil', {
+                        date: formatDateTime(policy.refund_deadline, tz),
+                        percent: policy.refund_percent,
+                      })
+                    : t('manage.refundPassed')}
+                </p>
+              )}
+              {b.business.policy.notes && (
+                <p className="text-sm text-muted-foreground">{b.business.policy.notes}</p>
+              )}
             </CardHeader>
             <CardContent>
               {rescheduling ? (
@@ -258,14 +275,16 @@ export function ManageBookingPage() {
                   <Button onClick={() => setRescheduling(true)} disabled={!policy.can_reschedule}>
                     {t('manage.reschedule')}
                   </Button>
-                  <CancelDialog
-                    refund={policy.refund_eligible}
-                    hasDeposit={b.deposit_cents > 0 && b.payment?.status === 'approved'}
-                    reason={reason}
-                    setReason={setReason}
-                    onConfirm={cancel}
-                    loading={cancelling}
-                  />
+                  {policy.can_cancel && (
+                    <CancelDialog
+                      refund={policy.refund_eligible}
+                      hasDeposit={b.deposit_cents > 0 && b.payment?.status === 'approved'}
+                      reason={reason}
+                      setReason={setReason}
+                      onConfirm={cancel}
+                      loading={cancelling}
+                    />
+                  )}
                 </div>
               )}
             </CardContent>

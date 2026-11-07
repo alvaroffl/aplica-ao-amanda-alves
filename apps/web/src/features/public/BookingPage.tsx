@@ -230,7 +230,12 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
         <div className="min-w-0">
           {current === 'service' && !service && (
             <div className="mb-6 space-y-1">
-              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{business.name}</h1>
+              <p className="text-sm tracking-[0.3em] text-primary" aria-hidden>
+                ✦
+              </p>
+              <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+                {business.name}
+              </h1>
               {business.description && (
                 <p className="text-muted-foreground">{business.description}</p>
               )}
@@ -339,8 +344,11 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
             <React.Suspense fallback={<Skeleton className="h-96" />}>
               <StepDetails
                 depositCents={service!.deposit_cents}
+                priceCents={service!.price_cents}
                 currency={business.currency}
-                cancellationHours={business.cancellation_window_hours}
+                policy={business.policy}
+                paymentMethods={business.payment_methods}
+                maxInstallments={business.max_installments}
                 submitting={submitting}
                 onSubmit={onSubmit}
                 captchaRef={captchaRef}

@@ -15,6 +15,7 @@ import {
   Settings,
   Users,
   UsersRound,
+  Wallet,
 } from 'lucide-react';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -38,6 +39,7 @@ import { Spinner } from '@/components/ui/skeleton';
 import { publicUrl } from '@/lib/env';
 import { cn, copyText, initials } from '@/lib/utils';
 import { useAuth } from '@/providers/auth';
+import { DemoBanner } from './demo';
 import { BusinessProvider, useBusiness, useMemberships, type Permission } from './business';
 import { useRealtimeBookings } from './realtime';
 
@@ -114,6 +116,7 @@ function PanelShell() {
       </Dialog>
 
       <main id="conteudo" className="min-w-0 px-4 py-6 sm:px-6 lg:px-8">
+        <DemoBanner />
         <Outlet />
       </main>
     </div>
@@ -142,6 +145,12 @@ function Sidebar() {
       label: t('panel.nav.units'),
       icon: Building2,
       permission: 'units.manage',
+    },
+    {
+      to: '/painel/pagamentos',
+      label: t('panel.nav.payments'),
+      icon: Wallet,
+      permission: 'payments.view',
     },
     {
       to: '/painel/relatorios',

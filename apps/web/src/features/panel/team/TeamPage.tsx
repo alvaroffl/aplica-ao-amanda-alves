@@ -142,6 +142,7 @@ function ProfessionalDialog({
     reset({
       name: p?.name ?? '',
       bio: p?.bio ?? '',
+      credentials: p?.credentials ?? '',
       color: p?.color ?? COLORS[Math.floor(Math.random() * COLORS.length)],
       active: p?.active ?? true,
       unit_ids: p?.unit_ids ?? (units.data ?? []).map((u) => u.id),
@@ -162,7 +163,12 @@ function ProfessionalDialog({
 
   const onSubmit = handleSubmit(async ({ unit_ids, service_ids, ...values }) => {
     try {
-      const payload = { ...values, bio: values.bio || null, business_id: business.id };
+      const payload = {
+        ...values,
+        bio: values.bio || null,
+        credentials: values.credentials || null,
+        business_id: business.id,
+      };
       const id =
         editing === 'new'
           ? unwrap(await supabase.from('professionals').insert(payload).select('id').single()).id
@@ -222,6 +228,14 @@ function ProfessionalDialog({
             hint={t('team.bioHint')}
           >
             <Textarea rows={2} {...register('bio')} />
+          </Field>
+          <Field
+            label={t('team.credentials')}
+            htmlFor="credentials"
+            error={errors.credentials?.message}
+            hint={t('team.credentialsHint')}
+          >
+            <Input placeholder={t('team.credentialsPlaceholder')} {...register('credentials')} />
           </Field>
           <fieldset>
             <legend className="mb-2 text-sm font-medium">{t('team.color')}</legend>

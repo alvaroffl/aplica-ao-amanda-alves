@@ -26,8 +26,18 @@ export function StepService({
     groups.set(key, [...(groups.get(key) ?? []), s]);
   }
 
+  const hasDemo = services.some((s) => s.is_demo);
+
   return (
     <div className="space-y-6">
+      {hasDemo && (
+        <p
+          role="note"
+          className="rounded-lg border border-dashed px-3 py-2 text-xs text-muted-foreground"
+        >
+          {t('booking.demoPrices')}
+        </p>
+      )}
       {[...groups.entries()].map(([category, items]) => (
         <section key={category} aria-labelledby={`cat-${category}`}>
           {groups.size > 1 && (
@@ -54,6 +64,9 @@ export function StepService({
                       <span className="inline-flex items-center gap-1">
                         <Clock className="size-3.5" aria-hidden /> {formatDuration(s.duration_min)}
                       </span>
+                      {s.price_cents === 0 && (
+                        <Badge variant="success">{t('booking.freeBadge')}</Badge>
+                      )}
                       {s.deposit_cents > 0 && (
                         <Badge variant="secondary">
                           {t('booking.depositBadge', {
@@ -64,7 +77,7 @@ export function StepService({
                     </div>
                   </div>
                   <span className="font-semibold tabular-nums">
-                    {formatMoney(s.price_cents, currency)}
+                    {s.price_cents === 0 ? t('booking.free') : formatMoney(s.price_cents, currency)}
                   </span>
                   <ChevronRight className="size-4 text-muted-foreground" aria-hidden />
                 </button>

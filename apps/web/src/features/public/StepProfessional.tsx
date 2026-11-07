@@ -56,6 +56,7 @@ export function StepProfessional({
             )}
             <span className="min-w-0 flex-1">
               <span className="block font-medium">{p.name}</span>
+              {p.credentials && <span className="block truncate text-sm">{p.credentials}</span>}
               {p.bio && (
                 <span className="block truncate text-sm text-muted-foreground">{p.bio}</span>
               )}

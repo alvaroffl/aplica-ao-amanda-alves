@@ -13,6 +13,8 @@ export const env = {
   supabaseUrl: resolveSupabaseUrl(import.meta.env.VITE_SUPABASE_URL || 'http://127.0.0.1:54321'),
   supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
   turnstileSiteKey: import.meta.env.VITE_TURNSTILE_SITE_KEY || '',
+  /** "live" só em produção com o gateway real; qualquer outro valor = modo de teste */
+  paymentsTestMode: import.meta.env.VITE_PAYMENTS_MODE !== 'live',
 };
 
 export const functionsUrl = `${env.supabaseUrl}/functions/v1`;

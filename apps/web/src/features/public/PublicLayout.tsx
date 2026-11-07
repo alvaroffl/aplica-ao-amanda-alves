@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
 import { Logo } from '@/components/common/Logo';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
+import { WhatsAppButton } from '@/components/common/WhatsAppButton';
 import { initials } from '@/lib/utils';
 
 export function PublicLayout({
   business,
   children,
 }: {
-  business?: { name: string; logo_url: string | null; slug: string } | null;
+  business?: { name: string; logo_url: string | null; slug: string; phone?: string | null } | null;
   children: ReactNode;
 }) {
   const { t } = useTranslation();
@@ -46,7 +47,8 @@ export function PublicLayout({
       <main id="conteudo" className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 sm:py-10">
         {children}
       </main>
-      <footer className="border-t py-6 text-center text-xs text-muted-foreground">
+      {business?.phone && <WhatsAppButton phone={business.phone} />}
+      <footer className="border-t pt-6 pb-24 text-center text-xs text-muted-foreground">
         <p className="inline-flex flex-wrap items-center justify-center gap-x-1.5">
           <span>{t('common.poweredBy')}</span>
           <Logo className="gap-1 text-xs font-medium [&_svg]:size-4" />

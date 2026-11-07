@@ -10,8 +10,17 @@ function setup(depositCents = 0) {
   render(
     <StepDetails
       depositCents={depositCents}
+      priceCents={depositCents * 3}
       currency="BRL"
-      cancellationHours={24}
+      policy={{
+        reschedule_min_hours: 48,
+        refund_min_hours: 24,
+        refund_percent: 100,
+        client_can_reschedule: true,
+        client_can_cancel: true,
+        notes: null,
+      }}
+      maxInstallments={3}
       submitting={false}
       onSubmit={onSubmit}
       captchaRef={createRef<TurnstileHandle>()}

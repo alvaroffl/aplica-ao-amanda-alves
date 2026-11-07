@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { ANON_KEY, SUPABASE_URL } from './helpers';
 
-const SERVICE = 'e3000000-0000-0000-0000-000000000006'; // Barba (Rafael)
+const SERVICE = 'e3000000-0000-0000-0000-000000000001'; // Avaliação gratuita (sem sinal)
 const UNIT = 'e1000000-0000-0000-0000-000000000001';
 
 test('duas reservas simultâneas no mesmo horário: só uma passa (constraint no banco)', async ({

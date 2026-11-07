@@ -2,22 +2,27 @@ import { expect, test } from '@playwright/test';
 import { expectAccessible, fillDetails, pickFirstSlot, SLUG, uniqueEmail } from './helpers';
 
 test.describe('reserva pública (celular)', () => {
-  test('cliente agenda em 4 passos, sem cadastro, e cancela pelo link seguro', async ({ page }) => {
+  test('avaliação gratuita: agenda sem cadastro nem pagamento e cancela pelo link', async ({
+    page,
+  }) => {
     await page.goto(`/${SLUG}`);
     await expect(page.getByRole('heading', { name: 'Escolha o serviço' })).toBeVisible();
+    // dados fictícios sinalizados e canal de apoio no WhatsApp
+    await expect(page.getByText(/Valores, durações e sinais ilustrativos/)).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: /Falar com a Amanda|Chamar no WhatsApp/ }),
+    ).toHaveAttribute('href', /wa\.me\/5532988829364/);
     await expectAccessible(page);
 
-    // 1. serviço (Escova: duas profissionais → passo de profissional aparece)
-    await page.getByRole('button', { name: /Escova/ }).click();
-    // 2. profissional
-    await expect(page.getByText('Passo 2 de 4')).toBeVisible();
-    await page.getByRole('button', { name: /Qualquer profissional/ }).click();
-    // 3. data e horário
-    await expect(page.getByText('Passo 3 de 4')).toBeVisible();
+    // 1. serviço (uma profissional → sem o passo de escolha)
+    await page.getByRole('button', { name: /Avaliação gratuita/ }).click();
+    // 2. data e horário
+    await expect(page.getByText('Passo 2 de 3')).toBeVisible();
     await expectAccessible(page);
     const time = await pickFirstSlot(page);
-    // 4. dados
-    await expect(page.getByText('Passo 4 de 4')).toBeVisible();
+    // 3. dados
+    await expect(page.getByText('Passo 3 de 3')).toBeVisible();
+    await expect(page.getByText(/A avaliação é gratuita e não exige pagamento/)).toBeVisible();
     await page.getByRole('button', { name: 'Confirmar agendamento' }).click();
     await expect(page.getByText('É preciso concordar para continuar.')).toBeVisible();
     await fillDetails(page, 'Cliente E2E', uniqueEmail('reserva'));
@@ -43,7 +48,7 @@ test.describe('reserva pública (celular)', () => {
 
   test('voltar do navegador preserva os passos (estado na URL)', async ({ page }) => {
     await page.goto(`/${SLUG}`);
-    await page.getByRole('button', { name: /Manicure/ }).click(); // um profissional → pula passo 2
+    await page.getByRole('button', { name: /^Micro Sobrancelha/ }).click(); // uma profissional
     await expect(page.getByText('Passo 2 de 3')).toBeVisible();
     await page.goBack();
     await expect(page.getByRole('heading', { name: 'Escolha o serviço' })).toBeVisible();

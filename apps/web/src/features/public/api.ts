@@ -73,8 +73,9 @@ export function useBookingByToken(token: string | undefined) {
       if (!data) throw new ApiError('INVALID_TOKEN', 404);
       return data;
     },
-    // aguardando pagamento: consulta a cada 4s até confirmar ou expirar
-    refetchInterval: (q) => (q.state.data?.status === 'pending_payment' ? 4000 : false),
+    // aguardando pagamento: o aviso em tempo real (PaymentPanel) atualiza na hora;
+    // a consulta periódica é a rede de segurança se o WebSocket cair
+    refetchInterval: (q) => (q.state.data?.status === 'pending_payment' ? 8000 : false),
   });
 }
 

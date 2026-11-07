@@ -9,6 +9,8 @@ type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]>
  */
 const en: DeepPartial<Translations> = {
   common: {
+    whatsappCta: 'Chat on WhatsApp',
+    whatsappGreeting: 'Hi! I came from the booking page and have a question.',
     close: 'Close',
     cancel: 'Cancel',
     save: 'Save',
@@ -42,6 +44,7 @@ const en: DeepPartial<Translations> = {
     consent: 'You must agree to continue.',
   },
   errors: {
+    CANCEL_NOT_ALLOWED: 'Cancelling by link is turned off. Please contact the clinic.',
     SLOT_UNAVAILABLE: 'This time was just booked. Please choose another one.',
     BUSINESS_NOT_FOUND: 'Business not found.',
     INVALID_TOKEN: 'Invalid or expired link.',
@@ -73,6 +76,25 @@ const en: DeepPartial<Translations> = {
   },
   periods: { morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening' },
   booking: {
+    policy: {
+      reschedule: 'You can reschedule from the link up to {{hours}}h before.',
+      refundFull:
+        'Cancel up to {{hours}}h before and the deposit is refunded; after that, no refund.',
+      refundPartial:
+        'Cancel up to {{hours}}h before and {{percent}}% of the deposit is refunded; after that, no refund.',
+      noRefund: 'The deposit is non-refundable.',
+    },
+    pixHint:
+      'The QR code and copy & paste code appear on the next screen. Confirmation is automatic.',
+    cardHint: "Credit or debit, on Mercado Pago's secure page. Your card details never reach us.",
+    cardHintInstallments:
+      "Credit in up to {{n}} installments or debit, on Mercado Pago's secure page. Your card details never reach us.",
+    free: 'Free',
+    freeBadge: 'No cost',
+    freeEvaluation:
+      'The consultation is free and needs no payment. You will get a confirmation by email.',
+    demoPrices:
+      'Illustrative prices, durations and deposits (demo). Official values will be confirmed by the clinic.',
     pageTitle: 'Book an appointment',
     progress: 'Booking progress',
     stepOf: 'Step {{current}} of {{total}}',
@@ -139,6 +161,12 @@ const en: DeepPartial<Translations> = {
     businessNotFoundHint: 'Double-check the link with whoever sent it.',
   },
   payment: {
+    testModeTitle: 'Test mode:',
+    testModeText: "no real charge is made. Use Mercado Pago's test data or the simulate button.",
+    rejected: 'The payment was not approved. You can try again with another card or Pix.',
+    cardSecure: "You'll go to Mercado Pago's secure checkout (credit or debit).",
+    cardSecureInstallments:
+      "You'll go to Mercado Pago's secure checkout: credit in up to {{n}} installments or debit.",
     title: 'Pay the deposit to confirm',
     subtitle: 'Your time is held while the {{amount}} payment is made.',
     expiresIn: 'Hold expires in {{time}}',
@@ -154,6 +182,9 @@ const en: DeepPartial<Translations> = {
     simulate: 'Simulate approved payment (development mode)',
   },
   manage: {
+    rescheduleByContact: 'To reschedule, please contact the clinic.',
+    refundUntil: 'Cancel by {{date}} and {{percent}}% of the deposit is refunded.',
+    refundPassed: 'The deposit refund deadline has passed.',
     pageTitle: 'Your booking',
     title: 'Your booking',
     confirmedTitle: 'Booking confirmed!',

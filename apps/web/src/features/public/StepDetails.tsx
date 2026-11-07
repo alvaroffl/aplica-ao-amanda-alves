@@ -1,17 +1,20 @@
 import { formatMoney } from '@agendae/shared/money';
-import type { ClientDetails, ClientDetailsInput } from '@agendae/shared';
+import type { BookingPolicy, ClientDetails, ClientDetailsInput } from '@agendae/shared';
 import { clientDetailsSchema } from '@agendae/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreditCard, QrCode, ShieldCheck } from 'lucide-react';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
+import { TestModeNotice } from '@/components/common/TestModeNotice';
 import { Turnstile, captchaEnabled, type TurnstileHandle } from '@/components/common/Turnstile';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Field } from '@/components/ui/field';
 import { Input, Textarea } from '@/components/ui/input';
+import { env } from '@/lib/env';
 import { cn } from '@/lib/utils';
+import { policySummary } from './policy';
 
 export interface DetailsSubmit {
   client: ClientDetails;
@@ -21,22 +24,30 @@ export interface DetailsSubmit {
 
 export function StepDetails({
   depositCents,
+  priceCents,
   currency,
-  cancellationHours,
+  policy,
+  paymentMethods = ['pix', 'card'],
+  maxInstallments = 1,
   submitting,
   onSubmit,
   captchaRef,
 }: {
   depositCents: number;
+  priceCents: number;
   currency: string;
-  cancellationHours: number;
+  policy: BookingPolicy;
+  paymentMethods?: ('pix' | 'card')[];
+  maxInstallments?: number;
   submitting: boolean;
   onSubmit: (data: DetailsSubmit) => void;
   captchaRef: React.RefObject<TurnstileHandle | null>;
 }) {
   const { t, i18n } = useTranslation();
   const [captchaToken, setCaptchaToken] = React.useState('');
-  const [paymentMethod, setPaymentMethod] = React.useState<'pix' | 'card'>('pix');
+  const [paymentMethod, setPaymentMethod] = React.useState<'pix' | 'card'>(
+    paymentMethods[0] ?? 'pix',
+  );
   const {
     register,
     control,
@@ -100,8 +111,8 @@ export function StepDetails({
           <p className="text-sm">
             {t('booking.depositText', { amount: formatMoney(depositCents, currency) })}
           </p>
-          <div className="grid grid-cols-2 gap-2">
-            {(['pix', 'card'] as const).map((m) => (
+          <div className={cn('grid gap-2', paymentMethods.length > 1 && 'grid-cols-2')}>
+            {paymentMethods.map((m) => (
               <label
                 key={m}
                 className={cn(
@@ -126,13 +137,30 @@ export function StepDetails({
               </label>
             ))}
           </div>
+          <p className="text-xs text-muted-foreground">
+            {paymentMethod === 'pix'
+              ? t('booking.pixHint')
+              : maxInstallments > 1
+                ? t('booking.cardHintInstallments', { n: maxInstallments })
+                : t('booking.cardHint')}
+          </p>
+          {env.paymentsTestMode && <TestModeNotice />}
         </fieldset>
       )}
 
-      <p className="flex items-start gap-2 text-sm text-muted-foreground">
-        <ShieldCheck className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
-        {t('booking.policyText', { hours: cancellationHours })}
-      </p>
+      {priceCents === 0 && (
+        <p className="rounded-lg bg-accent/40 p-3 text-sm">{t('booking.freeEvaluation')}</p>
+      )}
+
+      {(() => {
+        const text = policySummary(t, policy, depositCents > 0);
+        return text ? (
+          <p className="flex items-start gap-2 text-sm text-muted-foreground">
+            <ShieldCheck className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
+            {text}
+          </p>
+        ) : null;
+      })()}
 
       <div className="space-y-1.5">
         <div className="flex items-start gap-3">

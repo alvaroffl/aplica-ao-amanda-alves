@@ -58,6 +58,9 @@ const UnitsPage = lazy(() =>
 const ReportsPage = lazy(() =>
   import('@/features/panel/reports/ReportsPage').then((m) => ({ default: m.ReportsPage })),
 );
+const PaymentsPage = lazy(() =>
+  import('@/features/panel/payments/PaymentsPage').then((m) => ({ default: m.PaymentsPage })),
+);
 const NotificationsPage = lazy(() =>
   import('@/features/panel/notifications/NotificationsPage').then((m) => ({
     default: m.NotificationsPage,
@@ -95,6 +98,7 @@ const routes: RouteObject[] = [
           { path: 'disponibilidade', element: page(<AvailabilityPage />) },
           { path: 'unidades', element: page(<UnitsPage />) },
           { path: 'relatorios', element: page(<ReportsPage />) },
+          { path: 'pagamentos', element: page(<PaymentsPage />) },
           { path: 'notificacoes', element: page(<NotificationsPage />) },
           { path: 'configuracoes', element: page(<SettingsPage />) },
         ],

@@ -24,6 +24,8 @@ const PERMISSIONS = {
   'clients.lgpd': ['admin'],
   'reports.view': ['admin', 'reception'],
   'notifications.view': ['admin', 'reception'],
+  'payments.view': ['admin', 'reception'],
+  'payments.refund': ['admin'],
 } as const satisfies Record<string, readonly MemberRole[]>;
 
 export type Permission = keyof typeof PERMISSIONS;

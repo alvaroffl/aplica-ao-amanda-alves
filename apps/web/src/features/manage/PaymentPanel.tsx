@@ -6,10 +6,39 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { QrCode } from '@/components/common/QrCode';
+import { TestModeNotice } from '@/components/common/TestModeNotice';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { copyText } from '@/lib/utils';
 import { simulatePayment } from '../public/api';
+
+/**
+ * Aviso em tempo real do pagamento (Supabase Realtime, canal Broadcast com nome
+ * secreto que só quem tem o link conhece). O cliente do Supabase é carregado só
+ * nesta tela, para não pesar o restante da página pública.
+ */
+function usePaymentRealtime(topic: string | undefined) {
+  const qc = useQueryClient();
+  React.useEffect(() => {
+    if (!topic) return;
+    let disposed = false;
+    let cleanup: (() => void) | undefined;
+    void import('@/lib/supabase').then(({ supabase }) => {
+      if (disposed) return;
+      const channel = supabase
+        .channel(topic, { config: { private: false } })
+        .on('broadcast', { event: 'payment_status' }, () => {
+          void qc.invalidateQueries({ queryKey: ['booking-token'] });
+        })
+        .subscribe();
+      cleanup = () => void supabase.removeChannel(channel);
+    });
+    return () => {
+      disposed = true;
+      cleanup?.();
+    };
+  }, [topic, qc]);
+}
 
 function useCountdown(until: string | null) {
   const [now, setNow] = React.useState(() => Date.now());
@@ -36,6 +65,8 @@ export function PaymentPanel({
   const payment = booking.payment;
   const countdown = useCountdown(booking.hold_expires_at);
   const [simulating, setSimulating] = React.useState(false);
+
+  usePaymentRealtime(booking.realtime_topic);
 
   const copy = async () => {
     if (!payment?.pix_qr_code) return;
@@ -75,6 +106,12 @@ export function PaymentPanel({
         )}
       </CardHeader>
       <CardContent className="space-y-4">
+        {payment?.test_mode && <TestModeNotice />}
+        {payment?.status === 'rejected' && (
+          <p role="alert" className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+            {t('payment.rejected')}
+          </p>
+        )}
         {!payment ? (
           <p className="text-sm text-muted-foreground">{t('payment.unavailable')}</p>
         ) : payment.method === 'pix' && payment.pix_qr_code ? (
@@ -105,11 +142,18 @@ export function PaymentPanel({
             </div>
           </div>
         ) : payment.checkout_url ? (
-          <Button asChild size="lg" className="w-full">
-            <a href={payment.checkout_url}>
-              <CreditCard aria-hidden /> {t('payment.cardButton')}
-            </a>
-          </Button>
+          <div className="space-y-2">
+            <Button asChild size="lg" className="w-full">
+              <a href={payment.checkout_url}>
+                <CreditCard aria-hidden /> {t('payment.cardButton')}
+              </a>
+            </Button>
+            <p className="text-center text-xs text-muted-foreground">
+              {booking.business.max_installments > 1
+                ? t('payment.cardSecureInstallments', { n: booking.business.max_installments })
+                : t('payment.cardSecure')}
+            </p>
+          </div>
         ) : (
           <p className="text-sm text-muted-foreground">{t('payment.cardFake')}</p>
         )}

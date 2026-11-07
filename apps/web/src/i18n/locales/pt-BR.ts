@@ -1,5 +1,7 @@
 const ptBR = {
   common: {
+    whatsappCta: 'Chamar no WhatsApp',
+    whatsappGreeting: 'Olá! Vim pela página de agendamento e gostaria de tirar uma dúvida.',
     close: 'Fechar',
     cancel: 'Cancelar',
     save: 'Salvar',
@@ -32,6 +34,7 @@ const ptBR = {
   },
 
   validation: {
+    paymentMethodRequired: 'Mantenha pelo menos uma forma de pagamento ativa.',
     required: 'Campo obrigatório.',
     invalid: 'Valor inválido.',
     email: 'Informe um e-mail válido.',
@@ -61,6 +64,9 @@ const ptBR = {
   },
 
   errors: {
+    CANCEL_NOT_ALLOWED: 'O cancelamento pelo link está desativado. Fale com a clínica.',
+    PAYMENT_NOT_REFUNDABLE: 'Este pagamento não pode ser estornado agora.',
+    INVALID_REFUND_AMOUNT: 'Valor de estorno inválido.',
     SLOT_UNAVAILABLE: 'Esse horário acabou de ser reservado. Escolha outro, por favor.',
     SERVICE_NOT_FOUND: 'Serviço não encontrado.',
     UNIT_NOT_FOUND: 'Unidade não encontrada.',
@@ -133,6 +139,9 @@ const ptBR = {
         text: 'Configure por serviço e reduza faltas. O estorno segue a sua política.',
       },
       team: {
+        credentials: 'Formação / credenciais (opcional)',
+        credentialsHint: 'Só aparece na página de agendamento se preenchido.',
+        credentialsPlaceholder: 'Ex.: formação e registro profissional',
         title: 'Equipe e unidades',
         text: 'Agenda por profissional, várias unidades e permissões de recepção.',
       },
@@ -144,6 +153,26 @@ const ptBR = {
   },
 
   booking: {
+    policy: {
+      reschedule: 'Você pode remarcar pelo link até {{hours}}h antes.',
+      refundFull:
+        'Cancelando até {{hours}}h antes, o sinal é devolvido; depois disso, não há devolução.',
+      refundPartial:
+        'Cancelando até {{hours}}h antes, {{percent}}% do sinal é devolvido; depois disso, não há devolução.',
+      noRefund: 'O sinal não é reembolsável.',
+    },
+    pixHint:
+      'O QR Code e o código copia e cola aparecem na próxima tela. A confirmação é automática.',
+    cardHint:
+      'Crédito ou débito, em ambiente seguro do Mercado Pago. Seus dados de cartão não passam por nós.',
+    cardHintInstallments:
+      'Crédito em até {{n}}x ou débito, em ambiente seguro do Mercado Pago. Seus dados de cartão não passam por nós.',
+    free: 'Gratuito',
+    freeBadge: 'Sem custo',
+    freeEvaluation:
+      'A avaliação é gratuita e não exige pagamento. Você recebe a confirmação por e-mail.',
+    demoPrices:
+      'Valores, durações e sinais ilustrativos (demonstração). Os valores oficiais serão confirmados pela clínica.',
     pageTitle: 'Agendar horário',
     progress: 'Progresso do agendamento',
     stepOf: 'Passo {{current}} de {{total}}',
@@ -211,6 +240,13 @@ const ptBR = {
   },
 
   payment: {
+    testModeTitle: 'Modo de teste:',
+    testModeText:
+      'nenhuma cobrança é real. Use os dados de teste do Mercado Pago ou o botão de simulação.',
+    rejected: 'O pagamento não foi aprovado. Você pode tentar de novo com outro cartão ou com Pix.',
+    cardSecure: 'Você será levada ao checkout seguro do Mercado Pago (crédito ou débito).',
+    cardSecureInstallments:
+      'Você será levada ao checkout seguro do Mercado Pago: crédito em até {{n}}x ou débito.',
     title: 'Pague o sinal para confirmar',
     subtitle: 'Seu horário fica reservado enquanto o pagamento de {{amount}} é feito.',
     expiresIn: 'Reserva expira em {{time}}',
@@ -227,6 +263,9 @@ const ptBR = {
   },
 
   manage: {
+    rescheduleByContact: 'Para remarcar, fale com a clínica.',
+    refundUntil: 'Cancelando até {{date}}, {{percent}}% do sinal é devolvido.',
+    refundPassed: 'O prazo para devolução do sinal já passou.',
     pageTitle: 'Seu agendamento',
     title: 'Seu agendamento',
     confirmedTitle: 'Agendamento confirmado!',
@@ -342,6 +381,7 @@ const ptBR = {
       units: 'Unidades',
       reports: 'Relatórios',
       notifications: 'Notificações',
+      payments: 'Pagamentos',
       settings: 'Configurações',
     },
   },
@@ -390,6 +430,7 @@ const ptBR = {
   },
 
   services: {
+    free: 'Gratuito',
     title: 'Serviços',
     subtitle: 'O que seus clientes podem agendar online.',
     firstHint: 'Comece cadastrando seus serviços. Depois, ajuste os horários em Disponibilidade.',
@@ -618,12 +659,41 @@ const ptBR = {
     description: 'Descrição (aparece na página pública)',
     phone: 'Telefone / WhatsApp',
     email: 'E-mail de contato',
-    policies: 'Políticas de agendamento',
+    policies: 'Regras da agenda',
     policiesHint: 'Valem para todos os serviços.',
+    payments: 'Pagamento online do sinal',
+    paymentsHint:
+      'Formas aceitas na página de agendamento. Avaliações gratuitas não passam por pagamento.',
+    method: {
+      pix: 'Pix',
+      pixHint: 'QR Code e copia e cola, com confirmação automática e prazo de expiração.',
+      card: 'Cartão (crédito e débito)',
+      cardHint: 'Checkout seguro do Mercado Pago. Inclui o saldo da conta Mercado Pago.',
+    },
+    maxInstallments: 'Parcelamento no crédito',
+    maxInstallmentsHint:
+      'Juros do parcelamento seguem a configuração da sua conta no Mercado Pago.',
+    installmentsOne: 'Somente à vista',
+    installmentsN: 'Em até {{n}}x',
+    policy: {
+      title: 'Política de remarcação e cancelamento',
+      hint: 'Regras aplicadas automaticamente no link que a cliente recebe por e-mail.',
+      reschedule: 'Remarcação até (h antes)',
+      rescheduleHint: 'Ex.: 48 = remarcação gratuita até 2 dias antes.',
+      refundWindow: 'Devolução do sinal até (h antes)',
+      refundWindowHint: 'Depois disso, o sinal fica retido.',
+      refundPercent: 'Quanto do sinal volta (%)',
+      refundPercentHint: '100 = integral; 0 = não reembolsável.',
+      clientReschedule: 'A cliente pode remarcar pelo link',
+      clientRescheduleHint: 'Desligado: remarcação só falando com a clínica.',
+      clientCancel: 'A cliente pode cancelar pelo link',
+      clientCancelHint: 'Pré-reservas aguardando sinal sempre podem ser canceladas.',
+      notes: 'Observações da política (opcional)',
+      notesHint: 'Aparece para a cliente na reserva e no e-mail.',
+      save: 'Salvar política',
+    },
     slotInterval: 'Intervalo entre horários',
     slotIntervalHint: 'Ex.: 30 → 09:00, 09:30…',
-    cancellationWindow: 'Prazo de cancelamento (h)',
-    cancellationWindowHint: 'Até quando o cliente reagenda/cancela com estorno.',
     hold: 'Reserva aguardando sinal (min)',
     holdHint: 'Depois disso, o horário é liberado.',
     notifications: 'Lembretes',
@@ -636,6 +706,47 @@ const ptBR = {
     whatsappHint: 'Requer a API oficial do WhatsApp configurada no servidor.',
   },
 
+  demo: {
+    badge: 'Demonstração',
+    banner: 'Dados de demonstração',
+    bannerText: 'Preços, horários, política, clientes e reservas fictícios para a apresentação.',
+    manage: 'Remover',
+    flagLabel: 'Dado de demonstração',
+    flagHint: 'Marcado como fictício; sai junto na limpeza antes do lançamento.',
+    cardTitle: 'Dados de demonstração',
+    cardText:
+      'Remove serviços e preços fictícios, horários, bloqueios, clientes e reservas de exemplo (com os pagamentos de teste). A política volta ao padrão até você definir a oficial.',
+    purge: 'Remover dados de demonstração',
+    purgeTitle: 'Remover todos os dados de demonstração?',
+    purgeText:
+      'Reservas feitas nos serviços de demonstração também saem. Cadastre os serviços e horários oficiais em seguida. Não é possível desfazer.',
+    purgeConfirm: 'Remover',
+    purged: 'Dados de demonstração removidos.',
+  },
+  payments: {
+    title: 'Pagamentos',
+    subtitle: 'Sinais pagos online por agendamento: status, valor, forma de pagamento e estornos.',
+    filter: 'Status',
+    all: 'Todos',
+    received: 'Recebido (líquido de estornos)',
+    refundedTotal: 'Estornado',
+    empty: 'Nenhum pagamento por aqui',
+    emptyHint: 'Os sinais pagos pela página de agendamento aparecem nesta lista.',
+    appointment: 'Atendimento em {{when}}',
+    refundedAmount: '{{amount}} estornado',
+    test: 'Teste',
+    refund: 'Estornar',
+    refundTitle: 'Estornar pagamento',
+    refundText:
+      'O valor volta para a cliente pelo mesmo meio de pagamento. A reserva não é cancelada automaticamente.',
+    refundTextTest:
+      'Pagamento de teste: o estorno é simulado. A reserva não é cancelada automaticamente.',
+    refundAmount: 'Valor do estorno (R$)',
+    refundMax: 'Máximo: {{max}}',
+    refundInvalid: 'Informe um valor entre R$ 0,01 e {{max}}.',
+    refundQueued: 'Estorno solicitado. Ele é processado em instantes.',
+    refundConfirm: 'Confirmar estorno',
+  },
   privacy: {
     title: 'Política de privacidade',
     version: 'Versão {{version}}',
