@@ -96,6 +96,16 @@ Com `VITE_SUPABASE_URL=/supabase` (padrão do `.env.example`), o navegador fala 
 - Instalar como app (PWA) e o modo offline exigem HTTPS. Pela rede local o site funciona normalmente, mas sem essas duas coisas.
 - Endereços IP são aceitos por padrão. Para acessar por um nome de host (túnel ou pré-visualização remota), rode com `DEV_ALLOW_ANY_HOST=1`. Isso desliga a proteção contra _DNS rebinding_ do Vite, então use só em rede confiável.
 
+### GitHub Codespaces (sem instalar nada, até pelo celular)
+
+O repositório traz um [`.devcontainer`](.devcontainer) que instala tudo e sobe o Supabase, as Edge Functions e o site sozinho.
+
+1. Em [github.com/codespaces](https://github.com/codespaces), clique em **New codespace**, escolha este repositório e a branch, e crie.
+2. Espere a preparação terminar. Na primeira vez leva de 5 a 10 minutos, porque baixa as imagens do Supabase.
+3. Abra a aba **Ports**, clique no globo da porta **5173 (Agendaê)** e acrescente `/studio-exemplo` ao endereço. O endereço também aparece no fim do log de inicialização.
+
+O link `https://…-5173.app.github.dev` só abre para quem está logado no GitHub com a sua conta. Para mostrar a outra pessoa, mude a visibilidade da porta para **Public**. Logs: `/tmp/agendae-web.log` e `/tmp/agendae-functions.log`.
+
 ### Scripts
 
 | Comando                                        | Faz                                                                          |
