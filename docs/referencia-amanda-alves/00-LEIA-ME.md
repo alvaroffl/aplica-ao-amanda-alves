@@ -23,7 +23,9 @@ regras.
 | [03-identidade-visual-e-tom.md](03-identidade-visual-e-tom.md) | Estilo, tom de voz, chamadas, paleta e fontes (proposta) |
 | [04-fluxo-de-agendamento.md](04-fluxo-de-agendamento.md) | Fluxo da cliente e regras da agenda |
 | [05-pagamentos.md](05-pagamentos.md) | Gateway, métodos, estados, webhook, testes em sandbox e ida para produção |
-| [assets/README.md](assets/README.md) | Arquivos a pedir para a Amanda (logo, fotos, autorizações) |
+| [06-roteiro-da-apresentacao.md](06-roteiro-da-apresentacao.md) | Roteiro passo a passo para apresentar o app à Amanda, com perguntas prováveis |
+| [07-manual-do-painel.md](07-manual-do-painel.md) | Manual de uso do painel para a Amanda e a equipe |
+| [assets/README.md](assets/README.md) | Arquivos a pedir para a Amanda (logo em vetor, fotos, autorizações) |
 
 ## Origem de cada informação
 

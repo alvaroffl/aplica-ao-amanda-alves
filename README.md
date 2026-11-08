@@ -10,6 +10,8 @@ App exclusivo da clínica **Amanda Alves | Estética Avançada** (micropigmenta�
 > [`docs/referencia-amanda-alves/`](docs/referencia-amanda-alves/00-LEIA-ME.md) (site oficial:
 > <https://www.amandaalvespmu.com.br>). Preços, durações, sinais, política, clientes e reservas
 > do seed são **fictícios** (`is_demo = true`) e os pagamentos rodam em **modo de teste**.
+> Roteiro da apresentação: [`06-roteiro-da-apresentacao.md`](docs/referencia-amanda-alves/06-roteiro-da-apresentacao.md) ·
+> Manual do painel: [`07-manual-do-painel.md`](docs/referencia-amanda-alves/07-manual-do-painel.md).
 
 | Página inicial (celular)                | Serviços                                    | Horários                                    | Sinal por Pix (modo de teste)     |
 | --------------------------------------- | ------------------------------------------- | ------------------------------------------- | --------------------------------- |
@@ -219,7 +221,7 @@ sequenceDiagram
 | **Mercado Pago por trás de `PaymentProvider`**                                                                                    | Pix é o meio dominante no Brasil e a integração do MP é a mais documentada. O Stripe entra na V2 sem reescrever nada. Cartão via Checkout Pro: nenhum dado de cartão passa por aqui (PCI).     |
 | **Cloudflare Turnstile**                                                                                                          | Captcha gratuito e sem rastreamento publicitário (melhor para a LGPD).                                                                                                                         |
 | **Zod compartilhado** (`packages/shared`) entre React e Deno                                                                      | A mesma validação no cliente e no servidor. As mensagens são chaves de i18n.                                                                                                                   |
-| **Página pública sem supabase-js** (RPC via `fetch`) e painel carregado sob demanda                                               | Lighthouse mobile (build local): **Desempenho 91 · Acessibilidade 100 · Boas práticas 100 · SEO 91**.                                                                                          |
+| **Página pública sem supabase-js** (RPC via `fetch`) e painel carregado sob demanda                                               | Lighthouse mobile (build local, 4G simulado), página inicial e de agendamento: **Desempenho 90 · Acessibilidade 100 · Boas práticas 100 · SEO 100**.                                           |
 | **FullCalendar (plugins MIT)** com "horário de parede" codificado em UTC                                                          | A agenda mostra sempre o horário do negócio, sem plugin pago de fuso.                                                                                                                          |
 | **Monorepo pnpm** (`apps/web`, `packages/shared`, `supabase/`)                                                                    | Tipos do banco gerados (`pnpm db:types`) e compartilhados.                                                                                                                                     |
 
