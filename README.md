@@ -115,6 +115,8 @@ O repositório traz um [`.devcontainer`](.devcontainer) que instala tudo e sobe 
 
 O link `https://…-5173.app.github.dev` começa **privado**: só abre no navegador logado no GitHub e aberto pelo próprio Codespaces. Em outro navegador ou no celular aparece **HTTP 401**. Para mostrar o app (por exemplo, à Amanda), na aba **Ports**, clique com o botão direito na porta 5173 → **Port Visibility → Public**; depois da apresentação, volte para **Private**. Logs: `/tmp/agendae-web.log` e `/tmp/agendae-functions.log`.
 
+Se o link não abrir (HTTP 401 ou página fora do ar): (1) confira na aba **Ports** se a porta 5173 está **Public** e se a coluna "Running Process" mostra o site; (2) no terminal do codespace rode `git pull && bash .devcontainer/start.sh`, que religa o que estiver parado e mostra o estado de cada parte; (3) abra o link numa **janela anônima** do navegador.
+
 ### Scripts
 
 | Comando                                        | Faz                                                                          |
