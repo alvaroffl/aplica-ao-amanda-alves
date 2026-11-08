@@ -113,7 +113,7 @@ O repositório traz um [`.devcontainer`](.devcontainer) que instala tudo e sobe 
 2. Espere a preparação terminar. Na primeira vez leva de 5 a 10 minutos, porque baixa as imagens do Supabase.
 3. Abra a aba **Ports**, clique no globo da porta **5173 (Amanda Alves)** e acrescente `/amanda-alves` ao endereço. O endereço também aparece no fim do log de inicialização.
 
-O link `https://…-5173.app.github.dev` só abre para quem está logado no GitHub com a sua conta. Para mostrar a outra pessoa, mude a visibilidade da porta para **Public**. Logs: `/tmp/agendae-web.log` e `/tmp/agendae-functions.log`.
+O link `https://…-5173.app.github.dev` começa **privado**: só abre no navegador logado no GitHub e aberto pelo próprio Codespaces. Em outro navegador ou no celular aparece **HTTP 401**. Para mostrar o app (por exemplo, à Amanda), na aba **Ports**, clique com o botão direito na porta 5173 → **Port Visibility → Public**; depois da apresentação, volte para **Private**. Logs: `/tmp/agendae-web.log` e `/tmp/agendae-functions.log`.
 
 ### Scripts
 

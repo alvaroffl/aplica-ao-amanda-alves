@@ -1,6 +1,6 @@
 {
-  // GitHub Codespaces / Dev Containers: sobe o Agendaê completo (Supabase local,
-  // Edge Functions e front-end) e abre a página de reserva, inclusive pelo celular.
+  // GitHub Codespaces / Dev Containers: sobe o app da Amanda Alves completo
+  // (Supabase local, Edge Functions e site) e abre a página inicial.
   "name": "Amanda Alves",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
   "features": {

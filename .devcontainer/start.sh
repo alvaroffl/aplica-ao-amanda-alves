@@ -27,5 +27,12 @@ else
 fi
 echo
 echo "Amanda Alves no ar:"
-echo "  Página de reserva: ${base}/studio-exemplo"
+echo "  Página inicial:    ${base}/"
+echo "  Agendamento:       ${base}/amanda-alves"
 echo "  Painel:            ${base}/entrar  (amanda@demo.test / demo12345)"
+if [ -n "${CODESPACE_NAME:-}" ]; then
+  echo
+  echo "  A porta 5173 é privada (só abre no navegador logado no GitHub)."
+  echo "  Para abrir em outro navegador ou celular (HTTP 401): aba Portas >"
+  echo "  porta 5173 > botão direito > Visibilidade da porta > Pública."
+fi
