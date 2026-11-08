@@ -7,7 +7,7 @@ export function getEnv() {
   const appUrl = get('APP_URL', 'http://localhost:5173').replace(/\/$/, '');
   return {
     environment: get('ENVIRONMENT', 'development'),
-    appName: get('APP_NAME', 'Agendaê'),
+    appName: get('APP_NAME', 'Amanda Alves'),
     appUrl,
     allowedOrigins: get('ALLOWED_ORIGINS', appUrl)
       .split(',')
@@ -33,7 +33,7 @@ export function getEnv() {
     mercadoPagoAccessToken: get('MERCADOPAGO_ACCESS_TOKEN'),
     mercadoPagoWebhookSecret: get('MERCADOPAGO_WEBHOOK_SECRET'),
     emailProvider: get('EMAIL_PROVIDER', 'log') as 'log' | 'resend' | 'mailpit',
-    emailFrom: get('EMAIL_FROM', 'Agendaê <nao-responda@agendae.dev>'),
+    emailFrom: get('EMAIL_FROM', 'Amanda Alves <nao-responda@agendae.dev>'),
     resendApiKey: get('RESEND_API_KEY'),
     mailpitUrl: get('MAILPIT_URL', 'http://inbucket:8025'),
     whatsappProvider: get('WHATSAPP_PROVIDER', 'log') as 'log' | 'meta',

@@ -141,14 +141,16 @@ const headlines: Record<Exclude<TemplateName, 'member_invite'>, (biz: string) =>
   reminder_2h: (biz) => `Lembrete: daqui a pouco você tem horário em ${biz}`,
 };
 
-function layout(title: string, bodyHtml: string, appName: string): string {
+function layout(title: string, bodyHtml: string, appName: string, logoUrl?: string): string {
   return `<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title></head>
-<body style="margin:0;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#18181b">
+<body style="margin:0;background:#f9f7f2;font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#3c3c3b">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:24px 12px"><tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:16px;padding:28px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:4px;border-top:3px solid #bfa070;padding:28px">
 <tr><td>
-<h1 style="font-size:20px;line-height:1.3;margin:0 0 16px">${escapeHtml(title)}</h1>
+${logoUrl ? `<p style="text-align:center;margin:0 0 20px"><img src="${escapeHtml(logoUrl)}" alt="${escapeHtml(appName)}" width="120" style="width:120px;height:auto"></p>` : ''}
+<p style="text-align:center;margin:0 0 16px;color:#bfa070;letter-spacing:4px">&#10022;</p>
+<h1 style="font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:22px;line-height:1.3;margin:0 0 16px">${escapeHtml(title)}</h1>
 ${bodyHtml}
 </td></tr></table>
 <p style="font-size:12px;color:#71717a;margin-top:16px">Enviado por ${escapeHtml(appName)} · Mensagem automática, não responda.</p>
@@ -156,8 +158,8 @@ ${bodyHtml}
 }
 
 function button(href: string, label: string, primary = true): string {
-  const style = primary ? 'background:#4f46e5;color:#ffffff' : 'background:#eef2ff;color:#3730a3';
-  return `<a href="${escapeHtml(href)}" style="${style};display:inline-block;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:600;margin:4px 8px 4px 0">${escapeHtml(label)}</a>`;
+  const style = primary ? 'background:#4a4e40;color:#ffffff' : 'background:#efece6;color:#4a4e40';
+  return `<a href="${escapeHtml(href)}" style="${style};display:inline-block;padding:12px 18px;border-radius:4px;text-decoration:none;font-weight:500;margin:4px 8px 4px 0">${escapeHtml(label)}</a>`;
 }
 
 export function renderEmail(ctx: NotificationContext, opts: RenderOptions): EmailMessage {
@@ -171,6 +173,7 @@ export function renderEmail(ctx: NotificationContext, opts: RenderOptions): Emai
       `<p>Você foi convidado(a) para acessar a agenda de <strong>${escapeHtml(ctx.business.name)}</strong> no ${escapeHtml(opts.appName)}.</p>
        <p>Crie sua conta com este e-mail para entrar:</p>${button(link, 'Criar minha conta')}`,
       opts.appName,
+      `${opts.appUrl}/brand/logo-amanda-alves.png`,
     );
     const text = `${subject}\n\nCrie sua conta com este e-mail para acessar: ${link}`;
     return { subject, html, text };
@@ -198,10 +201,10 @@ export function renderEmail(ctx: NotificationContext, opts: RenderOptions): Emai
   };
 
   const summary = `
-    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;background:#fafafa;border-radius:12px;padding:16px;margin:8px 0 20px">
+    <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;background:#f9f7f2;border-radius:4px;padding:16px;margin:8px 0 20px">
       <tr><td style="padding:4px 0"><strong>${escapeHtml(b.service.name)}</strong> com ${escapeHtml(b.professional.name)}</td></tr>
       <tr><td style="padding:4px 0">${escapeHtml(d.date)} às <strong>${escapeHtml(d.time)}</strong></td></tr>
-      <tr><td style="padding:4px 0;color:#52525b;font-size:13px">${escapeHtml(d.tzLabel)}</td></tr>
+      <tr><td style="padding:4px 0;color:#666660;font-size:13px">${escapeHtml(d.tzLabel)}</td></tr>
       ${where ? `<tr><td style="padding:4px 0">${escapeHtml(where)}</td></tr>` : ''}
     </table>`;
 
@@ -212,23 +215,24 @@ export function renderEmail(ctx: NotificationContext, opts: RenderOptions): Emai
     : `${button(manageUrl, 'Ver, reagendar ou cancelar')}${button(calendar, 'Adicionar ao Google Agenda', false)}`;
   const policyText = cancelled ? '' : describePolicy(b);
   const policy = policyText
-    ? `<p style="font-size:13px;color:#52525b">${escapeHtml(policyText)}</p>`
+    ? `<p style="font-size:13px;color:#666660">${escapeHtml(policyText)}</p>`
     : '';
   const receipt = paymentReceipt(b);
   const receiptHtml = receipt
-    ? `<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border:1px solid #e7e0da;border-radius:12px;padding:16px;margin:0 0 20px">
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border:1px solid #e4dfd5;border-radius:4px;padding:16px;margin:0 0 20px">
         <tr><td style="padding:2px 0;font-weight:600">${escapeHtml(receipt.title)}</td></tr>
         ${receipt.lines.map((l) => `<tr><td style="padding:2px 0;font-size:14px">${escapeHtml(l)}</td></tr>`).join('')}
       </table>`
     : '';
   const contact = b.business.phone
-    ? `<p style="font-size:13px;color:#52525b">Dúvidas? Fale com ${escapeHtml(b.business.name)}: ${escapeHtml(formatPhone(b.business.phone))}</p>`
+    ? `<p style="font-size:13px;color:#666660">Dúvidas? Fale com ${escapeHtml(b.business.name)}: ${escapeHtml(formatPhone(b.business.phone))}</p>`
     : '';
 
   const html = layout(
     title,
     `${greeting}${summary}${receiptHtml}${actions}${policy}${contact}`,
     opts.appName,
+    `${opts.appUrl}/brand/logo-amanda-alves.png`,
   );
   const text = [
     `Olá, ${firstName(b.client.name)}!`,

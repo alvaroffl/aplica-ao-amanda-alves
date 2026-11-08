@@ -104,7 +104,11 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
         : [],
     [data.services, prosById, unit],
   );
-  const service = services.find((s) => s.id === params.get(P.service));
+  const serviceParam = params.get(P.service);
+  // "?servico=avaliacao" abre direto o serviço gratuito (botão "Agendar Avaliação Gratuita")
+  const service =
+    services.find((s) => s.id === serviceParam) ??
+    (serviceParam === 'avaliacao' ? services.find((s) => s.price_cents === 0) : undefined);
   const pros = React.useMemo(
     () =>
       service && unit

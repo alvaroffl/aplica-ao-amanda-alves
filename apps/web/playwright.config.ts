@@ -23,8 +23,16 @@ export default defineConfig({
     trace: 'off',
   },
   projects: [
-    { name: 'mobile', use: { ...devices['Pixel 7'] }, testMatch: /booking|payment/ },
-    { name: 'desktop', use: { ...devices['Desktop Chrome'] }, testMatch: /panel|concurrency/ },
+    {
+      name: 'mobile',
+      use: { ...devices['Pixel 7'] },
+      testMatch: /(home|booking|payment)\.spec\.ts$/,
+    },
+    {
+      name: 'desktop',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /(panel|concurrency)\.spec\.ts$/,
+    },
   ],
   webServer: {
     command: preview ? 'pnpm preview' : 'pnpm dev',

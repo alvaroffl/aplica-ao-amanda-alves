@@ -1,7 +1,7 @@
 {
   // GitHub Codespaces / Dev Containers: sobe o Agendaê completo (Supabase local,
   // Edge Functions e front-end) e abre a página de reserva, inclusive pelo celular.
-  "name": "Agendaê",
+  "name": "Amanda Alves",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
@@ -12,7 +12,7 @@
   "postStartCommand": "bash .devcontainer/start.sh",
   "forwardPorts": [5173, 54324],
   "portsAttributes": {
-    "5173": { "label": "Agendaê (site)", "onAutoForward": "openBrowser" },
+    "5173": { "label": "Amanda Alves (site)", "onAutoForward": "openBrowser" },
     "54324": { "label": "E-mails (Mailpit)", "onAutoForward": "silent" }
   },
   "otherPortsAttributes": { "onAutoForward": "ignore" },

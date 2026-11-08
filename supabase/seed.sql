@@ -1,6 +1,6 @@
 -- =============================================================================
 -- Seed de DESENVOLVIMENTO / APRESENTAÇÃO (executado por `supabase db reset`).
--- Clínica Amanda Alves — Micropigmentação e Estética Avançada.
+-- Clínica Amanda Alves | Estética Avançada (app exclusivo).
 --
 -- Fonte das informações: docs/referencia-amanda-alves/ (00-LEIA-ME.md).
 --   • Nome, contatos, horários e procedimentos: site oficial
@@ -49,8 +49,8 @@ insert into public.businesses (
   max_installments, payment_methods
 ) values (
   'e0000000-0000-0000-0000-000000000001', 'amanda-alves',
-  'Amanda Alves · Micropigmentação e Estética Avançada',
-  'Micropigmentação de sobrancelhas e lábios, camuflagem de cicatrizes e estrias, remoção a laser e protocolos de pele. Mais de 10 anos de experiência e mais de 20 mil procedimentos realizados, com precisão técnica e respeito à harmonia de cada rosto.',
+  'Amanda Alves | Estética Avançada',
+  'Beleza elevada à sua forma mais autêntica. Micropigmentação de sobrancelhas e lábios, camuflagem de cicatrizes e estrias, remoção a laser e protocolos de pele, com mais de 10 anos de experiência e mais de 20 mil procedimentos realizados.',
   '+5532988829364', 'contato@amandaalvespmu.com.br', 'America/Sao_Paulo', 30, 15,
   3, '{pix,card}' -- parcelamento em até 3x: valor de demonstração
 );
@@ -71,7 +71,7 @@ values (
   'e2000000-0000-0000-0000-000000000001', 'e0000000-0000-0000-0000-000000000001',
   'd0000000-0000-0000-0000-000000000001', 'Amanda Alves',
   'Especialista em micropigmentação e estética avançada. Mais de 10 anos de experiência e mais de 20 mil procedimentos realizados.',
-  '#9a6b5b', 1, null
+  '#6b705c', 1, null
 );
 
 insert into public.professional_units (business_id, professional_id, unit_id) values
@@ -88,7 +88,7 @@ insert into public.services (
    'Avaliação gratuita', 'Conversa e análise personalizada para indicar o procedimento ideal para você. Vale para qualquer serviço e não tem custo.',
    'Avaliação', 30, 0, 0, 120, 60, 'none', 0, 1, true),
   ('e3000000-0000-0000-0000-000000000002', 'e0000000-0000-0000-0000-000000000001',
-   'Micro Sobrancelha (Nanoblading e Shadow)', 'Fio a fio e/ou shadow com mapeamento facial personalizado. Duração média de 8 a 12 meses, com saída gradual da cor.',
+   'Micro Sobrancelha (Nanoblading e Shadow)', 'Valoriza o olhar com sobrancelhas naturais todos os dias. Fio a fio e/ou shadow com mapeamento facial personalizado; duração média de 8 a 12 meses, com saída gradual da cor.',
    'Sobrancelhas', 150, 79000, 15, 1440, 90, 'percent', 30, 2, true),
   ('e3000000-0000-0000-0000-000000000003', 'e0000000-0000-0000-0000-000000000001',
    'Retoque da Micro Sobrancelha', 'Retoque para clientes que fizeram a Micro Sobrancelha nos últimos 45 dias.',
@@ -103,10 +103,10 @@ insert into public.services (
    'Micro Labial · Hydra Gloss', 'Hidratação dos lábios com ácido hialurônico e vitaminas.',
    'Lábios', 60, 25000, 15, 1440, 90, 'percent', 50, 6, true),
   ('e3000000-0000-0000-0000-000000000007', 'e0000000-0000-0000-0000-000000000001',
-   'Camuflagem de Cicatrizes e Estrias (por sessão)', 'Pigmentos de alta fixação que uniformizam o tom da pele ao redor da cicatriz. Materiais esterilizados e normas de biossegurança.',
+   'Camuflagem de Cicatrizes e Estrias (por sessão)', 'Arte e técnica para suavizar o contraste de estrias e cicatrizes, com pigmentos de alta fixação, materiais esterilizados e normas de biossegurança.',
    'Camuflagem', 90, 45000, 15, 1440, 90, 'percent', 30, 7, true),
   ('e3000000-0000-0000-0000-000000000008', 'e0000000-0000-0000-0000-000000000001',
-   'Remoção a Laser (por sessão)', 'Remoção de micropigmentação antiga em poucas sessões.',
+   'Remoção a Laser (por sessão)', 'Remoção de micropigmentação antiga em poucas sessões, devolvendo harmonia às sobrancelhas.',
    'Remoção', 45, 28000, 15, 1440, 90, 'percent', 50, 8, true),
   ('e3000000-0000-0000-0000-000000000009', 'e0000000-0000-0000-0000-000000000001',
    'Protocolo Rejuvenescimento', 'Gerenciamento de pele com protocolo definido após avaliação personalizada.',

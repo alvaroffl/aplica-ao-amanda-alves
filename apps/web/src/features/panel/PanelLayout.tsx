@@ -10,7 +10,6 @@ import {
   ExternalLink,
   LogOut,
   Menu,
-  Plus,
   Scissors,
   Settings,
   Users,
@@ -19,10 +18,10 @@ import {
 } from 'lucide-react';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router';
+import { NavLink, Outlet, useLocation } from 'react-router';
 import { toast } from 'sonner';
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
-import { Logo } from '@/components/common/Logo';
+import { Logo, LogoMark } from '@/components/common/Logo';
 import { ErrorState } from '@/components/common/States';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { Button } from '@/components/ui/button';
@@ -32,7 +31,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Spinner } from '@/components/ui/skeleton';
@@ -54,7 +52,6 @@ interface NavItem {
 export function PanelRoot() {
   const { t } = useTranslation();
   const memberships = useMemberships();
-  const location = useLocation();
   if (memberships.isPending) return <Spinner className="min-h-dvh" label={t('common.loading')} />;
   if (memberships.isError)
     return (
@@ -64,15 +61,28 @@ export function PanelRoot() {
         onRetry={() => void memberships.refetch()}
       />
     );
-  if (memberships.data.length === 0 || location.pathname === '/painel/novo-negocio') {
-    if (location.pathname !== '/painel/novo-negocio')
-      return <Navigate to="/painel/novo-negocio" replace />;
-    return <Outlet />;
-  }
+  // App exclusivo da clínica: sem cadastro de novos negócios. Quem entra sem
+  // convite aceito vê o aviso para pedir acesso à administradora.
+  if (memberships.data.length === 0) return <NoAccess />;
   return (
     <BusinessProvider memberships={memberships.data}>
       <PanelShell />
     </BusinessProvider>
+  );
+}
+
+function NoAccess() {
+  const { t } = useTranslation();
+  const { signOut } = useAuth();
+  return (
+    <div className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-5 p-6 text-center">
+      <LogoMark className="h-12" />
+      <h1 className="text-2xl">{t('panel.noAccessTitle')}</h1>
+      <p className="text-muted-foreground">{t('panel.noAccessText')}</p>
+      <Button variant="outline" onClick={() => void signOut()}>
+        {t('common.signOut')}
+      </Button>
+    </div>
   );
 }
 
@@ -215,12 +225,6 @@ function Sidebar() {
                 {m.business.id === business.id && <Check aria-hidden />}
               </DropdownMenuItem>
             ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to="/painel/novo-negocio">
-                <Plus aria-hidden /> {t('panel.newBusiness')}
-              </Link>
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

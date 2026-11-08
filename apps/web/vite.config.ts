@@ -11,21 +11,27 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.ico', 'favicon.png', 'apple-touch-icon.png', 'brand/*.png'],
       manifest: {
-        name: 'Agendaê — Agendamento online',
-        short_name: 'Agendaê',
-        description: 'Agende serviços em poucos toques e gerencie sua agenda.',
+        name: 'Amanda Alves | Estética Avançada',
+        short_name: 'Amanda Alves',
+        description:
+          'Agende micropigmentação e estética avançada com Amanda Alves: avaliação gratuita e sinal online.',
         lang: 'pt-BR',
-        start_url: '/painel',
+        start_url: '/',
         scope: '/',
         display: 'standalone',
-        background_color: '#fbf8f5',
-        theme_color: '#8a5646',
+        background_color: '#f9f7f2',
+        theme_color: '#f9f7f2',
         icons: [
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          {
+            src: 'pwa-maskable-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
         ],
       },
       workbox: {

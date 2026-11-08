@@ -1,80 +1,87 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import '@fontsource-variable/inter';
-@import '@fontsource-variable/cormorant-garamond';
+@import '@fontsource-variable/outfit';
+@import '@fontsource-variable/playfair-display';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Tokens de design — PROPOSTA de identidade da Clínica Amanda Alves
- * (minimalista, elegante e acolhedora; aguarda aprovação da Amanda).
+ * Identidade da Clínica Amanda Alves — extraída do site oficial
+ * (amandaalvespmu.com.br): creme, dourado e oliva; Playfair Display + Outfit.
  * Fonte: docs/referencia-amanda-alves/03-identidade-visual-e-tom.md
- * Para ajustar a marca, altere só estas variáveis.
- * Contraste WCAG AA verificado: texto ≥ 14:1, secundário ≥ 5,4:1, selos ≥ 4,6:1,
- * primário sobre o fundo ≥ 5,6:1, texto sobre o primário ≥ 5,9:1.
+ * Ajustes de acessibilidade (WCAG AA): botões em oliva escuro (8,5:1 com texto
+ * branco); dourado só em decoração (✦, filetes) ou na versão escurecida
+ * --gold-text (4,8:1); texto secundário levemente mais escuro que o do site.
  */
 :root {
   color-scheme: light;
-  --radius: 0.875rem;
-  --background: #fbf8f5; /* porcelana */
-  --foreground: #2b2220; /* café */
+  --radius: 0.25rem; /* cantos discretos, como no site (4px) */
+  --background: #f9f7f2; /* creme do site */
+  --foreground: #3c3c3b;
   --card: #ffffff;
-  --card-foreground: #2b2220;
+  --card-foreground: #3c3c3b;
   --popover: #ffffff;
-  --popover-foreground: #2b2220;
-  --primary: #8a5646; /* rosé terroso */
-  --primary-foreground: #fffdfb;
-  --secondary: #f1e9e3; /* areia */
-  --secondary-foreground: #4a3a33;
-  --muted: #f3eeea;
-  --muted-foreground: #6b5d56;
-  --accent: #f5ebe5; /* nude */
-  --accent-foreground: #5e3b30;
-  --destructive: #b4362b;
-  --destructive-foreground: #fffdfb;
-  --success: #2f6a4b;
-  --success-foreground: #fffdfb;
+  --popover-foreground: #3c3c3b;
+  --primary: #4a4e40; /* oliva escuro */
+  --primary-foreground: #ffffff;
+  --secondary: #efece6; /* fundo alternativo do site */
+  --secondary-foreground: #3c3c3b;
+  --muted: #efece6;
+  --muted-foreground: #666660;
+  --accent: #f4f1ea;
+  --accent-foreground: #4a4e40;
+  --destructive: #a33a2e;
+  --destructive-foreground: #ffffff;
+  --success: #3f6b4a;
+  --success-foreground: #ffffff;
   --warning: #83540f;
-  --gold: #b8956a; /* champanhe — só decoração (✦, filetes), nunca texto */
-  --border: #e8dfd8;
-  --input: #dcd0c8;
-  --ring: #8a5646;
+  --gold: #bfa070; /* dourado do site — decoração */
+  --gold-text: #86683a; /* dourado legível para textos pequenos */
+  --olive: #6b705c;
+  --border: #e4dfd5;
+  --input: #d6d0c4;
+  --ring: #6b705c;
 }
 
 .dark {
   color-scheme: dark;
-  --background: #191412;
-  --foreground: #f4ede8;
-  --card: #221b18;
-  --card-foreground: #f4ede8;
-  --popover: #241d1a;
-  --popover-foreground: #f4ede8;
-  --primary: #ddb0a0;
-  --primary-foreground: #2a1b16;
-  --secondary: #2e2522;
-  --secondary-foreground: #ede3dd;
-  --muted: #2b2320;
-  --muted-foreground: #bdafa7;
-  --accent: #33282b;
-  --accent-foreground: #f1e2da;
+  --background: #1c1d19;
+  --foreground: #f4f1ea;
+  --card: #24251f;
+  --card-foreground: #f4f1ea;
+  --popover: #272822;
+  --popover-foreground: #f4f1ea;
+  --primary: #cdb287; /* dourado claro */
+  --primary-foreground: #1c1d19;
+  --secondary: #2c2d27;
+  --secondary-foreground: #f4f1ea;
+  --muted: #2c2d27;
+  --muted-foreground: #b7b3a8;
+  --accent: #30312a;
+  --accent-foreground: #f4f1ea;
   --destructive: #f0877b;
   --destructive-foreground: #2a1210;
-  --success: #7cc39b;
+  --success: #8fc79d;
   --success-foreground: #102419;
   --warning: #e3b26a;
-  --gold: #cdae85;
-  --border: #3a302c;
-  --input: #463a35;
-  --ring: #ddb0a0;
+  --gold: #cdb287;
+  --gold-text: #cdb287;
+  --olive: #a9ae98;
+  --border: #393a33;
+  --input: #45463e;
+  --ring: #cdb287;
 }
 
 @theme inline {
   --font-sans:
-    'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  /* títulos: serifada elegante (proposta) */
+    'Outfit Variable', 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
+  /* títulos: a mesma serifada do site */
   --font-display:
-    'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    'Playfair Display Variable', 'Playfair Display', Georgia, 'Times New Roman', serif;
   --color-gold: var(--gold);
+  --color-gold-text: var(--gold-text);
+  --color-olive: var(--olive);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -114,13 +121,17 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: 'cv11', 'ss01';
   }
   /* títulos de página na fonte serifada da identidade */
-  h1 {
+  h1,
+  h2 {
     font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+  strong,
+  b {
+    font-weight: 500;
   }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-ring;
@@ -187,4 +198,13 @@
 }
 .fc-theme-standard .fc-list {
   @apply rounded-lg;
+}
+
+/* Rótulo em caixa alta e espaçado, como no site ("ESTÉTICA AVANÇADA ✦ NATURALIDADE") */
+.eyebrow {
+  @apply text-xs font-normal tracking-[0.3em] uppercase text-gold-text;
+}
+/* Logo (preta) fica clara no tema escuro */
+.dark .brand-logo {
+  filter: invert(1);
 }

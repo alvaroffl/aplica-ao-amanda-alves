@@ -76,7 +76,9 @@ export function BookingSummary({
       <div className="mt-4 flex items-baseline justify-between border-t pt-3">
         <span className="text-sm text-muted-foreground">{t('booking.price')}</span>
         <span className="font-semibold tabular-nums">
-          {formatMoney(service.price_cents, currency)}
+          {service.price_cents === 0
+            ? t('booking.free')
+            : formatMoney(service.price_cents, currency)}
         </span>
       </div>
       {service.deposit_cents > 0 && (

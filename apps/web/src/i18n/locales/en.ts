@@ -75,6 +75,48 @@ const en: DeepPartial<Translations> = {
     refunded: 'Deposit refunded',
   },
   periods: { morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening' },
+  home: {
+    nav: 'Navigation',
+    procedures: 'Treatments',
+    contact: 'Contact',
+    book: 'Book',
+    eyebrowLeft: 'Advanced aesthetics',
+    eyebrowRight: 'Naturalness',
+    title: 'Beauty raised to its most authentic form.',
+    subtitle:
+      'Permanent makeup and advanced aesthetics with technical precision, sensitivity and respect for the harmony of every face.',
+    ctaBook: 'Book now',
+    ctaEvaluation: 'Book a free consultation',
+    stats: {
+      procedures: '20k+',
+      proceduresLabel: 'Procedures performed',
+      years: '10+',
+      yearsLabel: 'Years of experience',
+      natural: '100%',
+      naturalLabel: 'Focus on natural results',
+    },
+    aboutEyebrow: 'Meet Amanda Alves',
+    aboutTitle: 'An exclusive ritual, from the first stroke to the result',
+    about1:
+      'For over 10 years, Amanda Alves has been devoted to excellence in permanent makeup, enhancing the identity, elegance and natural beauty of every woman.',
+    about2:
+      'Her work combines technical precision, aesthetic sensitivity and a refined artistic eye, with subtle, timeless and personalized procedures.',
+    about3:
+      'Every appointment is an exclusive ritual where proportion, facial harmony and sophistication go hand in hand.',
+    mission:
+      "It's not just about aesthetics, but about how you feel when you look in the mirror. My mission is to give back that confidence in a light, sophisticated and true way.",
+    expertise: 'Our expertise',
+    bookThis: 'Book {{name}}',
+    evaluationTitle: 'Free consultation',
+    evaluationText: 'Find the ideal treatment for you in a personalized, free conversation.',
+    quote:
+      "Transforming isn't changing who you are, but revealing the potential that already exists in you.",
+    talkTitle: "Let's talk?",
+    talkText: 'Book your consultation and find the ideal treatment for you.',
+    whatsapp: 'Chat on WhatsApp',
+    hours: 'Opening hours',
+    staffArea: 'Staff area',
+  },
   booking: {
     policy: {
       reschedule: 'You can reschedule from the link up to {{hours}}h before.',

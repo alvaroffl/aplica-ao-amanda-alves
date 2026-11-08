@@ -4,7 +4,7 @@ import { RouteErrorPage } from '@/components/common/ErrorBoundary';
 import { Spinner } from '@/components/ui/skeleton';
 import i18n from '@/i18n';
 import { BookingPage } from '@/features/public/BookingPage';
-import { LandingPage } from '@/pages/LandingPage';
+import { HomePage } from '@/pages/HomePage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { PrivacyPage } from '@/pages/PrivacyPage';
 
@@ -27,9 +27,6 @@ const ResetPasswordPage = lazy(() =>
   import('@/features/auth/PasswordPages').then((m) => ({ default: m.ResetPasswordPage })),
 );
 const PanelRoute = lazy(() => import('@/features/panel/PanelRoute'));
-const OnboardingPage = lazy(() =>
-  import('@/features/panel/OnboardingPage').then((m) => ({ default: m.OnboardingPage })),
-);
 const AgendaPage = lazy(() =>
   import('@/features/panel/agenda/AgendaPage').then((m) => ({ default: m.AgendaPage })),
 );
@@ -77,7 +74,7 @@ const page = (node: ReactNode) => (
 );
 
 const routes: RouteObject[] = [
-  { path: '/', element: <LandingPage /> },
+  { path: '/', element: <HomePage /> },
   {
     element: page(<AuthRoot />),
     children: [
@@ -90,7 +87,6 @@ const routes: RouteObject[] = [
         element: page(<PanelRoute />),
         children: [
           { index: true, element: page(<AgendaPage />) },
-          { path: 'novo-negocio', element: page(<OnboardingPage />) },
           { path: 'clientes', element: page(<ClientsPage />) },
           { path: 'clientes/:id', element: page(<ClientDetailPage />) },
           { path: 'servicos', element: page(<ServicesPage />) },

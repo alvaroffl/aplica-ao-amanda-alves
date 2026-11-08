@@ -320,7 +320,7 @@ const ptBR = {
 
   auth: {
     signIn: 'Entrar',
-    signUp: 'Criar conta',
+    signUp: 'Criar meu acesso',
     signInTitle: 'Entrar no painel',
     signInText: 'Acesse a agenda do seu negócio.',
     signUpTitle: 'Crie sua conta',
@@ -333,7 +333,7 @@ const ptBR = {
     or: 'ou',
     magicLink: 'Receber link de acesso por e-mail',
     magicSent: 'Enviamos um link de acesso para {{email}}.',
-    noAccount: 'Ainda não tem conta?',
+    noAccount: 'Recebeu um convite da equipe?',
     haveAccount: 'Já tem conta?',
     createAccount: 'Criar conta',
     terms: 'Ao criar a conta, você concorda com os termos de uso e a política de privacidade.',
@@ -365,6 +365,9 @@ const ptBR = {
   },
 
   panel: {
+    noAccessTitle: 'Acesso ainda não liberado',
+    noAccessText:
+      'Esta área é exclusiva da equipe da Clínica Amanda Alves. Peça à administradora um convite para o seu e-mail.',
     menu: 'Menu do painel',
     openMenu: 'Abrir menu',
     businesses: 'Seus negócios',
@@ -706,6 +709,47 @@ const ptBR = {
     whatsappHint: 'Requer a API oficial do WhatsApp configurada no servidor.',
   },
 
+  home: {
+    nav: 'Navegação',
+    procedures: 'Procedimentos',
+    contact: 'Contato',
+    book: 'Agendar',
+    eyebrowLeft: 'Estética avançada',
+    eyebrowRight: 'Naturalidade',
+    title: 'Beleza elevada à sua forma mais autêntica.',
+    subtitle:
+      'Micropigmentação e estética avançada com precisão técnica, sensibilidade e respeito à harmonia de cada rosto.',
+    ctaBook: 'Agendar Agora',
+    ctaEvaluation: 'Agendar Avaliação Gratuita',
+    stats: {
+      procedures: '+20 mil',
+      proceduresLabel: 'Procedimentos realizados',
+      years: '+10',
+      yearsLabel: 'Anos de experiência',
+      natural: '100%',
+      naturalLabel: 'Foco em naturalidade',
+    },
+    aboutEyebrow: 'Quem é Amanda Alves',
+    aboutTitle: 'Um ritual exclusivo, do primeiro traço ao resultado',
+    about1:
+      'Há mais de 10 anos, Amanda Alves se dedica à excelência em micropigmentação, valorizando a identidade, a elegância e a naturalidade de cada mulher.',
+    about2:
+      'Seu trabalho une precisão técnica, sensibilidade estética e um olhar artístico refinado, com procedimentos sutis, atemporais e personalizados.',
+    about3:
+      'Cada atendimento é conduzido como um ritual exclusivo, em que proporção, harmonia facial e sofisticação caminham juntas.',
+    mission:
+      'Não se trata apenas de estética, mas de como você se sente ao se olhar no espelho. Minha missão é devolver essa confiança de forma leve, sofisticada e verdadeira.',
+    expertise: 'Nossa expertise',
+    bookThis: 'Agendar {{name}}',
+    evaluationTitle: 'Avaliação gratuita',
+    evaluationText: 'Descubra o tratamento ideal para você numa conversa personalizada, sem custo.',
+    quote: 'Transformar não é mudar quem você é, mas revelar o potencial que já existe em você.',
+    talkTitle: 'Vamos conversar?',
+    talkText: 'Agende sua avaliação e descubra o tratamento ideal para você.',
+    whatsapp: 'Chamar no WhatsApp',
+    hours: 'Atendimento',
+    staffArea: 'Área da equipe',
+  },
   demo: {
     badge: 'Demonstração',
     banner: 'Dados de demonstração',

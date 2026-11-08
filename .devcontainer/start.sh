@@ -26,6 +26,6 @@ else
   base="http://localhost:5173"
 fi
 echo
-echo "Agendaê no ar:"
+echo "Amanda Alves no ar:"
 echo "  Página de reserva: ${base}/studio-exemplo"
 echo "  Painel:            ${base}/entrar  (demo@agendae.dev / demo12345)"
