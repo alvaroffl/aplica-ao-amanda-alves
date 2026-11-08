@@ -3,10 +3,10 @@ import { SLUG } from './helpers';
 
 /** Nenhuma tela pode ficar mais larga que o celular (o navegador reduziria o zoom). */
 async function expectNoHorizontalOverflow(page: Page, label: string) {
-  const { scroll, viewport } = await page.evaluate(() => ({
-    scroll: document.documentElement.scrollWidth,
-    viewport: document.documentElement.clientWidth,
-  }));
+  // expressão avaliada no navegador (o tsconfig dos testes não inclui o DOM)
+  const [scroll, viewport] = (await page.evaluate(
+    '[document.documentElement.scrollWidth, document.documentElement.clientWidth]',
+  )) as [number, number];
   expect(scroll, `${label}: largura ${scroll}px em tela de ${viewport}px`).toBeLessThanOrEqual(
     viewport,
   );
