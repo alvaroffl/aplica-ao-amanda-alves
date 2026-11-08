@@ -65,12 +65,14 @@ export function HomePage() {
               <Link to={`${book}?servico=avaliacao`}>{t('home.ctaEvaluation')}</Link>
             </Button>
           </div>
-          <dl className="mx-auto mt-14 grid max-w-3xl grid-cols-3 gap-4 border-y py-8">
+          <dl className="relative mx-auto mt-14 grid max-w-3xl grid-cols-3 gap-4 border-y py-8">
             {(['procedures', 'years', 'natural'] as const).map((k) => (
               <div key={k}>
                 <dt className="sr-only">{t(`home.stats.${k}Label`)}</dt>
-                <dd className="font-display text-3xl sm:text-4xl">{t(`home.stats.${k}`)}</dd>
-                <dd className="mt-1 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                <dd className="font-display text-2xl min-[380px]:text-3xl sm:text-4xl">
+                  {t(`home.stats.${k}`)}
+                </dd>
+                <dd className="mt-1 text-[11px] leading-tight text-muted-foreground sm:text-xs sm:uppercase sm:tracking-[0.2em]">
                   {t(`home.stats.${k}Label`)}
                 </dd>
               </div>
@@ -108,7 +110,7 @@ export function HomePage() {
               {t('home.procedures')}
             </h2>
           </div>
-          <ol className="mt-12 grid gap-px overflow-hidden border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          <ol className="mt-12 grid grid-cols-1 gap-px overflow-hidden border bg-border sm:grid-cols-2 lg:grid-cols-3">
             {CLINIC.procedures.map((p, i) => (
               <li key={p.key} className="flex flex-col bg-card p-8">
                 <span className="font-display text-2xl text-gold-text" aria-hidden>
@@ -153,7 +155,7 @@ export function HomePage() {
           aria-labelledby="contato-titulo"
           className="mx-auto max-w-6xl scroll-mt-20 px-4 py-16 sm:py-24"
         >
-          <div className="grid gap-10 md:grid-cols-2 md:items-center">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-center">
             <div>
               <h2 id="contato-titulo" className="text-3xl sm:text-4xl">
                 {t('home.talkTitle')}
@@ -174,7 +176,7 @@ export function HomePage() {
                 </Button>
               </div>
             </div>
-            <dl className="grid gap-6 border bg-card p-8 text-sm sm:grid-cols-2">
+            <dl className="grid grid-cols-1 gap-6 border bg-card p-8 text-sm sm:grid-cols-2">
               <div>
                 <dt className="flex items-center gap-2 font-medium">
                   <Clock className="size-4 text-gold-text" aria-hidden /> {t('home.hours')}

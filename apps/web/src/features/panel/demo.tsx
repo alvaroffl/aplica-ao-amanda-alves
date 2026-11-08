@@ -26,11 +26,11 @@ export function DemoBanner() {
   return (
     <div
       role="note"
-      className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-warning/40 bg-warning/10 px-3 py-2 text-sm"
+      className="mb-4 flex items-center gap-x-3 gap-y-1 rounded-lg border border-warning/40 bg-warning/10 px-3 py-2 text-sm sm:flex-wrap"
     >
       <FlaskConical className="size-4 shrink-0 text-warning" aria-hidden />
       <span className="font-medium">{t('demo.banner')}</span>
-      <span className="text-muted-foreground">{t('demo.bannerText')}</span>
+      <span className="hidden text-muted-foreground sm:inline">{t('demo.bannerText')}</span>
       {can('settings.manage') && (
         <Link
           to="/painel/configuracoes"

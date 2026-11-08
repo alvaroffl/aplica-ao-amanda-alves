@@ -68,7 +68,7 @@ export function DateStrip({
         role="listbox"
         tabIndex={0}
         aria-label={t('booking.chooseDate')}
-        className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-2 [scrollbar-width:thin]"
+        className="relative -mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-2 [scrollbar-width:thin]"
       >
         {keys.map((key) => {
           const isAvailable = available.has(key);

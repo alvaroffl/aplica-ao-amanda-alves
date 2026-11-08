@@ -107,7 +107,7 @@ export function PolicyCard({ businessId }: { businessId: string }) {
           <CardDescription>{t('settings.policy.hint')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <Field
               label={t('settings.policy.reschedule')}
               htmlFor="reschedule_min_hours"

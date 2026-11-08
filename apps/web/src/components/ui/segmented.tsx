@@ -39,7 +39,8 @@ export function Segmented<T extends string>({
       role="radiogroup"
       aria-label={label}
       className={cn(
-        'inline-flex h-10 items-center rounded-lg bg-muted p-1 text-muted-foreground',
+        // no celular ocupa a largura e as opções dividem o espaço; nunca vaza da tela
+        'flex h-10 w-full max-w-full items-center overflow-x-auto rounded-lg bg-muted p-1 text-muted-foreground sm:inline-flex sm:w-auto',
         className,
       )}
     >
@@ -58,7 +59,7 @@ export function Segmented<T extends string>({
             onClick={() => onChange(o.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cn(
-              'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-2 focus-visible:outline-ring',
+              'inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-md px-2 py-1.5 text-sm font-medium transition-all focus-visible:outline-2 focus-visible:outline-ring sm:flex-none sm:px-3',
               checked && 'bg-card text-foreground shadow-sm',
             )}
           >

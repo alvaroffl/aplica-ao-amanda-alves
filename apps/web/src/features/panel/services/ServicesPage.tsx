@@ -218,7 +218,7 @@ function ServiceDialog({
           <DialogTitle>{editing === 'new' ? t('services.new') : t('services.edit')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={onSubmit} noValidate className="space-y-5">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label={t('services.name')} htmlFor="name" error={errors.name?.message}>
               <Input {...register('name')} />
             </Field>
@@ -258,7 +258,7 @@ function ServiceDialog({
 
           <details className="rounded-lg border p-3" open={editing !== 'new'}>
             <summary className="cursor-pointer text-sm font-medium">{t('services.rules')}</summary>
-            <div className="mt-3 grid gap-4 sm:grid-cols-2">
+            <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field
                 label={t('services.bufferBefore')}
                 htmlFor="buffer_before_min"
@@ -292,7 +292,7 @@ function ServiceDialog({
             </div>
           </details>
 
-          <fieldset className="grid gap-4 rounded-lg border p-3 sm:grid-cols-2">
+          <fieldset className="grid grid-cols-1 gap-4 rounded-lg border p-3 sm:grid-cols-2">
             <legend className="px-1 text-sm font-medium">{t('services.deposit')}</legend>
             <Field label={t('services.depositType')} htmlFor="deposit_type">
               <NativeSelect {...register('deposit_type')}>
@@ -321,7 +321,7 @@ function ServiceDialog({
 
           <fieldset className="space-y-2">
             <legend className="text-sm font-medium">{t('services.professionals')}</legend>
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {(professionals.data ?? []).map((p) => {
                 const checked = selectedPros.includes(p.id);
                 return (

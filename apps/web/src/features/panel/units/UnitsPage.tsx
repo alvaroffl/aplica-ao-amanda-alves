@@ -52,7 +52,7 @@ export function UnitsPage() {
       ) : units.isError ? (
         <ErrorState error={units.error} onRetry={() => void units.refetch()} />
       ) : (
-        <div className="grid gap-3 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {units.data.map((u) => (
             <Card key={u.id} className="flex items-start gap-3 p-4">
               <MapPin className="mt-0.5 size-5 text-primary" aria-hidden />

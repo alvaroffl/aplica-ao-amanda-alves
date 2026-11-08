@@ -88,7 +88,7 @@ export function AvailabilityPage() {
               </NativeSelect>
             )}
           </div>
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
             {unit ? (
               <WeeklyEditor
                 key={`${pro.id}:${unit.id}`}
@@ -192,8 +192,8 @@ function WeeklyEditor({
 
   return (
     <Card>
-      <CardHeader className="flex-row items-start justify-between gap-2 space-y-0">
-        <div>
+      <CardHeader className="flex-row flex-wrap items-start justify-between gap-2 space-y-0">
+        <div className="min-w-0">
           <CardTitle>{t('availability.weekly')}</CardTitle>
           <CardDescription>{t('availability.weeklyHint')}</CardDescription>
         </div>
@@ -366,7 +366,7 @@ function TimeOffCard({ professionalId, timeZone }: { professionalId: string; tim
         <CardDescription>{t('availability.timeOffHint')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <form onSubmit={onSubmit} noValidate className="grid gap-3 sm:grid-cols-2">
+        <form onSubmit={onSubmit} noValidate className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <input type="hidden" {...register('professional_id')} value={professionalId} />
           <Field label={t('availability.kind')} htmlFor="kind" className="sm:col-span-2">
             <NativeSelect {...register('kind')}>
@@ -502,7 +502,7 @@ function HolidaysCard() {
         <CardDescription>{t('availability.holidaysHint')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <form onSubmit={onSubmit} noValidate className="grid gap-3 sm:grid-cols-2">
+        <form onSubmit={onSubmit} noValidate className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Field label={t('availability.date')} htmlFor="h-date" error={errors.date?.message}>
             <Input type="date" {...register('date')} />
           </Field>

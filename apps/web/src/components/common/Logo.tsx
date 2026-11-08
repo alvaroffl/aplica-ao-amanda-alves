@@ -43,7 +43,8 @@ export function Logo({ to = '/', className }: { to?: string; className?: string 
   return (
     <Link to={to} className={cn('inline-flex items-center gap-2.5', className)}>
       <LogoMark />
-      <span className="font-display text-lg tracking-wide">{env.appName}</span>
+      {/* em telas muito estreitas fica só o monograma (o nome segue para leitores de tela) */}
+      <span className="font-display text-lg tracking-wide max-[359px]:sr-only">{env.appName}</span>
     </Link>
   );
 }

@@ -38,7 +38,7 @@ export function CalendarActions({ booking }: { booking: PublicBooking }) {
   });
 
   return (
-    <div className="grid gap-2 sm:grid-cols-3">
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
       <Button variant="outline" asChild>
         <a href={googleCalendarUrl(event)} target="_blank" rel="noreferrer">
           <CalendarPlus aria-hidden /> {t('manage.googleCalendar')}

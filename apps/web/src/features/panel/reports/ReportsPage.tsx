@@ -139,7 +139,7 @@ function ReportContent({
         />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <Card>
           <CardHeader>
             <CardTitle>{t('reports.byDay')}</CardTitle>
@@ -189,7 +189,9 @@ function StatTile({ label, value, hint }: { label: string; value: string; hint?:
   return (
     <Card className="p-4">
       <p className="text-xs font-medium text-muted-foreground">{label}</p>
-      <p className="mt-1 text-2xl font-semibold tabular-nums tracking-tight">{value}</p>
+      <p className="mt-1 text-xl font-semibold tabular-nums tracking-tight break-words sm:text-2xl">
+        {value}
+      </p>
       {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </Card>
   );

@@ -236,7 +236,7 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
 
   return (
     <PublicLayout business={business}>
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0">
           {current === 'service' && !service && (
             <div className="mb-6 space-y-1">

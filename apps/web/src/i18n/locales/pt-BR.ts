@@ -355,7 +355,7 @@ const ptBR = {
   onboarding: {
     title: 'Configure seu negócio',
     subtitle: 'Depois você cadastra serviços, equipe e horários.',
-    name: 'Nome do negócio',
+    name: 'Nome da clínica',
     slug: 'Endereço da página',
     slugHint: 'Seu link: {{url}}',
     timezone: 'Fuso horário',

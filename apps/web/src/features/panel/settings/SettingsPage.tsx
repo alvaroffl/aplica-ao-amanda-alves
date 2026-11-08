@@ -172,7 +172,7 @@ export function SettingsPage() {
                 </span>
               </label>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label={t('onboarding.name')} htmlFor="name" error={errors.name?.message}>
                 <Input {...register('name')} />
               </Field>
@@ -216,7 +216,7 @@ export function SettingsPage() {
             <CardTitle>{t('settings.policies')}</CardTitle>
             <CardDescription>{t('settings.policiesHint')}</CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-4 sm:grid-cols-2">
+          <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field
               label={t('settings.slotInterval')}
               htmlFor="slot_interval_min"

@@ -70,7 +70,7 @@ export function TeamPage() {
         ) : professionals.data.length === 0 ? (
           <EmptyState title={t('team.empty')} />
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {professionals.data.map((p) => (
               <Card key={p.id} className="flex items-center gap-3 p-4">
                 <span
@@ -274,7 +274,7 @@ function ProfessionalDialog({
           )}
           <fieldset className="space-y-2">
             <legend className="text-sm font-medium">{t('team.services')}</legend>
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {(services.data ?? []).map((s) => (
                 <label
                   key={s.id}
@@ -418,7 +418,7 @@ function MembersSection() {
   };
 
   return (
-    <section aria-labelledby="members-title" className="grid gap-4 lg:grid-cols-2">
+    <section aria-labelledby="members-title" className="grid grid-cols-1 gap-4 lg:grid-cols-2">
       <Card>
         <CardHeader>
           <CardTitle id="members-title">{t('team.access')}</CardTitle>
