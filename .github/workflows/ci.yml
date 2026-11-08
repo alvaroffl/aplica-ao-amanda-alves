@@ -1,9 +1,11 @@
 name: CI
 
+# Roda em todo push (qualquer branch), em pull requests e sob demanda.
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: ['**']
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
