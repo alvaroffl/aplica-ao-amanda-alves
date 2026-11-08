@@ -125,9 +125,15 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
   const startsAt = params.get(P.time);
   const day = params.get(P.day);
 
+  // Antes de escolher o serviço, o passo de profissional só aparece se a unidade
+  // tiver mais de uma profissional (evita mostrar "1 de 4" e depois "2 de 3").
+  const unitPros = unit
+    ? data.professionals.filter((p) => p.unit_ids.includes(unit.id))
+    : data.professionals;
+  const skipProfessional = service ? Boolean(singlePro) : unitPros.length <= 1;
   const steps: StepId[] = [
     'service',
-    ...(singlePro ? [] : (['professional'] as const)),
+    ...(skipProfessional ? [] : (['professional'] as const)),
     'datetime',
     'details',
   ];

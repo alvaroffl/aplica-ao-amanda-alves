@@ -80,7 +80,7 @@ const ptBR = {
     PAYMENT_PROVIDER_ERROR:
       'O pagamento está indisponível no momento. Tente novamente em instantes.',
     FORBIDDEN: 'Você não tem permissão para esta ação.',
-    LAST_ADMIN: 'O negócio precisa de pelo menos um administrador.',
+    LAST_ADMIN: 'A clínica precisa de pelo menos uma administradora.',
     SLUG_TAKEN: 'Esse endereço já está em uso. Escolha outro.',
     CLIENT_REQUIRED: 'Escolha um cliente.',
     INVALID_RANGE: 'Período inválido.',
@@ -322,9 +322,9 @@ const ptBR = {
     signIn: 'Entrar',
     signUp: 'Criar meu acesso',
     signInTitle: 'Entrar no painel',
-    signInText: 'Acesse a agenda do seu negócio.',
-    signUpTitle: 'Crie sua conta',
-    signUpText: 'Grátis. Em 2 minutos sua página de agendamento está no ar.',
+    signInText: 'Área da equipe da Clínica Amanda Alves.',
+    signUpTitle: 'Crie seu acesso',
+    signUpText: 'Para quem recebeu convite da equipe da clínica. Use o mesmo e-mail do convite.',
     email: 'E-mail',
     password: 'Senha',
     passwordHint: 'Mínimo de 8 caracteres.',
@@ -653,7 +653,7 @@ const ptBR = {
 
   settings: {
     title: 'Configurações',
-    subtitle: 'Dados do negócio, políticas e notificações.',
+    subtitle: 'Dados da clínica, pagamentos, políticas e lembretes.',
     general: 'Dados gerais',
     logo: 'Logotipo',
     uploadLogo: 'Enviar logotipo',
@@ -795,30 +795,30 @@ const ptBR = {
     title: 'Política de privacidade',
     version: 'Versão {{version}}',
     intro:
-      'Esta política explica como tratamos dados pessoais de quem agenda pela plataforma, conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018). O estabelecimento em que você agenda é o controlador dos seus dados; a plataforma atua como operadora.',
+      'Esta política explica como a Clínica Amanda Alves (Amanda Alves PMU) trata os dados pessoais de quem agenda por este app, conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018). A clínica é a controladora dos seus dados.',
     data: {
       title: 'Quais dados coletamos',
-      text: 'Nome, e-mail, WhatsApp, observações que você escrever, os agendamentos feitos e, quando houver sinal, o status do pagamento (os dados do cartão ficam com o provedor de pagamento, nunca conosco).',
+      text: 'Nome, e-mail, WhatsApp, observações que você escrever, os agendamentos feitos e, quando houver sinal, o status do pagamento. Os dados do cartão ficam com o provedor de pagamento (Mercado Pago), nunca conosco.',
     },
     purpose: {
       title: 'Para que usamos',
-      text: 'Para registrar e gerenciar o seu agendamento, enviar confirmações e lembretes, processar o sinal e permitir que o estabelecimento te atenda. Base legal: execução de contrato e consentimento.',
+      text: 'Para registrar e gerenciar o seu agendamento, enviar confirmações e lembretes, processar o sinal e preparar o seu atendimento. Base legal: execução de contrato e consentimento.',
     },
     sharing: {
       title: 'Com quem compartilhamos',
-      text: 'Apenas com o estabelecimento escolhido e com provedores necessários ao serviço (hospedagem, e-mail, WhatsApp e pagamento).',
+      text: 'Somente com provedores necessários ao serviço: hospedagem e banco de dados, envio de e-mail, WhatsApp e pagamento. Não vendemos nem cedemos seus dados.',
     },
     retention: {
       title: 'Por quanto tempo',
-      text: 'Enquanto houver relação com o estabelecimento ou até você pedir a exclusão. Registros financeiros podem ser mantidos pelo prazo exigido em lei, sem dados de contato.',
+      text: 'Enquanto você for cliente da clínica ou até pedir a exclusão. Registros financeiros podem ser mantidos pelo prazo exigido em lei, sem dados de contato.',
     },
     rights: {
       title: 'Seus direitos',
-      text: 'Pelo link do seu agendamento você pode baixar uma cópia dos seus dados e pedir a exclusão a qualquer momento. Você também pode falar diretamente com o estabelecimento.',
+      text: 'Pelo link do seu agendamento você pode baixar uma cópia dos seus dados e pedir a exclusão a qualquer momento. Também pode falar com a clínica pelo e-mail contato@amandaalvespmu.com.br ou pelo WhatsApp (32) 98882-9364.',
     },
     security: {
       title: 'Segurança',
-      text: 'Conexões criptografadas, controle de acesso por estabelecimento e por papel, e links de gerenciamento assinados e revogáveis.',
+      text: 'Conexões criptografadas, acesso ao painel só para a equipe da clínica e por função, e links de gerenciamento assinados e revogáveis.',
     },
   },
 };

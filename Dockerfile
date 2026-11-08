@@ -14,14 +14,22 @@ COPY packages/shared/package.json packages/shared/
 RUN pnpm install --frozen-lockfile --filter @agendae/web...
 COPY apps/web apps/web
 COPY packages/shared packages/shared
-ARG VITE_APP_NAME=Agendaê
+ARG VITE_APP_NAME="Amanda Alves"
 ARG VITE_SUPABASE_URL
 ARG VITE_SUPABASE_ANON_KEY
 ARG VITE_TURNSTILE_SITE_KEY=
+ARG VITE_SITE_URL=
+ARG VITE_PAYMENTS_MODE=test
+ARG VITE_WHATSAPP_CTA="Falar com a Amanda"
+ARG VITE_CLINIC_SLUG=amanda-alves
 ENV VITE_APP_NAME=$VITE_APP_NAME \
     VITE_SUPABASE_URL=$VITE_SUPABASE_URL \
     VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY \
-    VITE_TURNSTILE_SITE_KEY=$VITE_TURNSTILE_SITE_KEY
+    VITE_TURNSTILE_SITE_KEY=$VITE_TURNSTILE_SITE_KEY \
+    VITE_SITE_URL=$VITE_SITE_URL \
+    VITE_PAYMENTS_MODE=$VITE_PAYMENTS_MODE \
+    VITE_WHATSAPP_CTA=$VITE_WHATSAPP_CTA \
+    VITE_CLINIC_SLUG=$VITE_CLINIC_SLUG
 RUN pnpm --filter @agendae/web build
 
 FROM nginxinc/nginx-unprivileged:1.27-alpine AS runtime

@@ -28,4 +28,4 @@ fi
 echo
 echo "Amanda Alves no ar:"
 echo "  Página de reserva: ${base}/studio-exemplo"
-echo "  Painel:            ${base}/entrar  (demo@agendae.dev / demo12345)"
+echo "  Painel:            ${base}/entrar  (amanda@demo.test / demo12345)"

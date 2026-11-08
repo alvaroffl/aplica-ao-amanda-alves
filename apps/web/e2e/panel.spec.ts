@@ -3,7 +3,7 @@ import { expectAccessible } from './helpers';
 
 test('equipe entra no painel e vê a agenda e os relatórios', async ({ page }) => {
   await page.goto('/entrar');
-  await page.getByLabel('E-mail').fill('demo@agendae.dev');
+  await page.getByLabel('E-mail').fill('amanda@demo.test');
   await page.getByLabel('Senha').fill('demo12345');
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
 
@@ -23,7 +23,7 @@ test('equipe entra no painel e vê a agenda e os relatórios', async ({ page }) 
 
 test('admin vê aviso de demonstração, pagamentos e pede estorno', async ({ page }) => {
   await page.goto('/entrar');
-  await page.getByLabel('E-mail').fill('demo@agendae.dev');
+  await page.getByLabel('E-mail').fill('amanda@demo.test');
   await page.getByLabel('Senha').fill('demo12345');
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
 

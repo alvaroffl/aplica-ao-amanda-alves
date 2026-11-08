@@ -84,7 +84,7 @@ pnpm dev                      # http://localhost:5173
 | O quê                                               | Onde                                                           |
 | --------------------------------------------------- | -------------------------------------------------------------- |
 | Página da clínica (demonstração)                    | http://localhost:5173/amanda-alves                             |
-| Painel (login de demonstração)                      | http://localhost:5173/entrar: **demo@agendae.dev / demo12345** |
+| Painel (login de demonstração)                      | http://localhost:5173/entrar: **amanda@demo.test / demo12345** |
 | E-mails enviados (confirmação, lembretes, convites) | http://127.0.0.1:54324 (Mailpit)                               |
 | Supabase API                                        | http://127.0.0.1:54321                                         |
 

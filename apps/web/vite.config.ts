@@ -2,11 +2,27 @@
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+
+/**
+ * Endereço público do app nas meta tags de compartilhamento (Open Graph):
+ * substitui %SITE_URL% no index.html por VITE_SITE_URL (ex.: https://agendar.amandaalvespmu.com.br).
+ */
+function siteUrl(): Plugin {
+  let url = '';
+  return {
+    name: 'site-url',
+    configResolved(config) {
+      url = String(config.env.VITE_SITE_URL ?? '').replace(/\/$/, '');
+    },
+    transformIndexHtml: (html) => html.replaceAll('%SITE_URL%', url),
+  };
+}
 
 export default defineConfig({
   plugins: [
+    siteUrl(),
     react(),
     tailwindcss(),
     VitePWA({

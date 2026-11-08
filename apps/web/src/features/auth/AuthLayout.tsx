@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
-import { Logo } from '@/components/common/Logo';
+import { BrandLogo, Logo } from '@/components/common/Logo';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -31,8 +31,9 @@ export function AuthLayout({
       </header>
       <main
         id="conteudo"
-        className="flex flex-1 items-start justify-center px-4 py-8 sm:items-center"
+        className="flex flex-1 flex-col items-center justify-start gap-6 px-4 py-8 sm:justify-center"
       >
+        <BrandLogo className="h-20" />
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle as="h1" className="text-xl">

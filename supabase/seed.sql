@@ -9,7 +9,7 @@
 --     marcados com is_demo = true. Remova com `pnpm demo:purge` (ou pelo painel,
 --     em Configurações) antes do lançamento real.
 --
--- Login do painel (apresentação):  demo@agendae.dev  /  demo12345
+-- Login do painel (apresentação):  amanda@demo.test  /  demo12345
 -- Página pública:                  http://localhost:5173/amanda-alves
 -- =============================================================================
 
@@ -27,7 +27,7 @@ insert into auth.users (
   email_change_token_current, phone_change, phone_change_token, reauthentication_token
 ) values (
   '00000000-0000-0000-0000-000000000000', 'd0000000-0000-0000-0000-000000000001',
-  'authenticated', 'authenticated', 'demo@agendae.dev',
+  'authenticated', 'authenticated', 'amanda@demo.test',
   extensions.crypt('demo12345', extensions.gen_salt('bf')), now(),
   '{"provider":"email","providers":["email"]}', '{"full_name":"Amanda Alves"}', now(), now(),
   '', '', '', '', '', '', '', ''
@@ -37,7 +37,7 @@ insert into auth.identities (
   id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at
 ) values (
   gen_random_uuid(), 'd0000000-0000-0000-0000-000000000001', 'd0000000-0000-0000-0000-000000000001',
-  '{"sub":"d0000000-0000-0000-0000-000000000001","email":"demo@agendae.dev","email_verified":true}',
+  '{"sub":"d0000000-0000-0000-0000-000000000001","email":"amanda@demo.test","email_verified":true}',
   'email', now(), now(), now()
 );
 

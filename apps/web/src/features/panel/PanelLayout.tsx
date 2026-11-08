@@ -138,6 +138,8 @@ function Sidebar() {
   const { business, memberships, role, can, switchBusiness } = useBusiness();
   const { user, signOut } = useAuth();
   const link = publicUrl(`/${business.slug}`);
+  const displayName =
+    (user?.user_metadata?.full_name as string | undefined) || user?.email || business.name;
 
   const items: NavItem[] = [
     { to: '/painel', label: t('panel.nav.agenda'), icon: CalendarDays, end: true },
@@ -198,35 +200,54 @@ function Sidebar() {
       </div>
 
       <div className="p-3">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              type="button"
-              className="flex w-full items-center gap-2.5 rounded-lg border bg-background p-2 text-left text-sm hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
-            >
-              <span
-                className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-xs font-bold text-primary-foreground"
-                aria-hidden
+        {memberships.length > 1 ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="flex w-full items-center gap-2.5 rounded-lg border bg-background p-2 text-left text-sm hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
               >
-                {initials(business.name)}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block truncate font-medium">{business.name}</span>
-                <span className="block text-xs text-muted-foreground">{t(`roles.${role}`)}</span>
-              </span>
-              <ChevronsUpDown className="size-4 text-muted-foreground" aria-hidden />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-60">
-            <DropdownMenuLabel>{t('panel.businesses')}</DropdownMenuLabel>
-            {memberships.map((m) => (
-              <DropdownMenuItem key={m.business.id} onSelect={() => switchBusiness(m.business.id)}>
-                <span className="flex-1 truncate">{m.business.name}</span>
-                {m.business.id === business.id && <Check aria-hidden />}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+                <span
+                  className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary text-xs font-bold text-primary-foreground"
+                  aria-hidden
+                >
+                  {initials(business.name)}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-medium">{business.name}</span>
+                  <span className="block text-xs text-muted-foreground">{t(`roles.${role}`)}</span>
+                </span>
+                <ChevronsUpDown className="size-4 text-muted-foreground" aria-hidden />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-60">
+              <DropdownMenuLabel>{t('panel.businesses')}</DropdownMenuLabel>
+              {memberships.map((m) => (
+                <DropdownMenuItem
+                  key={m.business.id}
+                  onSelect={() => switchBusiness(m.business.id)}
+                >
+                  <span className="flex-1 truncate">{m.business.name}</span>
+                  {m.business.id === business.id && <Check aria-hidden />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          // app exclusivo: uma clínica só — mostra quem está usando o painel
+          <div className="flex items-center gap-2.5 rounded-lg border bg-background p-2 text-sm">
+            <span
+              className="flex size-8 shrink-0 items-center justify-center rounded-md bg-secondary text-xs font-medium text-secondary-foreground"
+              aria-hidden
+            >
+              {initials(displayName)}
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate font-medium">{displayName}</span>
+              <span className="block text-xs text-muted-foreground">{t(`roles.${role}`)}</span>
+            </span>
+          </div>
+        )}
       </div>
 
       <nav aria-label={t('panel.menu')} className="flex-1 overflow-y-auto px-3">

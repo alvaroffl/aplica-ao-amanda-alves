@@ -6,8 +6,9 @@ name: Deploy
 # Configure no ambiente "production" do repositório:
 #   secrets: SUPABASE_ACCESS_TOKEN, SUPABASE_DB_PASSWORD, CLOUDFLARE_API_TOKEN
 #   vars:    SUPABASE_PROJECT_REF, VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY,
-#            VITE_TURNSTILE_SITE_KEY, VITE_APP_NAME, CLOUDFLARE_ACCOUNT_ID,
-#            CLOUDFLARE_PAGES_PROJECT
+#            VITE_TURNSTILE_SITE_KEY, VITE_APP_NAME, VITE_SITE_URL,
+#            VITE_PAYMENTS_MODE (test | live), VITE_WHATSAPP_CTA, VITE_CLINIC_SLUG,
+#            CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_PAGES_PROJECT
 # Segredos das Edge Functions: `supabase secrets set` (ver README → Deploy).
 
 on:
@@ -67,6 +68,10 @@ jobs:
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
           VITE_TURNSTILE_SITE_KEY: ${{ vars.VITE_TURNSTILE_SITE_KEY }}
+          VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
+          VITE_PAYMENTS_MODE: ${{ vars.VITE_PAYMENTS_MODE }}
+          VITE_WHATSAPP_CTA: ${{ vars.VITE_WHATSAPP_CTA }}
+          VITE_CLINIC_SLUG: ${{ vars.VITE_CLINIC_SLUG }}
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -101,5 +106,9 @@ jobs:
             VITE_SUPABASE_URL=${{ vars.VITE_SUPABASE_URL }}
             VITE_SUPABASE_ANON_KEY=${{ vars.VITE_SUPABASE_ANON_KEY }}
             VITE_TURNSTILE_SITE_KEY=${{ vars.VITE_TURNSTILE_SITE_KEY }}
+            VITE_SITE_URL=${{ vars.VITE_SITE_URL }}
+            VITE_PAYMENTS_MODE=${{ vars.VITE_PAYMENTS_MODE }}
+            VITE_WHATSAPP_CTA=${{ vars.VITE_WHATSAPP_CTA }}
+            VITE_CLINIC_SLUG=${{ vars.VITE_CLINIC_SLUG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
