@@ -42,6 +42,22 @@ else
   done
 fi
 
+# 2b) Banco igual ao do repositório: depois de um `git pull` com migrations ou
+#     seed novos (ex.: login de demonstração), recria o banco de demonstração.
+#     Ambiente de desenvolvimento: os dados locais voltam ao seed.
+stamp_file=supabase/.temp/db-stamp
+stamp=$(cat supabase/migrations/*.sql supabase/seed.sql | sha256sum | cut -d' ' -f1)
+if [ "$(cat "$stamp_file" 2>/dev/null)" != "$stamp" ]; then
+  echo "Atualizando o banco de demonstração (migrations e seed do repositório)..."
+  if npx supabase db reset; then
+    mkdir -p supabase/.temp && echo "$stamp" >"$stamp_file"
+  else
+    echo "AVISO: não foi possível recriar o banco; rode: npx supabase db reset"
+  fi
+else
+  echo "Banco de demonstração em dia."
+fi
+
 # 3) Edge Functions (reserva, pagamentos e e-mails)
 code=$(curl -s -o /dev/null -w '%{http_code}' -X OPTIONS --max-time 3 \
   http://127.0.0.1:54321/functions/v1/public-booking || true)
