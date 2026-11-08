@@ -139,8 +139,8 @@ export function HomePage() {
             </React.Suspense>
           )}
 
-          <div className="relative mx-auto w-full max-w-4xl px-4 text-center">
-            <GoldLogo animate halo className="mx-auto h-28 w-auto sm:h-40" />
+          <div className="relative mx-auto w-full max-w-4xl px-4 text-center 2xl:max-w-5xl">
+            <GoldLogo animate halo className="mx-auto h-28 w-auto sm:h-40 2xl:h-52" />
             <Reveal as="p" delay={500} className="eyebrow mt-8">
               {t('home.eyebrowLeft')} <span aria-hidden>✦</span> {t('home.eyebrowRight')}
             </Reveal>
@@ -149,12 +149,12 @@ export function HomePage() {
               id="titulo"
               text={t('home.title')}
               delay={650}
-              className="mx-auto mt-5 max-w-3xl text-balance text-4xl leading-[1.08] sm:text-6xl"
+              className="mx-auto mt-5 max-w-3xl text-balance text-4xl leading-[1.08] sm:text-6xl 2xl:max-w-4xl 2xl:text-7xl"
             />
             <Reveal
               as="p"
               delay={950}
-              className="mx-auto mt-6 max-w-xl text-balance text-lg text-muted-foreground"
+              className="mx-auto mt-6 max-w-xl text-balance text-lg text-muted-foreground 2xl:max-w-2xl 2xl:text-xl"
             >
               {t('home.subtitle')}
             </Reveal>
