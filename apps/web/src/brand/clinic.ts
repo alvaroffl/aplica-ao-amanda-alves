@@ -46,7 +46,48 @@ export const CLINIC = {
       text: 'Tratamentos faciais personalizados, mediante avaliação, para rejuvenescimento e qualidade de pele.',
     },
   ],
+  /** fotos reais do salão (public/brand/espaco), na ordem da galeria */
+  space: [
+    { key: 'salao', ratio: 1125 / 2000 },
+    { key: 'recepcao', ratio: 1125 / 2000 },
+    { key: 'entrada', ratio: 1125 / 2000 },
+  ],
+  /** diferenciais (todos citados no site oficial) */
+  highlights: ['mapping', 'natural', 'biosafety', 'evaluation'],
+  /**
+   * Depoimentos ILUSTRATIVOS para a apresentação (demo: true). Substitua por
+   * relatos reais autorizados pelas clientes; enquanto houver demo, a página
+   * avisa que são exemplos.
+   */
+  testimonials: [
+    {
+      demo: true,
+      name: 'Juliana F.',
+      service: 'Micro Sobrancelha',
+      text: 'Saí com a sensação de que as sobrancelhas sempre foram minhas. Natural, delicado e do jeito que eu queria.',
+    },
+    {
+      demo: true,
+      name: 'Camila D.',
+      service: 'Micro Labial · Revitalização',
+      text: 'O atendimento é um ritual. Cada detalhe foi explicado com calma, e o resultado ficou leve e sofisticado.',
+    },
+    {
+      demo: true,
+      name: 'Patrícia M.',
+      service: 'Avaliação gratuita',
+      text: 'A avaliação me deixou segura para escolher o procedimento certo. O espaço é lindo e acolhedor.',
+    },
+  ],
 } as const;
+
+/** srcset responsivo (AVIF/WebP) das fotos do espaço */
+export function spaceSources(key: string) {
+  const sizes = [480, 800, 1125];
+  const set = (ext: string) =>
+    sizes.map((w) => `/brand/espaco/${key}-${w}.${ext} ${w}w`).join(', ');
+  return { avif: set('avif'), webp: set('webp'), fallback: `/brand/espaco/${key}-800.webp` };
+}
 
 export function whatsappUrl(text?: string) {
   const digits = CLINIC.whatsapp.replace(/\D/g, '');

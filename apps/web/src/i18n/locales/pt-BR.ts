@@ -710,16 +710,17 @@ const ptBR = {
   },
 
   home: {
-    nav: 'Navegação',
+    nav: { label: 'Navegação', clinic: 'A clínica', space: 'O espaço' },
+    backToTop: 'Amanda Alves — voltar ao início',
+    enter: 'Entrar',
     procedures: 'Procedimentos',
     contact: 'Contato',
     book: 'Agendar',
     eyebrowLeft: 'Estética avançada',
     eyebrowRight: 'Naturalidade',
     title: 'Beleza elevada à sua forma mais autêntica.',
-    subtitle:
-      'Micropigmentação e estética avançada com precisão técnica, sensibilidade e respeito à harmonia de cada rosto.',
-    ctaBook: 'Agendar Agora',
+    subtitle: 'Um refúgio de tranquilidade e sofisticação, projetado para que você se sinta única.',
+    ctaBook: 'Agendar horário',
     ctaEvaluation: 'Agendar Avaliação Gratuita',
     stats: {
       procedures: '+20 mil',
@@ -749,6 +750,50 @@ const ptBR = {
     whatsapp: 'Chamar no WhatsApp',
     hours: 'Atendimento',
     staffArea: 'Área da equipe',
+    talkEyebrow: 'Agende seu momento',
+    highlights: {
+      mapping: {
+        title: 'Mapeamento facial',
+        text: 'Desenho personalizado que respeita as proporções do seu rosto.',
+      },
+      natural: { title: 'Naturalidade', text: 'Resultados leves, sofisticados e verdadeiros.' },
+      biosafety: {
+        title: 'Biossegurança',
+        text: 'Materiais esterilizados e normas rigorosas em cada atendimento.',
+      },
+      evaluation: {
+        title: 'Avaliação gratuita',
+        text: 'Uma conversa para indicar o procedimento ideal para você.',
+      },
+    },
+    space: {
+      eyebrow: 'Um refúgio',
+      title: 'O espaço',
+      text: 'Mármore, luz quente e flores de cerejeira: um ambiente pensado para você se sentir em casa, só que melhor.',
+      open: 'Ampliar foto: {{name}}',
+      prev: 'Anterior',
+      next: 'Próxima',
+      photos: {
+        salao: {
+          title: 'O salão',
+          alt: 'Salão com poltronas em greige, espelho amplo, parede de mármore com veios dourados e vista para a cidade.',
+        },
+        recepcao: {
+          title: 'A recepção',
+          alt: 'Recepção com balcão de mármore branco e o letreiro dourado Amanda Alves iluminado por luz quente.',
+        },
+        entrada: {
+          title: 'A entrada',
+          alt: 'Árvore de flores de cerejeira rosa subindo pela parede, ao lado de um espelho em arco com moldura dourada.',
+        },
+      },
+    },
+    testimonials: {
+      eyebrow: 'Depoimentos',
+      title: 'Como elas se sentem',
+      demoNote:
+        'Depoimentos ilustrativos para a apresentação. Serão substituídos por relatos reais autorizados pelas clientes.',
+    },
   },
   demo: {
     badge: 'Demonstração',

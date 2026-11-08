@@ -76,16 +76,17 @@ const en: DeepPartial<Translations> = {
   },
   periods: { morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening' },
   home: {
-    nav: 'Navigation',
+    nav: { label: 'Navigation', clinic: 'The clinic', space: 'The space' },
+    backToTop: 'Amanda Alves — back to top',
+    enter: 'Enter',
     procedures: 'Treatments',
     contact: 'Contact',
     book: 'Book',
     eyebrowLeft: 'Advanced aesthetics',
     eyebrowRight: 'Naturalness',
     title: 'Beauty raised to its most authentic form.',
-    subtitle:
-      'Permanent makeup and advanced aesthetics with technical precision, sensitivity and respect for the harmony of every face.',
-    ctaBook: 'Book now',
+    subtitle: 'A haven of calm and sophistication, designed to make you feel unique.',
+    ctaBook: 'Book an appointment',
     ctaEvaluation: 'Book a free consultation',
     stats: {
       procedures: '20k+',
@@ -116,6 +117,50 @@ const en: DeepPartial<Translations> = {
     whatsapp: 'Chat on WhatsApp',
     hours: 'Opening hours',
     staffArea: 'Staff area',
+    talkEyebrow: 'Book your moment',
+    highlights: {
+      mapping: {
+        title: 'Facial mapping',
+        text: 'A personalized design that respects your proportions.',
+      },
+      natural: { title: 'Natural results', text: 'Light, sophisticated and true results.' },
+      biosafety: {
+        title: 'Biosafety',
+        text: 'Sterilized materials and strict standards in every visit.',
+      },
+      evaluation: {
+        title: 'Free consultation',
+        text: 'A conversation to find the ideal treatment for you.',
+      },
+    },
+    space: {
+      eyebrow: 'A haven',
+      title: 'The space',
+      text: 'Marble, warm light and cherry blossoms: a place designed to make you feel at home, only better.',
+      open: 'Enlarge photo: {{name}}',
+      prev: 'Previous',
+      next: 'Next',
+      photos: {
+        salao: {
+          title: 'The salon',
+          alt: 'Salon with greige chairs, a wide mirror, a marble wall with gold veins and a city view.',
+        },
+        recepcao: {
+          title: 'The reception',
+          alt: 'Reception with a white marble counter and the gold Amanda Alves sign lit by warm light.',
+        },
+        entrada: {
+          title: 'The entrance',
+          alt: 'A pink cherry blossom tree climbing the wall next to an arched mirror with a gold frame.',
+        },
+      },
+    },
+    testimonials: {
+      eyebrow: 'Testimonials',
+      title: 'How they feel',
+      demoNote:
+        'Illustrative testimonials for the presentation. They will be replaced by real, authorized reviews.',
+    },
   },
   booking: {
     policy: {
