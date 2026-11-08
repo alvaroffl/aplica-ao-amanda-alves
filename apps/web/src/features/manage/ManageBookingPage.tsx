@@ -332,7 +332,9 @@ export function ManageBookingPage() {
 
         {(b.status === 'cancelled' || b.status === 'expired') && (
           <Button asChild size="lg" className="w-full">
-            <Link to={`/${b.business.slug}`}>{t('manage.bookAgain')}</Link>
+            <Link to={`/${b.business.slug}`} viewTransition>
+              {t('manage.bookAgain')}
+            </Link>
           </Button>
         )}
         {b.status === 'cancelled' &&

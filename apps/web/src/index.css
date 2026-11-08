@@ -422,16 +422,17 @@
 ::view-transition-new(root) {
   animation: page-in var(--dur-base) var(--ease-out) both;
 }
+/* "Atravessar a porta": a sala atual se aproxima e some; a próxima assenta */
 @keyframes page-out {
   to {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: scale(1.035);
   }
 }
 @keyframes page-in {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: scale(0.985) translateY(10px);
   }
 }
 

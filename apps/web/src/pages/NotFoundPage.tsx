@@ -15,7 +15,9 @@ export function NotFoundPage() {
         <h1 className="text-2xl">{t('common.notFoundTitle')}</h1>
         <p className="text-muted-foreground">{t('common.notFoundText')}</p>
         <Button asChild>
-          <Link to="/">{t('common.goHome')}</Link>
+          <Link to="/" viewTransition>
+            {t('common.goHome')}
+          </Link>
         </Button>
       </div>
     </PublicLayout>

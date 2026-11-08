@@ -16,7 +16,7 @@ test.use({ viewport: { width: 360, height: 780 } });
 
 test('celular de 360 px: páginas da cliente sem rolagem horizontal', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('img', { name: 'Amanda Alves' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'Amanda Alves', exact: true })).toBeVisible();
   await expectNoHorizontalOverflow(page, 'início');
 
   await page.goto(`/${SLUG}`);
@@ -47,7 +47,7 @@ for (const [label, width, height] of [
   test(`${label} (${width} px): páginas principais sem rolagem horizontal`, async ({ page }) => {
     await page.setViewportSize({ width, height });
     await page.goto('/');
-    await expect(page.getByRole('img', { name: 'Amanda Alves' })).toBeVisible();
+    await expect(page.getByRole('img', { name: 'Amanda Alves', exact: true })).toBeVisible();
     await expectNoHorizontalOverflow(page, `${label}: início`);
     await page.goto(`/${SLUG}`);
     await page.getByRole('button', { name: /Hydra Gloss/ }).click();

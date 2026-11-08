@@ -4,7 +4,7 @@ import { expectAccessible } from './helpers';
 test('página inicial da clínica: marca, procedimentos e avaliação gratuita', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle('Amanda Alves | Estética Avançada');
-  await expect(page.getByRole('img', { name: 'Amanda Alves' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'Amanda Alves', exact: true })).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Beleza elevada à sua forma mais autêntica.' }),
   ).toBeVisible();
