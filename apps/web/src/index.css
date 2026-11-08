@@ -6,70 +6,128 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Identidade da Clínica Amanda Alves — extraída do site oficial
- * (amandaalvespmu.com.br): creme, dourado e oliva; Playfair Display + Outfit.
+ * Identidade da Clínica Amanda Alves — referência: fotos do espaço físico
+ * (marfim, mármore branco com veios dourados, ouro champagne, greige, madeira,
+ * preto fosco dos trilhos de spots) + site oficial (Playfair Display + Outfit).
  * Fonte: docs/referencia-amanda-alves/03-identidade-visual-e-tom.md
- * Ajustes de acessibilidade (WCAG AA): botões em oliva escuro (8,5:1 com texto
- * branco); dourado só em decoração (✦, filetes) ou na versão escurecida
- * --gold-text (4,8:1); texto secundário levemente mais escuro que o do site.
+ * Acessibilidade (WCAG AA): ouro brilhante só em decoração ou sobre fundo escuro;
+ * para texto em fundo claro use --gold-text (≥ 4,5:1). Botões em preto fosco
+ * (13,7:1) e CTA dourado com texto escuro (≥ 6:1).
  */
 :root {
   color-scheme: light;
-  --radius: 0.25rem; /* cantos discretos, como no site (4px) */
-  --background: #f9f7f2; /* creme do site */
-  --foreground: #3c3c3b;
+  --radius: 0.5rem;
+  --background: #faf8f3; /* marfim das paredes */
+  --foreground: #2b2926; /* preto fosco quente */
   --card: #ffffff;
-  --card-foreground: #3c3c3b;
+  --card-foreground: #2b2926;
   --popover: #ffffff;
-  --popover-foreground: #3c3c3b;
-  --primary: #4a4e40; /* oliva escuro */
-  --primary-foreground: #ffffff;
-  --secondary: #efece6; /* fundo alternativo do site */
-  --secondary-foreground: #3c3c3b;
-  --muted: #efece6;
-  --muted-foreground: #666660;
-  --accent: #f4f1ea;
-  --accent-foreground: #4a4e40;
+  --popover-foreground: #2b2926;
+  --primary: #2b2926; /* trilhos e esquadrias */
+  --primary-foreground: #faf8f3;
+  --secondary: #f2eee7; /* mármore */
+  --secondary-foreground: #2b2926;
+  --muted: #f2eee7;
+  --muted-foreground: #68625a;
+  --accent: #f6f1e7; /* champagne claro */
+  --accent-foreground: #5c4a2e;
   --destructive: #a33a2e;
   --destructive-foreground: #ffffff;
   --success: #3f6b4a;
   --success-foreground: #ffffff;
   --warning: #83540f;
-  --gold: #bfa070; /* dourado do site — decoração */
-  --gold-text: #86683a; /* dourado legível para textos pequenos */
-  --olive: #6b705c;
-  --border: #e4dfd5;
-  --input: #d6d0c4;
-  --ring: #6b705c;
+  --border: #e6dfd3;
+  --input: #d9d0c2;
+  --ring: #8a6a1f;
+
+  /* ouro */
+  --gold: #c9a24b; /* champagne — decoração */
+  --gold-bright: #d4af37;
+  --gold-light: #f6e7a8;
+  --gold-deep: #8a6a1f;
+  --gold-text: #7c5f32; /* ouro legível para texto em fundo claro */
+  --gold-metal: linear-gradient(
+    105deg,
+    #8a6a1f 0%,
+    #c9a24b 18%,
+    #d4af37 32%,
+    #f6e7a8 48%,
+    #c9a24b 62%,
+    #b8913a 80%,
+    #8a6a1f 100%
+  );
+  --gold-button: linear-gradient(105deg, #c9a24b 0%, #e5c77a 50%, #c9a24b 100%);
+  --gold-hairline: linear-gradient(
+    90deg,
+    transparent,
+    #c9a24b 20%,
+    #e8cf86 50%,
+    #c9a24b 80%,
+    transparent
+  );
+
+  /* cerejeira (só detalhes e fundos suaves; nunca texto) */
+  --blossom-50: #fbeff2;
+  --blossom-100: #f8e1e7; /* blush */
+  --blossom-300: #efb8c7;
+  --blossom-500: #e79ab0; /* rosa vivo — detalhes */
+  --straw: #d8bfa0; /* capim-dos-pampas */
+  --teal: #2f5d62; /* aparador vintage — micro-acentos */
+
+  /* vidro jateado (porta) */
+  --glass-bg: rgb(255 255 255 / 0.58);
+  --glass-border: rgb(201 162 75 / 0.35);
+
+  /* tons do espaço (uso pontual) */
+  --greige: #a39382; /* poltronas */
+  --wood: #5a3a2a; /* braços das poltronas */
+  --olive: #6b705c; /* plantas — com parcimônia */
+  --ink: #1e1d1b; /* rodapé e áreas escuras */
+
+  /* sombras suaves, luz quente */
+  --shadow-soft: 0 1px 2px rgb(43 41 38 / 0.04), 0 12px 32px -16px rgb(43 41 38 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(43 41 38 / 0.05), 0 24px 48px -24px rgb(43 41 38 / 0.28);
+  --shadow-gold: 0 12px 32px -14px rgb(201 162 75 / 0.55);
+
+  /* movimento */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 300ms;
+  --dur-base: 500ms;
+  --dur-slow: 700ms;
 }
 
 .dark {
   color-scheme: dark;
-  --background: #1c1d19;
-  --foreground: #f4f1ea;
-  --card: #24251f;
-  --card-foreground: #f4f1ea;
-  --popover: #272822;
-  --popover-foreground: #f4f1ea;
-  --primary: #cdb287; /* dourado claro */
-  --primary-foreground: #1c1d19;
-  --secondary: #2c2d27;
-  --secondary-foreground: #f4f1ea;
-  --muted: #2c2d27;
-  --muted-foreground: #b7b3a8;
-  --accent: #30312a;
-  --accent-foreground: #f4f1ea;
+  --background: #161513;
+  --foreground: #f4efe6;
+  --card: #1f1d1a;
+  --card-foreground: #f4efe6;
+  --popover: #221f1c;
+  --popover-foreground: #f4efe6;
+  --primary: #d4af37;
+  --primary-foreground: #1a1816;
+  --secondary: #26231f;
+  --secondary-foreground: #f4efe6;
+  --muted: #26231f;
+  --muted-foreground: #b9b1a5;
+  --accent: #2c2823;
+  --accent-foreground: #f4efe6;
   --destructive: #f0877b;
   --destructive-foreground: #2a1210;
   --success: #8fc79d;
   --success-foreground: #102419;
   --warning: #e3b26a;
-  --gold: #cdb287;
-  --gold-text: #cdb287;
-  --olive: #a9ae98;
-  --border: #393a33;
-  --input: #45463e;
-  --ring: #cdb287;
+  --border: #36322c;
+  --input: #433e37;
+  --ring: #d4af37;
+  --gold-text: #d9b968;
+  --glass-bg: rgb(31 29 26 / 0.6);
+  --glass-border: rgb(212 175 55 / 0.3);
+  --blossom-50: #2a2023;
+  --blossom-100: #33262a;
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -16px rgb(0 0 0 / 0.6);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.3), 0 24px 48px -24px rgb(0 0 0 / 0.7);
 }
 
 @theme inline {
@@ -80,8 +138,23 @@
   --font-display:
     'Playfair Display Variable', 'Playfair Display', Georgia, 'Times New Roman', serif;
   --color-gold: var(--gold);
+  --color-gold-bright: var(--gold-bright);
+  --color-gold-deep: var(--gold-deep);
   --color-gold-text: var(--gold-text);
+  --color-greige: var(--greige);
+  --color-wood: var(--wood);
   --color-olive: var(--olive);
+  --color-ink: var(--ink);
+  --color-blossom-50: var(--blossom-50);
+  --color-blossom-100: var(--blossom-100);
+  --color-blossom-300: var(--blossom-300);
+  --color-blossom-500: var(--blossom-500);
+  --color-straw: var(--straw);
+  --color-teal: var(--teal);
+  --shadow-soft: var(--shadow-soft);
+  --shadow-lift: var(--shadow-lift);
+  --shadow-gold: var(--shadow-gold);
+  --ease-luxe: var(--ease-out);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -200,11 +273,338 @@
   @apply rounded-lg;
 }
 
-/* Rótulo em caixa alta e espaçado, como no site ("ESTÉTICA AVANÇADA ✦ NATURALIDADE") */
+/* ------------------------------------------------------------------------- */
+/* Marca: ouro, mármore e rótulos                                              */
+/* ------------------------------------------------------------------------- */
+
+/* Rótulo em caixa alta e espaçado ("ESTÉTICA AVANÇADA ✦ NATURALIDADE") */
 .eyebrow {
   @apply text-xs font-normal tracking-[0.3em] uppercase text-gold-text;
 }
 /* Logo (preta) fica clara no tema escuro */
 .dark .brand-logo {
   filter: invert(1);
+}
+
+/* Ouro metálico em texto grande e decorativo (títulos, números, monograma) */
+.text-gold-metal {
+  background: var(--gold-metal);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Filete dourado fino (bordas de cartões e divisores) */
+.gold-hairline {
+  height: 1px;
+  background: var(--gold-hairline);
+}
+.card-luxe {
+  position: relative;
+  background: var(--card);
+  border: 1px solid color-mix(in oklab, var(--gold) 28%, var(--border));
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+@media (hover: hover) {
+  .card-luxe:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+    border-color: color-mix(in oklab, var(--gold) 60%, var(--border));
+  }
+}
+
+/* Logo em ouro: a forma vem da logo (máscara) e a cor do gradiente metálico */
+.gold-logo {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  background: var(--gold-metal);
+  -webkit-mask: var(--logo-mask) center / contain no-repeat;
+  mask: var(--logo-mask) center / contain no-repeat;
+}
+.gold-logo::after {
+  /* faixa de luz que atravessa o letreiro */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgb(255 250 230 / 0.95) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+}
+.gold-logo[data-animate='true'] {
+  animation: logo-reveal var(--dur-slow) var(--ease-out) both;
+}
+.gold-logo[data-animate='true']::after {
+  animation: logo-shimmer 1600ms var(--ease-in-out) 650ms both;
+}
+@media (hover: hover) {
+  .gold-logo:hover::after {
+    animation: logo-shimmer 1200ms var(--ease-in-out) both;
+  }
+}
+@keyframes logo-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes logo-shimmer {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(120%);
+  }
+}
+
+/* Botão dourado (CTA principal): preenchimento animado + brilho */
+.btn-gold {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--gold-button);
+  color: #2b2926;
+  box-shadow: var(--shadow-gold);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, #e5c77a, #f6e7a8 50%, #e5c77a);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+@media (hover: hover) {
+  .btn-gold:hover::before {
+    transform: scaleX(1);
+  }
+}
+.btn-gold:active {
+  transform: scale(0.98);
+}
+
+/* Revelação ao entrar na tela (Reveal.tsx) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal='in'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Transições de página (View Transitions API, nativa do navegador) */
+::view-transition-old(root) {
+  animation: page-out var(--dur-fast) var(--ease-in-out) both;
+}
+::view-transition-new(root) {
+  animation: page-in var(--dur-base) var(--ease-out) both;
+}
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Luz de spot passando pela parede de mármore (MarbleBackdrop.tsx) */
+@keyframes spot-sweep {
+  0%,
+  100% {
+    transform: translate3d(-20%, -5%, 0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(25%, 8%, 0);
+    opacity: 0.9;
+  }
+}
+
+/* Movimento reduzido: tudo aparece sem animação */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .gold-logo[data-animate='true'],
+  .gold-logo[data-animate='true']::after,
+  .gold-logo:hover::after {
+    animation: none;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+/* Materiais do salão                                                          */
+/* ------------------------------------------------------------------------- */
+
+/* Vidro jateado (porta da recepção) — GlassCard.tsx */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-soft);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+  }
+}
+
+/* Espelho em arco com moldura dourada — ArchFrame.tsx */
+/* Arco de espelho: raios enormes são reduzidos proporcionalmente pelo navegador,
+   o que dá um semicírculo perfeito no topo de qualquer moldura em retrato. */
+.arch {
+  border-radius: 9999px 9999px 0 0;
+}
+
+/* Reflexo esmaecido do porcelanato polido */
+.floor-reflection {
+  transform: scaleY(-1);
+  opacity: 0.18;
+  -webkit-mask-image: linear-gradient(to top, rgb(0 0 0 / 0.9), transparent 65%);
+  mask-image: linear-gradient(to top, rgb(0 0 0 / 0.9), transparent 65%);
+  pointer-events: none;
+}
+
+/* Brisa nos ramos de cerejeira — BlossomBranch.tsx */
+@keyframes branch-sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(1.6deg);
+  }
+}
+
+/* Veios dourados que se desenham sozinhos — MarbleBackground.tsx */
+.vein-draw path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: vein-draw 2400ms var(--ease-out) forwards;
+  animation-delay: var(--vein-delay, 0ms);
+}
+@keyframes vein-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Revelação de texto por máscara (RevealText.tsx) */
+.reveal-line {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.reveal-line > span {
+  display: inline-block;
+  transform: translateY(105%);
+  transition: transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal-text='in'] .reveal-line > span {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vein-draw path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .reveal-line > span {
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Textura de mármore (MarbleBackground.tsx): carregada só quando usada */
+.marble-surface {
+  background-color: #f7f4ee;
+  background-image: url('/brand/marmore-landscape.webp');
+  background-image: image-set(
+    url('/brand/marmore-landscape.avif') type('image/avif'),
+    url('/brand/marmore-landscape.webp') type('image/webp')
+  );
+  background-size: cover;
+  background-position: center;
+}
+@media (orientation: portrait) {
+  .marble-surface {
+    background-image: url('/brand/marmore-portrait.webp');
+    background-image: image-set(
+      url('/brand/marmore-portrait.avif') type('image/avif'),
+      url('/brand/marmore-portrait.webp') type('image/webp')
+    );
+  }
+}
+.marble-surface-dark,
+.dark .marble-surface {
+  background-color: #1e1d1b;
+  background-image: url('/brand/marmore-escuro.webp');
+  background-image: image-set(
+    url('/brand/marmore-escuro.avif') type('image/avif'),
+    url('/brand/marmore-escuro.webp') type('image/webp')
+  );
+  background-size: cover;
+  background-position: center;
+}
+
+.branch-sway {
+  animation: branch-sway 9s var(--ease-in-out) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .branch-sway {
+    animation: none;
+  }
+}
+
+/* Indicador "entrar" no fim do hero */
+.scroll-cue {
+  animation: scroll-cue 2.2s var(--ease-in-out) infinite;
+}
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue {
+    animation: none;
+  }
 }
