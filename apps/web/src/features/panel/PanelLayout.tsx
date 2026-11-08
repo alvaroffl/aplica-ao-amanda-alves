@@ -126,8 +126,11 @@ function PanelShell() {
       </Dialog>
 
       <main id="conteudo" className="min-w-0 px-4 py-6 sm:px-6 lg:px-8">
-        <DemoBanner />
-        <Outlet />
+        {/* em monitores largos o conteúdo não estica demais */}
+        <div className="mx-auto w-full max-w-[100rem]">
+          <DemoBanner />
+          <Outlet />
+        </div>
       </main>
     </div>
   );

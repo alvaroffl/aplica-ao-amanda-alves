@@ -30,7 +30,7 @@ test('celular de 360 px: painel sem rolagem horizontal', async ({ page }) => {
   await page.getByLabel('E-mail').fill('amanda@demo.test');
   await page.getByLabel('Senha').fill('demo12345');
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
-  await expect(page.locator('.fc-event').first()).toBeVisible();
+  await expect(page.locator('.fc-view-harness')).toBeVisible();
   await expectNoHorizontalOverflow(page, 'agenda');
 
   for (const path of ['disponibilidade', 'relatorios', 'pagamentos', 'configuracoes', 'unidades']) {
@@ -39,3 +39,28 @@ test('celular de 360 px: painel sem rolagem horizontal', async ({ page }) => {
     await expectNoHorizontalOverflow(page, path);
   }
 });
+
+for (const [label, width, height] of [
+  ['tablet', 768, 1024],
+  ['computador', 1440, 900],
+] as const) {
+  test(`${label} (${width} px): páginas principais sem rolagem horizontal`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    await page.goto('/');
+    await expect(page.getByRole('img', { name: 'Amanda Alves' })).toBeVisible();
+    await expectNoHorizontalOverflow(page, `${label}: início`);
+    await page.goto(`/${SLUG}`);
+    await page.getByRole('button', { name: /Hydra Gloss/ }).click();
+    await expect(page.getByRole('option', { disabled: false }).first()).toBeVisible();
+    await expectNoHorizontalOverflow(page, `${label}: horários`);
+    await page.goto('/entrar');
+    await page.getByLabel('E-mail').fill('amanda@demo.test');
+    await page.getByLabel('Senha').fill('demo12345');
+    await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+    await expect(page.locator('.fc-view-harness')).toBeVisible();
+    await expectNoHorizontalOverflow(page, `${label}: agenda`);
+    await page.goto('/painel/relatorios');
+    await expect(page.locator('main h1')).toBeVisible();
+    await expectNoHorizontalOverflow(page, `${label}: relatórios`);
+  });
+}
