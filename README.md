@@ -1,8 +1,8 @@
-# Agendaê: plataforma de agendamento online
+# Amanda Alves | Estética Avançada — app de agendamento
 
-Agendamento online para negócios de serviço com hora marcada (salões, barbearias, estética, clínicas e estúdios). O cliente marca **em até 4 toques pelo celular, sem criar conta**. O negócio recebe **sinal via Pix ou cartão**, envia **lembretes por e-mail e WhatsApp** e **nunca tem dois clientes no mesmo horário**: a garantia está no banco de dados.
+App exclusivo da clínica **Amanda Alves | Estética Avançada** (micropigmentação e estética avançada), com a logo, as cores e as fontes do [site oficial](https://www.amandaalvespmu.com.br). A cliente agenda **em poucos toques pelo celular, sem criar conta**, paga o **sinal via Pix ou cartão**, recebe **lembretes por e-mail e WhatsApp**, e a agenda **nunca tem duas clientes no mesmo horário**: a garantia está no banco de dados. A Amanda e a equipe usam o painel em `/painel`.
 
-> O nome "Agendaê" é provisório e configurável (`VITE_APP_NAME` / `APP_NAME`).
+> A base técnica nasceu como plataforma de agendamento ("Agendaê") e continua com o modelo de dados multi-negócio; a interface agora é de uma clínica só (sem cadastro de novos negócios).
 > Pesquisa de mercado: [`docs/PESQUISA.md`](docs/PESQUISA.md) · Escopo MVP/V2/V3: [`docs/ESCOPO.md`](docs/ESCOPO.md) · Banco: [`docs/BANCO.md`](docs/BANCO.md)
 
 > **Versão de apresentação para a Clínica Amanda Alves** (micropigmentação e estética avançada).
@@ -11,9 +11,9 @@ Agendamento online para negócios de serviço com hora marcada (salões, barbear
 > <https://www.amandaalvespmu.com.br>). Preços, durações, sinais, política, clientes e reservas
 > do seed são **fictícios** (`is_demo = true`) e os pagamentos rodam em **modo de teste**.
 
-| Página pública (celular)                    | Escolha de horário                          | Sinal por Pix (modo de teste)     |
-| ------------------------------------------- | ------------------------------------------- | --------------------------------- |
-| ![Serviços](docs/img/mobile-1-servicos.png) | ![Horários](docs/img/mobile-2-horarios.png) | ![Pix](docs/img/mobile-3-pix.png) |
+| Página inicial (celular)                | Serviços                                    | Horários                                    | Sinal por Pix (modo de teste)     |
+| --------------------------------------- | ------------------------------------------- | ------------------------------------------- | --------------------------------- |
+| ![Início](docs/img/mobile-0-inicio.png) | ![Serviços](docs/img/mobile-1-servicos.png) | ![Horários](docs/img/mobile-2-horarios.png) | ![Pix](docs/img/mobile-3-pix.png) |
 
 | Agenda do painel (arrastar e soltar)  | Pagamentos e estornos                         |
 | ------------------------------------- | --------------------------------------------- |
@@ -109,7 +109,7 @@ O repositório traz um [`.devcontainer`](.devcontainer) que instala tudo e sobe 
 
 1. Em [github.com/codespaces](https://github.com/codespaces), clique em **New codespace**, escolha este repositório e a branch, e crie.
 2. Espere a preparação terminar. Na primeira vez leva de 5 a 10 minutos, porque baixa as imagens do Supabase.
-3. Abra a aba **Ports**, clique no globo da porta **5173 (Agendaê)** e acrescente `/amanda-alves` ao endereço. O endereço também aparece no fim do log de inicialização.
+3. Abra a aba **Ports**, clique no globo da porta **5173 (Amanda Alves)** e acrescente `/amanda-alves` ao endereço. O endereço também aparece no fim do log de inicialização.
 
 O link `https://…-5173.app.github.dev` só abre para quem está logado no GitHub com a sua conta. Para mostrar a outra pessoa, mude a visibilidade da porta para **Public**. Logs: `/tmp/agendae-web.log` e `/tmp/agendae-functions.log`.
 

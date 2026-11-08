@@ -1,18 +1,18 @@
 # Referência — Clínica Amanda Alves
 
-Fonte única de verdade para **design, conteúdo e regras** do app de agendamento
-da clínica da Amanda Alves (micropigmentação e estética avançada). Toda tarefa
-de produto deve consultar estes arquivos antes de criar telas, textos ou regras.
+Fonte única de verdade para **design, conteúdo e regras** do **app exclusivo**
+da clínica Amanda Alves | Estética Avançada (micropigmentação e estética
+avançada). O app usa a marca, a logo, as cores e as fontes da clínica. Toda
+tarefa de produto deve consultar estes arquivos antes de criar telas, textos ou
+regras.
 
 **Site oficial (referência de identidade e conteúdo):** <https://www.amandaalvespmu.com.br>
 
-> O site é usado só como referência. Não copiamos código, textos longos nem
-> fotos dele. Conteúdo do app = original ou arquivos fornecidos pela cliente.
->
-> Observação: a leitura automática do site a partir do ambiente de
-> desenvolvimento falhou (o domínio não está liberado na rede desse ambiente).
-> As informações marcadas como **site oficial** abaixo vieram da leitura do site
-> feita pelo responsável pelo projeto e foram repassadas na especificação.
+> Do site vieram a **logo** (a pedido do responsável pelo projeto, para ser a
+> logo do app), a **paleta**, as **fontes** e os **textos institucionais**. Não
+> copiamos o código do site nem as **fotos** (galeria e procedimentos): elas só
+> entram no app quando a Amanda autorizar ou enviar os arquivos.
+> O site foi lido em 08/11/2026.
 
 ## Índice
 
@@ -43,7 +43,8 @@ Legenda: **[site]** site oficial · **[demo]** dado fictício de demonstração 
 | Política de remarcação/cancelamento (48h / 24h) | [demo] — `is_demo = true` |
 | Faixas de horário cadastradas, bloqueio de exemplo, clientes e reservas | [demo] — `is_demo = true` |
 | Parcelamento em até 3x | [demo] (configuração do negócio, ajustável no painel) |
-| Paleta de cores e par de fontes | [técnico] proposta → **[confirmar]** |
+| Logo (PNG) e monograma “A” (ícone do app) | [site] — versão vetorial ainda **[confirmar]** |
+| Paleta (creme, dourado, oliva) e fontes (Playfair Display + Outfit) | [site], com ajustes de contraste [técnico] |
 | Formação/credenciais (ex.: biomedicina) | **[confirmar]** — campo opcional vazio; nada aparece no app |
 | Gateway Mercado Pago e modo de teste | [técnico] ver `05-pagamentos.md` |
 
@@ -83,7 +84,8 @@ Depois disso, cadastre os serviços, preços, horários e a política oficiais n
 - [ ] **Avaliação gratuita**: duração (30 min na demo) e se vale para todos os serviços.
 - [ ] **Formação/credenciais** a exibir (ex.: biomedicina) — só publicar após confirmação.
 - [ ] **Parcelamento**: número máximo de parcelas e se os juros ficam com a cliente.
-- [ ] **Paleta, fontes e logo** (proposta em `03-identidade-visual-e-tom.md`).
+- [ ] **Logo em vetor** (SVG/PDF) para substituir o PNG extraído do site, e aprovação dos ajustes de cor feitos por acessibilidade.
+- [ ] **Uso das fotos do site** (espaço e procedimentos) no app.
 - [ ] **Fotos** do espaço, dos procedimentos e antes/depois **com autorização das clientes**.
 - [ ] **Conta Mercado Pago** da clínica (credenciais de produção, dados bancários, CNPJ/CPF).
 - [ ] **E-mail remetente** (domínio próprio para o Resend) e **número de WhatsApp** oficial (API).
