@@ -183,6 +183,7 @@ const ptBR = {
       professional: 'Profissional',
       datetime: 'Data e horário',
       details: 'Seus dados',
+      confirm: 'Confirmação',
     },
     chooseUnit: 'Escolha a unidade',
     chooseService: 'Escolha o serviço',

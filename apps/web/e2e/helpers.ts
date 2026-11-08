@@ -38,6 +38,6 @@ export async function pickFirstSlot(page: Page) {
   await expect(slot).toBeVisible();
   const time = (await slot.textContent())!.trim();
   await page.getByRole('button', { name: time, exact: true }).click();
-  await expect(page.getByText(/Passo \d de \d/)).toContainText(/Passo (3 de 3|4 de 4)/);
+  await expect(page.getByText(/Passo \d de \d/)).toContainText(/Passo (3 de 4|4 de 5)/);
   return time;
 }

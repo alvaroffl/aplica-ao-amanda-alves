@@ -83,11 +83,14 @@ export function DateStrip({
               disabled={!isAvailable}
               onClick={() => onSelect(key)}
               className={cn(
-                'flex w-14 shrink-0 snap-start flex-col items-center rounded-xl border px-1 py-2 text-center transition-colors focus-visible:outline-2 focus-visible:outline-ring',
+                // formato de arco, como o espelho da entrada
+                'flex w-14 shrink-0 snap-start flex-col items-center rounded-t-full rounded-b-2xl border px-1 pb-2 pt-3 text-center',
+                'transition-[transform,background-color,border-color,box-shadow] duration-300 ease-[var(--ease-out)] motion-reduce:transform-none',
+                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
                 isSelected
-                  ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                  ? 'border-gold bg-primary text-primary-foreground shadow-[var(--shadow-gold)]'
                   : isAvailable
-                    ? 'bg-card hover:border-primary/60 hover:bg-accent'
+                    ? 'bg-card hover:-translate-y-0.5 hover:border-gold/70'
                     : 'cursor-not-allowed bg-muted/40 text-muted-foreground/60',
                 loading && 'animate-pulse',
               )}
@@ -96,13 +99,17 @@ export function DateStrip({
                 {label(key, 'EEEE').slice(0, 3)}
               </span>
               <span className="sr-only">{label(key, "EEEE, d 'de' MMMM")}</span>
-              <span className="text-lg font-semibold leading-6" aria-hidden>
+              <span className="font-display text-xl leading-7" aria-hidden>
                 {label(key, 'd')}
               </span>
               <span
                 className={cn(
                   'mt-0.5 size-1.5 rounded-full',
-                  isAvailable && !isSelected ? 'bg-success' : 'bg-transparent',
+                  isAvailable && !isSelected
+                    ? 'bg-gold'
+                    : isSelected
+                      ? 'bg-gold-bright'
+                      : 'bg-transparent',
                 )}
                 aria-hidden
               />

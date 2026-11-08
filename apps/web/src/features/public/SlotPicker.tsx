@@ -29,9 +29,9 @@ export function SlotPicker<T extends { starts_at: string }>({
           <section key={period} aria-labelledby={`period-${period}`}>
             <h3
               id={`period-${period}`}
-              className="mb-2 flex items-center gap-1.5 text-sm font-medium text-muted-foreground"
+              className="mb-3 flex items-center gap-2 text-sm font-medium text-muted-foreground"
             >
-              <Icon className="size-4" aria-hidden /> {t(`periods.${period}`)}
+              <Icon className="size-4 text-gold-text" aria-hidden /> {t(`periods.${period}`)}
             </h3>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
               {items.map((slot) => {
@@ -43,10 +43,12 @@ export function SlotPicker<T extends { starts_at: string }>({
                     aria-pressed={isSelected}
                     onClick={() => onSelect(slot)}
                     className={cn(
-                      'h-11 rounded-lg border text-sm font-medium tabular-nums transition-colors focus-visible:outline-2 focus-visible:outline-ring',
+                      'h-11 rounded-full border text-sm font-medium tabular-nums',
+                      'transition-[transform,border-color,color,box-shadow] duration-300 ease-[var(--ease-out)] active:scale-95 motion-reduce:transform-none',
+                      'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
                       isSelected
-                        ? 'border-primary bg-primary text-primary-foreground'
-                        : 'bg-card hover:border-primary/60 hover:bg-accent',
+                        ? 'border-transparent bg-[image:var(--gold-button)] text-ink shadow-[var(--shadow-gold)]'
+                        : 'bg-card hover:-translate-y-px hover:border-gold hover:text-gold-text hover:shadow-[var(--shadow-soft)]',
                     )}
                   >
                     {formatTime(slot.starts_at, timeZone)}

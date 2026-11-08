@@ -1,20 +1,11 @@
 import { Link } from 'react-router';
+import { GoldLogo } from '@/components/brand/GoldLogo';
 import { env } from '@/lib/env';
 import { cn } from '@/lib/utils';
 
-/** Monograma "A" da marca Amanda Alves (ícone do app). */
+/** Monograma "A" da marca Amanda Alves em ouro (ícone do app). */
 export function LogoMark({ className }: { className?: string }) {
-  return (
-    <img
-      src="/brand/monograma.webp"
-      alt=""
-      width={128}
-      height={90}
-      decoding="async"
-      className={cn('brand-logo h-6 w-auto', className)}
-      aria-hidden
-    />
-  );
+  return <GoldLogo variant="mark" decorative className={cn('h-6 w-auto', className)} />;
 }
 
 /** Logo completa (AMANDA Alves), usada em destaque. */

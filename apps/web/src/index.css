@@ -435,7 +435,23 @@
   }
 }
 
-/* Luz de spot passando pela parede de mármore (MarbleBackdrop.tsx) */
+/* Passos do agendamento: o conteúdo novo sobe suavemente (BookingPage.tsx) */
+.step-in {
+  animation: page-in var(--dur-base) var(--ease-out) both;
+}
+
+/* Selo dourado da confirmação (ManageBookingPage.tsx) */
+.confirm-pop {
+  animation: confirm-pop var(--dur-slow) var(--ease-out) both;
+}
+@keyframes confirm-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+/* Luz de spot passando pela parede de mármore (MarbleBackground.tsx) */
 @keyframes spot-sweep {
   0%,
   100% {
@@ -461,7 +477,9 @@
     animation: none;
   }
   ::view-transition-old(root),
-  ::view-transition-new(root) {
+  ::view-transition-new(root),
+  .step-in,
+  .confirm-pop {
     animation: none;
   }
 }

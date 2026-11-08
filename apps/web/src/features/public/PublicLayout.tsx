@@ -14,11 +14,18 @@ export function PublicLayout({
 }) {
   const { t } = useTranslation();
   return (
-    <div className="flex min-h-dvh flex-col bg-gradient-to-b from-accent/40 via-background to-background">
+    <div className="relative isolate flex min-h-dvh flex-col bg-background">
+      {/* faixa de mármore no topo, esmaecendo: a "parede" da recepção ao fundo */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[26rem] overflow-hidden opacity-70 [mask-image:linear-gradient(to_bottom,black,transparent)]"
+      >
+        <div className="marble-surface absolute inset-0" />
+      </div>
       <a href="#conteudo" className="skip-link">
         {t('common.skipToContent')}
       </a>
-      <header className="sticky top-0 z-30 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+      <header className="sticky top-0 z-30 border-b border-gold/20 bg-background/85 backdrop-blur-md supports-[backdrop-filter]:bg-background/70">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
           {/* app exclusivo: sempre a marca Amanda Alves, voltando para a página inicial */}
           <Logo />
@@ -32,7 +39,8 @@ export function PublicLayout({
         {children}
       </main>
       {business?.phone && <WhatsAppButton phone={business.phone} />}
-      <footer className="border-t pb-24 pt-6 text-center text-xs text-muted-foreground">
+      <footer className="relative pb-24 pt-6 text-center text-xs text-muted-foreground">
+        <div className="gold-hairline absolute inset-x-0 top-0" aria-hidden />
         <p className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
           <span>© {new Date().getFullYear()} Amanda Alves PMU</span>
           <a className="underline underline-offset-2" href="/privacidade">

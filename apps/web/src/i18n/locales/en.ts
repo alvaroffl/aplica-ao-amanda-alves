@@ -192,6 +192,7 @@ const en: DeepPartial<Translations> = {
       professional: 'Professional',
       datetime: 'Date & time',
       details: 'Your details',
+      confirm: 'Confirmation',
     },
     chooseUnit: 'Choose a location',
     chooseService: 'Choose a service',

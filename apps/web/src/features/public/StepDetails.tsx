@@ -200,7 +200,8 @@ export function StepDetails({
       <Button
         type="submit"
         size="lg"
-        className="w-full"
+        variant="gold"
+        className="w-full rounded-full"
         loading={submitting}
         disabled={needsCaptcha && !captchaToken}
       >

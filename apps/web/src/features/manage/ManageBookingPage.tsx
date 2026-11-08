@@ -11,6 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   CalendarClock,
   CalendarDays,
+  Check,
   CheckCircle2,
   Clock,
   MapPin,
@@ -42,11 +43,15 @@ import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ApiError } from '@/lib/api';
 import { cancelByToken, useBookingByToken } from '../public/api';
+import { BookingProgress } from '../public/BookingProgress';
 import { PublicLayout } from '../public/PublicLayout';
 import { CalendarActions } from './CalendarActions';
 import { PaymentPanel } from './PaymentPanel';
 import { PrivacyPanel } from './PrivacyPanel';
 import { ReschedulePanel } from './ReschedulePanel';
+
+// chuva curta de pétalas ao confirmar (carregada só nesse momento)
+const PetalFall = React.lazy(() => import('@/components/motion/PetalFall'));
 
 export function ManageBookingPage() {
   const { token } = useParams();
@@ -131,7 +136,14 @@ export function ManageBookingPage() {
   const hero =
     b.status === 'confirmed' && isNew
       ? {
-          icon: <CheckCircle2 className="size-10 text-success" aria-hidden />,
+          icon: (
+            <span
+              className="confirm-pop flex size-16 items-center justify-center rounded-full bg-[image:var(--gold-metal)] text-ink shadow-[var(--shadow-gold)]"
+              aria-hidden
+            >
+              <Check className="size-8" strokeWidth={2.25} />
+            </span>
+          ),
           title: t('manage.confirmedTitle'),
           text: b.client.email ? t('manage.confirmedText', { email: b.client.email }) : null,
         }
@@ -159,15 +171,31 @@ export function ManageBookingPage() {
     <PublicLayout
       business={{ name: b.business.name, logo_url: b.business.logo_url, slug: b.business.slug }}
     >
+      {isNew && b.status === 'confirmed' && (
+        <React.Suspense fallback={null}>
+          <PetalFall mode="burst" count={22} className="fixed z-40" />
+        </React.Suspense>
+      )}
       <div className="mx-auto max-w-2xl space-y-5">
+        {isNew && (b.status === 'confirmed' || b.status === 'pending_payment') && (
+          <BookingProgress
+            steps={['service', 'datetime', 'details', 'confirm']}
+            index={b.status === 'confirmed' ? 4 : 3}
+            className="mb-8"
+          />
+        )}
         {hero && (
-          <div className="flex flex-col items-center gap-2 text-center" aria-live="polite">
+          <div className="flex flex-col items-center gap-3 text-center" aria-live="polite">
             {hero.icon}
-            <h1 className="text-2xl font-semibold tracking-tight">{hero.title}</h1>
+            <h1 className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
+              {hero.title}
+            </h1>
             {hero.text && <p className="max-w-md text-muted-foreground">{hero.text}</p>}
           </div>
         )}
-        {!hero && <h1 className="text-2xl font-semibold tracking-tight">{t('manage.title')}</h1>}
+        {!hero && (
+          <h1 className="font-display text-3xl font-medium tracking-tight">{t('manage.title')}</h1>
+        )}
 
         {b.status === 'pending_payment' && <PaymentPanel booking={b} />}
 

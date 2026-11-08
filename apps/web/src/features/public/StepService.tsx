@@ -5,6 +5,7 @@ import { ChevronRight, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { EmptyState } from '@/components/common/States';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 type Service = PublicBusiness['services'][number];
 
@@ -33,7 +34,7 @@ export function StepService({
       {hasDemo && (
         <p
           role="note"
-          className="rounded-lg border border-dashed px-3 py-2 text-xs text-muted-foreground"
+          className="rounded-xl border border-dashed border-gold/40 px-3 py-2 text-xs text-muted-foreground"
         >
           {t('booking.demoPrices')}
         </p>
@@ -41,20 +42,30 @@ export function StepService({
       {[...groups.entries()].map(([category, items]) => (
         <section key={category} aria-labelledby={`cat-${category}`}>
           {groups.size > 1 && (
-            <h3 id={`cat-${category}`} className="mb-2 text-sm font-medium text-muted-foreground">
+            <h3 id={`cat-${category}`} className="eyebrow mb-3">
               {category}
             </h3>
           )}
-          <ul className="divide-y overflow-hidden rounded-xl border bg-card">
+          <ul className="space-y-3">
             {items.map((s) => (
               <li key={s.id}>
                 <button
                   type="button"
                   onClick={() => onSelect(s)}
-                  className="flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
+                  className={cn(
+                    'group relative flex w-full items-center gap-4 overflow-hidden rounded-2xl border bg-card/90 px-5 py-4 text-left shadow-[var(--shadow-soft)]',
+                    'transition-[transform,border-color,box-shadow] duration-300 ease-[var(--ease-out)]',
+                    'hover:-translate-y-0.5 hover:border-gold/60 hover:shadow-[var(--shadow-lift)] active:scale-[0.99]',
+                    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transform-none',
+                  )}
                 >
+                  {/* filete dourado que acende no hover */}
+                  <span
+                    aria-hidden
+                    className="absolute inset-y-3 left-0 w-[2px] origin-center scale-y-0 rounded-full bg-[image:var(--gold-metal)] transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-y-100 group-focus-visible:scale-y-100"
+                  />
                   <div className="min-w-0 flex-1">
-                    <p className="font-medium">{s.name}</p>
+                    <p className="font-display text-lg leading-snug">{s.name}</p>
                     {s.description && (
                       <p className="mt-0.5 line-clamp-2 text-sm text-muted-foreground">
                         {s.description}
@@ -76,10 +87,13 @@ export function StepService({
                       )}
                     </div>
                   </div>
-                  <span className="font-semibold tabular-nums">
+                  <span className="font-display text-lg tabular-nums">
                     {s.price_cents === 0 ? t('booking.free') : formatMoney(s.price_cents, currency)}
                   </span>
-                  <ChevronRight className="size-4 text-muted-foreground" aria-hidden />
+                  <ChevronRight
+                    className="size-4 text-gold-text transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
+                    aria-hidden
+                  />
                 </button>
               </li>
             ))}

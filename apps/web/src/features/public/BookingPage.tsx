@@ -5,6 +5,8 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { toast } from 'sonner';
+import { ArchFrame } from '@/components/brand/ArchFrame';
+import { SpacePhoto } from '@/components/brand/SpaceGallery';
 import { ErrorState, EmptyState } from '@/components/common/States';
 import type { TurnstileHandle } from '@/components/common/Turnstile';
 import { Button } from '@/components/ui/button';
@@ -15,9 +17,10 @@ const StepDetails = React.lazy(() =>
   import('./StepDetails').then((m) => ({ default: m.StepDetails })),
 );
 import { ApiError } from '@/lib/api';
-import { cn, newIdempotencyKey } from '@/lib/utils';
+import { newIdempotencyKey } from '@/lib/utils';
 import { createBooking, usePublicBusiness } from './api';
-import { BookingSummary } from './BookingSummary';
+import { BookingProgress, type ProgressStep } from './BookingProgress';
+import { BookingSummary, BookingSummaryBar } from './BookingSummary';
 import { PublicLayout } from './PublicLayout';
 import { StepDateTime } from './StepDateTime';
 import type { DetailsSubmit } from './StepDetails';
@@ -46,11 +49,17 @@ export function BookingPage() {
   if (query.isPending) {
     return (
       <PublicLayout>
-        <div className="mx-auto max-w-2xl space-y-4" aria-busy>
-          <Skeleton className="h-8 w-2/3" />
-          <Skeleton className="h-4 w-1/2" />
+        <div
+          className="max-w-2xl space-y-4"
+          aria-busy
+          role="status"
+          aria-label={t('common.loading')}
+        >
+          <Skeleton className="h-3 w-32" />
+          <Skeleton className="h-10 w-2/3" />
+          <Skeleton className="mb-8 h-[3px] w-full" />
           {Array.from({ length: 4 }, (_, i) => (
-            <Skeleton key={i} className="h-20" />
+            <Skeleton key={i} className="h-24 rounded-2xl" />
           ))}
         </div>
       </PublicLayout>
@@ -146,6 +155,8 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
           ? 'datetime'
           : 'details';
   const index = steps.indexOf(current);
+  // a confirmação é a tela seguinte (/r/:token), mas já aparece no progresso
+  const progressSteps: ProgressStep[] = [...steps, 'confirm'];
 
   // Foco no título a cada passo (leitores de tela anunciam a mudança)
   React.useEffect(() => {
@@ -238,43 +249,30 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
     <PublicLayout business={business}>
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0">
+          {/* Resumo fixo no celular: acompanha a rolagem logo abaixo do cabeçalho */}
+          {service && (
+            <BookingSummaryBar
+              service={service}
+              professional={professional}
+              unit={unit}
+              startsAt={startsAt}
+              currency={business.currency}
+            />
+          )}
           {current === 'service' && !service && (
-            <div className="mb-6 space-y-1">
-              <p className="text-sm tracking-[0.3em] text-primary" aria-hidden>
-                ✦
-              </p>
-              <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+            <div className="mb-8 space-y-3">
+              <p className="eyebrow">{t('booking.pageTitle')}</p>
+              <h1 className="font-display text-4xl font-medium tracking-tight sm:text-5xl">
                 {business.name}
               </h1>
+              <div className="gold-hairline w-24" aria-hidden />
               {business.description && (
-                <p className="text-muted-foreground">{business.description}</p>
+                <p className="max-w-xl text-muted-foreground">{business.description}</p>
               )}
             </div>
           )}
 
-          {/* Progresso */}
-          <nav aria-label={t('booking.progress')} className="mb-4">
-            <ol className="flex gap-1.5">
-              {steps.map((s, i) => (
-                <li key={s} className="flex-1">
-                  <span
-                    className={cn(
-                      'block h-1.5 rounded-full',
-                      i <= index ? 'bg-primary' : 'bg-muted',
-                    )}
-                  />
-                  <span className="sr-only">
-                    {t(`booking.steps.${s}`)}{' '}
-                    {i < index
-                      ? t('booking.stepDone')
-                      : i === index
-                        ? t('booking.stepCurrent')
-                        : ''}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </nav>
+          <BookingProgress steps={progressSteps} index={index} className="mb-8" />
 
           <div className="mb-5 flex items-center gap-2">
             {(index > 0 ||
@@ -284,91 +282,82 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
               </Button>
             )}
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                {t('booking.stepOf', { current: index + 1, total: steps.length })}
+              <p className="eyebrow">
+                {t('booking.stepOf', { current: index + 1, total: progressSteps.length })}
               </p>
-              <h2 ref={headingRef} tabIndex={-1} className="text-xl font-semibold outline-none">
+              <h2
+                ref={headingRef}
+                tabIndex={-1}
+                className="mt-1 font-display text-2xl font-medium tracking-tight outline-none sm:text-3xl"
+              >
                 {titles[current]}
               </h2>
             </div>
           </div>
 
-          {/* Resumo compacto no celular */}
-          {service && (
-            <div className="mb-5 lg:hidden">
-              <BookingSummary
-                service={service}
-                professional={professional}
-                anyProfessional={isAny}
-                unit={unit}
-                startsAt={startsAt}
+          <div key={`${current}-${unit?.id ?? ''}`} className="step-in">
+            {!unit ? (
+              <ul className="divide-y overflow-hidden rounded-xl border bg-card">
+                {data.units.map((u) => (
+                  <li key={u.id}>
+                    <button
+                      type="button"
+                      onClick={() => update({ [P.unit]: u.id })}
+                      className="flex w-full items-start gap-3 px-4 py-4 text-left hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
+                    >
+                      <MapPin className="mt-0.5 size-5 text-primary" aria-hidden />
+                      <span>
+                        <span className="block font-medium">{u.name}</span>
+                        {u.address && (
+                          <span className="block text-sm text-muted-foreground">{u.address}</span>
+                        )}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : current === 'service' ? (
+              <StepService
+                services={services}
                 currency={business.currency}
-                showUnit={data.units.length > 1}
+                onSelect={(s) => update({ [P.service]: s.id })}
               />
-            </div>
-          )}
-
-          {!unit ? (
-            <ul className="divide-y overflow-hidden rounded-xl border bg-card">
-              {data.units.map((u) => (
-                <li key={u.id}>
-                  <button
-                    type="button"
-                    onClick={() => update({ [P.unit]: u.id })}
-                    className="flex w-full items-start gap-3 px-4 py-4 text-left hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
-                  >
-                    <MapPin className="mt-0.5 size-5 text-primary" aria-hidden />
-                    <span>
-                      <span className="block font-medium">{u.name}</span>
-                      {u.address && (
-                        <span className="block text-sm text-muted-foreground">{u.address}</span>
-                      )}
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : current === 'service' ? (
-            <StepService
-              services={services}
-              currency={business.currency}
-              onSelect={(s) => update({ [P.service]: s.id })}
-            />
-          ) : current === 'professional' ? (
-            <StepProfessional
-              professionals={pros}
-              onSelect={(id) => update({ [P.pro]: id === 'any' ? ANY : id })}
-            />
-          ) : current === 'datetime' ? (
-            <StepDateTime
-              serviceId={service!.id}
-              unitId={unit.id}
-              unitName={unit.name}
-              timeZone={unit.timezone}
-              professionalId={professional?.id ?? null}
-              selectedDay={day}
-              onSelectDay={selectDay}
-              onSelectSlot={selectSlot}
-            />
-          ) : (
-            <React.Suspense fallback={<Skeleton className="h-96" />}>
-              <StepDetails
-                depositCents={service!.deposit_cents}
-                priceCents={service!.price_cents}
-                currency={business.currency}
-                policy={business.policy}
-                paymentMethods={business.payment_methods}
-                maxInstallments={business.max_installments}
-                submitting={submitting}
-                onSubmit={onSubmit}
-                captchaRef={captchaRef}
+            ) : current === 'professional' ? (
+              <StepProfessional
+                professionals={pros}
+                onSelect={(id) => update({ [P.pro]: id === 'any' ? ANY : id })}
               />
-            </React.Suspense>
-          )}
+            ) : current === 'datetime' ? (
+              <StepDateTime
+                serviceId={service!.id}
+                unitId={unit.id}
+                unitName={unit.name}
+                timeZone={unit.timezone}
+                professionalId={professional?.id ?? null}
+                selectedDay={day}
+                onSelectDay={selectDay}
+                onSelectSlot={selectSlot}
+              />
+            ) : (
+              <React.Suspense fallback={<Skeleton className="h-96" />}>
+                <StepDetails
+                  depositCents={service!.deposit_cents}
+                  priceCents={service!.price_cents}
+                  currency={business.currency}
+                  policy={business.policy}
+                  paymentMethods={business.payment_methods}
+                  maxInstallments={business.max_installments}
+                  submitting={submitting}
+                  onSubmit={onSubmit}
+                  captchaRef={captchaRef}
+                />
+              </React.Suspense>
+            )}
+          </div>
         </div>
 
         <aside className="hidden lg:block">
-          <div className="sticky top-20 space-y-3">
+          <div className="sticky top-24 space-y-3">
             {service ? (
               <BookingSummary
                 service={service}
@@ -380,9 +369,18 @@ function BookingFlow({ data, unitSlug }: { data: PublicBusiness; unitSlug?: stri
                 showUnit
               />
             ) : (
-              <div className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
-                {t('booking.summaryEmpty')}
-              </div>
+              <figure className="space-y-4">
+                <ArchFrame className="aspect-[3/4]">
+                  <SpacePhoto
+                    photo="recepcao"
+                    alt={t('home.space.photos.recepcao.alt')}
+                    sizes="320px"
+                  />
+                </ArchFrame>
+                <figcaption className="text-center text-sm text-muted-foreground">
+                  {t('booking.summaryEmpty')}
+                </figcaption>
+              </figure>
             )}
           </div>
         </aside>

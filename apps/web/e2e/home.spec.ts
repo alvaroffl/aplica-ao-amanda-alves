@@ -13,6 +13,6 @@ test('página inicial da clínica: marca, procedimentos e avaliação gratuita',
 
   await page.getByRole('link', { name: 'Agendar Avaliação Gratuita' }).first().click();
   await expect(page).toHaveURL(/\/amanda-alves\?servico=avaliacao/);
-  await expect(page.getByText('Passo 2 de 3')).toBeVisible();
+  await expect(page.getByText('Passo 2 de 4')).toBeVisible();
   await expect(page.getByText('Avaliação gratuita').first()).toBeVisible();
 });
