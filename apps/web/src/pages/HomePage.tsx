@@ -45,7 +45,7 @@ export function HomePage() {
       <main id="conteudo">
         {/* Abertura */}
         <section className="mx-auto max-w-6xl px-4 pb-16 pt-12 text-center sm:pt-20">
-          <BrandLogo className="mx-auto h-28 sm:h-36" />
+          <BrandLogo className="mx-auto h-28 sm:h-36" priority />
           <p className="eyebrow mt-8">
             {t('home.eyebrowLeft')} <span aria-hidden>✦</span> {t('home.eyebrowRight')}
           </p>

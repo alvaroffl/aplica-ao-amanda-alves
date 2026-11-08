@@ -27,7 +27,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'favicon.png', 'apple-touch-icon.png', 'brand/*.png'],
+      includeAssets: ['favicon.ico', 'favicon.png', 'apple-touch-icon.png', 'brand/*.{png,webp}'],
       manifest: {
         name: 'Amanda Alves | Estética Avançada',
         short_name: 'Amanda Alves',
@@ -51,7 +51,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2}'],
         navigateFallback: '/index.html',
         // dados da API nunca vêm do cache (agenda precisa estar sempre atual)
         navigateFallbackDenylist: [/^\/rest\//, /^\/auth\//, /^\/functions\//],

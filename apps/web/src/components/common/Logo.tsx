@@ -6,10 +6,11 @@ import { cn } from '@/lib/utils';
 export function LogoMark({ className }: { className?: string }) {
   return (
     <img
-      src="/brand/monograma.png"
+      src="/brand/monograma.webp"
       alt=""
-      width={512}
-      height={362}
+      width={128}
+      height={90}
+      decoding="async"
       className={cn('brand-logo h-6 w-auto', className)}
       aria-hidden
     />
@@ -17,13 +18,21 @@ export function LogoMark({ className }: { className?: string }) {
 }
 
 /** Logo completa (AMANDA Alves), usada em destaque. */
-export function BrandLogo({ className }: { className?: string }) {
+export function BrandLogo({
+  className,
+  priority = false,
+}: {
+  className?: string;
+  /** true no topo da página inicial (carrega antes das demais imagens) */
+  priority?: boolean;
+}) {
   return (
     <img
-      src="/brand/logo-amanda-alves.png"
+      src="/brand/logo-amanda-alves.webp"
       alt={env.appName}
-      width={900}
-      height={538}
+      width={640}
+      height={383}
+      fetchPriority={priority ? 'high' : 'auto'}
       className={cn('brand-logo h-24 w-auto', className)}
     />
   );
