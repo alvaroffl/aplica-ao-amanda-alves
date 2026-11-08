@@ -29,6 +29,48 @@
     <meta property="og:image:alt" content="Logo Amanda Alves" />
     <meta name="twitter:card" content="summary_large_image" />
     <script src="/theme-init.js"></script>
+    <!-- Materiais da "recepção" (mármore, cerejeira, logo): baixam junto com o JS,
+         em vez de esperar a página montar. São leves (4–16 KB). A logo é usada
+         como máscara CSS, buscada em modo CORS: daí o crossorigin. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      href="/brand/marmore-portrait.avif"
+      media="(orientation: portrait) and (prefers-color-scheme: light)"
+    />
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      href="/brand/marmore-landscape.avif"
+      media="(orientation: landscape) and (prefers-color-scheme: light)"
+    />
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      href="/brand/marmore-escuro.avif"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link rel="preload" as="image" href="/brand/monograma.webp" crossorigin="anonymous" />
+    <link rel="preload" as="image" href="/brand/logo-amanda-alves.webp" crossorigin="anonymous" />
+    <link rel="preload" as="image" href="/brand/cerejeira.svg" />
+    <!-- Fontes da identidade (latin): o título serifado é o maior texto da tela -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+      href="/node_modules/@fontsource-variable/playfair-display/files/playfair-display-latin-wght-normal.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+      href="/node_modules/@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2"
+    />
   </head>
   <body>
     <div id="root"></div>

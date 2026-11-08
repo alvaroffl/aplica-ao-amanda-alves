@@ -27,7 +27,13 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'favicon.png', 'apple-touch-icon.png', 'brand/*.{png,webp}'],
+      includeAssets: [
+        'favicon.ico',
+        'favicon.png',
+        'apple-touch-icon.png',
+        'brand/logo-amanda-alves.webp',
+        'brand/monograma.webp',
+      ],
       manifest: {
         name: 'Amanda Alves | Estética Avançada',
         short_name: 'Amanda Alves',
@@ -52,6 +58,19 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2}'],
+        // fotos e texturas não entram na instalação (o navegador escolhe AVIF ou
+        // WebP e o tamanho certo); ficam em cache depois de vistas
+        globIgnores: ['brand/espaco/**', 'brand/marmore-*', 'brand/*.png'],
+        runtimeCaching: [
+          {
+            urlPattern: ({ request, sameOrigin }) => sameOrigin && request.destination === 'image',
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'imagens',
+              expiration: { maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 30 },
+            },
+          },
+        ],
         navigateFallback: '/index.html',
         // dados da API nunca vêm do cache (agenda precisa estar sempre atual)
         navigateFallbackDenylist: [/^\/rest\//, /^\/auth\//, /^\/functions\//],

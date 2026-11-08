@@ -14,7 +14,8 @@ export function SmoothScroll() {
     let lenis: { raf: (t: number) => void; destroy: () => void } | null = null;
     void import('lenis').then(({ default: Lenis }) => {
       if (destroyed) return;
-      lenis = new Lenis({ lerp: 0.1, anchors: { offset: -72 } });
+      // âncoras suaves; o recuo do cabeçalho vem do scroll-margin das seções
+      lenis = new Lenis({ lerp: 0.1, anchors: true });
       const raf = (time: number) => {
         lenis?.raf(time);
         frame = requestAnimationFrame(raf);

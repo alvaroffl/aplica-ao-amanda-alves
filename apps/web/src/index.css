@@ -436,6 +436,24 @@
   }
 }
 
+/* Seções abaixo da dobra só são montadas perto da tela (imagens e texturas
+   delas também só baixam então). --cv-h: altura estimada, lembrada depois. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto var(--cv-h, 1000px);
+}
+
+/* Decoração (ramos, mármore) entra logo depois do conteúdo: o texto aparece
+   primeiro e os galhos "chegam" pelos cantos */
+.decor-in {
+  animation: decor-in 1200ms var(--ease-out) 120ms both;
+}
+@keyframes decor-in {
+  from {
+    opacity: 0;
+  }
+}
+
 /* Passos do agendamento: o conteúdo novo sobe suavemente (BookingPage.tsx) */
 .step-in {
   animation: page-in var(--dur-base) var(--ease-out) both;
@@ -480,7 +498,8 @@
   ::view-transition-old(root),
   ::view-transition-new(root),
   .step-in,
-  .confirm-pop {
+  .confirm-pop,
+  .decor-in {
     animation: none;
   }
 }

@@ -8,11 +8,17 @@ export const ANON_KEY =
 
 /** Auditoria WCAG 2.1 AA (axe-core). */
 export async function expectAccessible(page: Page) {
-  // mede o estado final: espera as animações de entrada (finitas) terminarem
+  // mede o estado final: espera as animações de entrada (finitas) dos elementos
+  // visíveis terminarem (seções com content-visibility fora da tela ficam
+  // pausadas, então não entram) — com limite de 5 s por segurança
   await page.evaluate(
-    `Promise.all(document.getAnimations()
-      .filter((a) => a.effect && a.effect.getComputedTiming().iterations !== Infinity)
-      .map((a) => a.finished.catch(() => null))).then(() => true)`,
+    `Promise.race([
+      Promise.all(document.getAnimations()
+        .filter((a) => a.effect && a.effect.getComputedTiming().iterations !== Infinity)
+        .filter((a) => !a.effect.target || a.effect.target.checkVisibility({ contentVisibilityAuto: true }))
+        .map((a) => a.finished.catch(() => null))),
+      new Promise((r) => setTimeout(r, 5000)),
+    ]).then(() => true)`,
   );
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])

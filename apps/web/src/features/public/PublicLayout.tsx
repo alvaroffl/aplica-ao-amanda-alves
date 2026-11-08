@@ -20,7 +20,7 @@ export function PublicLayout({
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[26rem] overflow-hidden opacity-70 [mask-image:linear-gradient(to_bottom,black,transparent)]"
       >
-        <div className="marble-surface absolute inset-0" />
+        <div className="marble-surface decor-in absolute inset-0" />
       </div>
       <a href="#conteudo" className="skip-link">
         {t('common.skipToContent')}

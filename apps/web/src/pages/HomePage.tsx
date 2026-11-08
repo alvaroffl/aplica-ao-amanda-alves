@@ -189,7 +189,7 @@ export function HomePage() {
         <section
           id="clinica"
           aria-labelledby="clinica-titulo"
-          className="relative scroll-mt-16 overflow-hidden py-20 sm:py-32"
+          className="cv-auto relative scroll-mt-16 overflow-hidden py-20 [--cv-h:2150px] sm:py-32 lg:[--cv-h:1150px]"
         >
           <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-4 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:gap-20">
             <Reveal className="relative mx-auto w-full max-w-sm">
@@ -275,7 +275,7 @@ export function HomePage() {
         <section
           id="procedimentos"
           aria-labelledby="procedimentos-titulo"
-          className="relative isolate scroll-mt-16 overflow-hidden py-20 sm:py-32"
+          className="cv-auto relative isolate scroll-mt-16 overflow-hidden py-20 [--cv-h:1820px] sm:py-32 lg:[--cv-h:950px]"
         >
           <MarbleBackground className="opacity-70" />
           <BlossomBranch
@@ -328,7 +328,7 @@ export function HomePage() {
         <section
           id="espaco"
           aria-labelledby="espaco-titulo"
-          className="scroll-mt-16 overflow-hidden py-20 sm:py-32"
+          className="cv-auto scroll-mt-16 overflow-hidden py-20 [--cv-h:2050px] sm:py-32 lg:[--cv-h:1180px]"
         >
           <div className="mx-auto max-w-6xl px-4">
             <SectionHeading
@@ -349,7 +349,7 @@ export function HomePage() {
         {CLINIC.testimonials.length > 0 && (
           <section
             aria-labelledby="depoimentos-titulo"
-            className="relative isolate overflow-hidden bg-blossom-100/60 py-20 sm:py-28 dark:bg-blossom-50"
+            className="cv-auto relative isolate overflow-hidden bg-blossom-100/60 py-20 [--cv-h:1200px] sm:py-28 lg:[--cv-h:720px] dark:bg-blossom-50"
           >
             <BlossomBranch
               className="-right-24 -top-12 w-[300px] opacity-60 sm:w-[460px]"
@@ -397,7 +397,7 @@ export function HomePage() {
         <section
           id="contato"
           aria-labelledby="contato-titulo"
-          className="relative isolate scroll-mt-16 overflow-hidden bg-ink py-20 text-[#f4efe6] sm:py-32"
+          className="cv-auto relative isolate scroll-mt-16 overflow-hidden bg-ink py-20 text-[#f4efe6] [--cv-h:760px] sm:py-32 lg:[--cv-h:500px]"
         >
           <MarbleBackground variant="dark" spot className="opacity-90" />
           <div className="relative mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 md:grid-cols-2 md:items-center">

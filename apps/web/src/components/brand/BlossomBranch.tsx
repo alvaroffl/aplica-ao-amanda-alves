@@ -28,7 +28,10 @@ export function BlossomBranch({
     <div
       ref={ref}
       aria-hidden
-      className={cn('pointer-events-none absolute select-none will-change-transform', className)}
+      className={cn(
+        'decor-in pointer-events-none absolute select-none will-change-transform',
+        className,
+      )}
     >
       <img
         src="/brand/cerejeira.svg"
