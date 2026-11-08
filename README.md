@@ -15,7 +15,7 @@ App exclusivo da clínica **Amanda Alves | Estética Avançada** (micropigmenta�
 
 | Página inicial (celular)                | Serviços                                    | Horários                                    | Sinal por Pix (modo de teste)     |
 | --------------------------------------- | ------------------------------------------- | ------------------------------------------- | --------------------------------- |
-| ![Início](docs/img/mobile-0-inicio.png) | ![Serviços](docs/img/mobile-1-servicos.png) | ![Horários](docs/img/mobile-2-horarios.png) | ![Pix](docs/img/mobile-3-pix.png) |
+| ![Início](docs/img/mobile-0-inicio.jpg) | ![Serviços](docs/img/mobile-1-servicos.png) | ![Horários](docs/img/mobile-2-horarios.png) | ![Pix](docs/img/mobile-3-pix.png) |
 
 | Agenda do painel (arrastar e soltar)  | Pagamentos e estornos                         |
 | ------------------------------------- | --------------------------------------------- |

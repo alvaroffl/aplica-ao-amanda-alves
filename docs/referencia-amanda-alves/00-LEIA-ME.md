@@ -30,7 +30,8 @@ regras.
 ## Origem de cada informação
 
 Legenda: **[site]** site oficial · **[demo]** dado fictício de demonstração ·
-**[técnico]** decisão técnica do projeto · **[confirmar]** pendente com a cliente.
+**[técnico]** decisão técnica do projeto · **[confirmar]** pendente com a cliente ·
+**[salão]** fotos do espaço enviadas pela clínica.
 
 | Informação | Origem |
 | --- | --- |
