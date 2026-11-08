@@ -224,7 +224,7 @@ begin
           case when v_status = 'cancelled' then 'refunded'::public.payment_status
                else 'approved'::public.payment_status end,
           case when v_status = 'cancelled' then r.deposit else 0 end,
-          true, v_start - interval '5 days'
+          true, least(v_start - interval '5 days', now() - make_interval(hours => 1 + i % 72))
         );
       end if;
     end loop;
