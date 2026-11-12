@@ -87,6 +87,7 @@ const ptBR = {
     AVAILABILITY_OVERLAP: 'Há horários sobrepostos (inclusive em outra unidade).',
     INTERNAL_ERROR: 'Erro inesperado. Tente novamente.',
     NETWORK: 'Sem conexão. Verifique sua internet.',
+    UNAVAILABLE: 'O sistema está iniciando ou fora do ar. Aguarde um instante e tente novamente.',
   },
 
   status: {

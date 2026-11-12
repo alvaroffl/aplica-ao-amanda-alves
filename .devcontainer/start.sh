@@ -34,12 +34,25 @@ for _ in $(seq 1 60); do docker info >/dev/null 2>&1 && break; sleep 2; done
 if up http://127.0.0.1:54321/rest/v1/ || [ "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:54321/rest/v1/)" = "401" ]; then
   echo "Supabase já está no ar."
 else
-  echo "Iniciando o Supabase local..."
-  for attempt in 1 2; do
+  echo "Iniciando o Supabase local (na primeira vez leva de 5 a 10 minutos)..."
+  for attempt in 1 2 3; do
+    # da 2ª tentativa em diante, baixa as imagens pelo Docker Hub (o registro
+    # padrão às vezes recusa ou limita downloads)
+    if [ "$attempt" -gt 1 ]; then export SUPABASE_INTERNAL_IMAGE_REGISTRY=docker.io; fi
     npx supabase start -x studio,imgproxy,logflare,vector,supavisor && break
     echo "Supabase não iniciou (tentativa ${attempt}); tentando de novo..."
+    npx supabase stop --no-backup >/dev/null 2>&1 || true
     sleep 5
   done
+fi
+api_up() { up http://127.0.0.1:54321/rest/v1/ || [ "$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:54321/rest/v1/)" = "401" ]; }
+for _ in $(seq 1 30); do api_up && break; sleep 2; done
+if ! api_up; then
+  echo
+  echo "ERRO: o Supabase não subiu, então o site abre mas mostra"
+  echo "'O sistema está iniciando ou fora do ar'. Rode de novo:"
+  echo "  bash .devcontainer/start.sh"
+  echo "Se persistir, envie a saída de: npx supabase status ; docker ps -a"
 fi
 
 # 2b) Banco igual ao do repositório: depois de um `git pull` com migrations ou

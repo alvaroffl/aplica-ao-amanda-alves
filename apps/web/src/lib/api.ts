@@ -4,13 +4,21 @@ import { env, functionsUrl } from './env';
 /** Erro de API com código de negócio (traduzido via i18n "errors.<code>"). */
 export class ApiError extends Error {
   constructor(
-    public readonly code: ErrorCode | 'NETWORK',
+    public readonly code: ErrorCode | 'NETWORK' | 'UNAVAILABLE',
     public readonly status = 0,
     public readonly details?: unknown,
   ) {
     super(code);
     this.name = 'ApiError';
   }
+}
+
+/**
+ * Servidor fora do ar ou ainda iniciando: o proxy/gateway responde sem o JSON
+ * da API (ex.: 500 vazio do proxy de desenvolvimento, 502/503/504).
+ */
+export function isUnavailable(status: number, hasApiBody: boolean): boolean {
+  return [502, 503, 504].includes(status) || (status >= 500 && !hasApiBody);
 }
 
 export function toApiError(error: unknown): ApiError {
@@ -35,6 +43,8 @@ export async function callFunction<T>(name: string, body: unknown): Promise<T> {
     error?: { code: ErrorCode; details?: unknown };
   } | null;
   if (!res.ok) {
+    if (isUnavailable(res.status, Boolean(data?.error)))
+      throw new ApiError('UNAVAILABLE', res.status);
     throw new ApiError(data?.error?.code ?? 'INTERNAL_ERROR', res.status, data?.error?.details);
   }
   return data as T;

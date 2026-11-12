@@ -56,6 +56,7 @@ const en: DeepPartial<Translations> = {
     PAYMENT_PROVIDER_ERROR: 'Payment is unavailable right now. Please try again shortly.',
     INTERNAL_ERROR: 'Unexpected error. Please try again.',
     NETWORK: 'No connection. Check your internet.',
+    UNAVAILABLE: 'The system is starting up or offline. Please wait a moment and try again.',
   },
   status: {
     pending_payment: 'Awaiting deposit',

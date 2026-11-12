@@ -1,5 +1,5 @@
 import { errorCodeFrom } from '@agendae/shared/errors';
-import { ApiError } from './api';
+import { ApiError, isUnavailable } from './api';
 import { env } from './env';
 
 /**
@@ -18,7 +18,15 @@ export async function rpc<T>(fn: string, args: Record<string, unknown>): Promise
     throw new ApiError('NETWORK');
   }
   const text = await res.text();
-  const data = text ? JSON.parse(text) : null;
-  if (!res.ok) throw new ApiError(errorCodeFrom(data), res.status);
+  let data: unknown = null;
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    // resposta que não é da API (ex.: proxy sem o Supabase no ar)
+  }
+  if (!res.ok) {
+    if (isUnavailable(res.status, data !== null)) throw new ApiError('UNAVAILABLE', res.status);
+    throw new ApiError(errorCodeFrom(data), res.status);
+  }
   return data as T;
 }
